@@ -30,7 +30,6 @@ th{background:#f5f7fa;font-weight:bold;}
 td:hover{background:#f0f4f8;}
 canvas{margin-top:20px;background:#fff;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
 label{display:inline-block;margin:5px;font-weight:bold;}
-textarea{width:100%;height:40px;}
 .progress-bar {height:25px;background:#e0e0e0;border-radius:12px;overflow:hidden;margin:10px 0;}
 .progress {height:100%;background:#4a90e2;width:0%;color:#fff;text-align:center;line-height:25px;font-weight:bold;transition:0.5s;}
 </style>
@@ -89,7 +88,7 @@ function updateDateTime(){
 setInterval(updateDateTime,1000);
 updateDateTime();
 
-// Load localStorage
+// Load from localStorage
 window.onload = function(){
     if(localStorage.getItem('pocketTrackerData')){
         let data = JSON.parse(localStorage.getItem('pocketTrackerData'));
@@ -98,12 +97,11 @@ window.onload = function(){
         document.getElementById('loan').value=data.loan;
         document.getElementById('daily').value=data.daily;
         document.getElementById('goal').value=data.goal;
-        document.getElementById('dailyNotes')?.value=data.dailyNotes || '';
         calculate();
     }
 }
 
-// Calculate
+// Main Calculation
 function calculate(){
     let salary=parseInt(document.getElementById('salary').value);
     let house=parseInt(document.getElementById('house').value);
@@ -114,7 +112,7 @@ function calculate(){
     const now=new Date();
     const totalDays=new Date(now.getFullYear(), now.getMonth()+1,0).getDate();
 
-    // Category wise simple split (example)
+    // Category split
     let food=Math.round(daily*0.4);
     let fuel=Math.round(daily*0.2);
     let snacks=Math.round(daily*0.1);
@@ -129,6 +127,7 @@ function calculate(){
     document.getElementById('totalExpense').innerText=totalExpense;
     document.getElementById('remaining').innerText=remaining;
 
+    // Goal %
     let goalPercent=Math.min(Math.round((remaining/goal)*100),100);
     document.getElementById('goalStatus').innerText=goalPercent+'%';
     document.getElementById('progress').style.width=goalPercent+'%';
@@ -145,18 +144,17 @@ function calculate(){
         row.insertCell(3).innerText=snacks;
         row.insertCell(4).innerText=bills;
         row.insertCell(5).innerText=entertainment;
-        let totalCat=food+fuel+snacks+bills+entertainment;
-        row.insertCell(6).innerText=totalCat;
+        row.insertCell(6).innerText=food+fuel+snacks+bills+entertainment;
         row.insertCell(7).innerHTML='<input type="text" placeholder="Note">';
     }
 
-    // Weekly summary
+    // Weekly summary (split month into 4 approx weeks)
     let weekDays=Math.ceil(totalDays/4);
     for(let i=1;i<=4;i++){
-        let weekExpense=weekDays*daily+house/4+loan/4;
-        let weekSaving=salary/4-weekExpense;
-        document.getElementById('w'+i+'Expense').innerText=Math.round(weekExpense);
-        document.getElementById('w'+i+'Saving').innerText=Math.round(weekSaving);
+        let weekExpense=Math.round(daily*weekDays + house/4 + loan/4);
+        let weekSaving=Math.round(salary/4 - weekExpense);
+        document.getElementById('w'+i+'Expense').innerText=weekExpense;
+        document.getElementById('w'+i+'Saving').innerText=weekSaving;
     }
 
     // Chart
@@ -164,8 +162,10 @@ function calculate(){
     if(window.barChart) window.barChart.destroy();
     window.barChart=new Chart(ctx,{
         type:'bar',
-        data:{labels:['Salary','Total Expense','Remaining Saving'],
-        datasets:[{label:'PKR',data:[salary,totalExpense,remaining],backgroundColor:['#4a90e2','#f39c12','#2ecc71'],borderColor:['#357ABD','#d35400','#27ae60'],borderWidth:2}]},
+        data:{
+            labels:['Salary','Total Expense','Remaining Saving'],
+            datasets:[{label:'PKR',data:[salary,totalExpense,remaining],backgroundColor:['#4a90e2','#f39c12','#2ecc71'],borderColor:['#357ABD','#d35400','#27ae60'],borderWidth:2}]
+        },
         options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
     });
 
@@ -192,5 +192,6 @@ function exportCSV(){
     link.click();
 }
 </script>
+
 </body>
 </html>
