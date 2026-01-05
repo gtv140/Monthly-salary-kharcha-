@@ -35,6 +35,7 @@ td:hover{background:#f0f4f8;}
   <label>Ghar Kharcha: <input type="number" id="house" value="20000"></label>
   <label>Loan: <input type="number" id="loan" value="10000"></label>
   <label>Savings Goal: <input type="number" id="goal" value="10000"></label>
+  <label>Loan Paid: <input type="checkbox" id="loanPaid" onchange="updateLoan()"></label>
   <br>
   <button onclick="addDay()">Add Day</button>
   <button onclick="calculate()">Recalculate</button>
@@ -56,7 +57,10 @@ td:hover{background:#f0f4f8;}
 
 <h2>Daily Expenses</h2>
 <table id="dailyTable">
-<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th></tr>
+<tr>
+<th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th>
+<th>Daily Total</th><th>Total incl. Ghar+Loan</th>
+</tr>
 </table>
 
 <h2>Weekly Summary</h2>
@@ -83,7 +87,10 @@ updateDateTime();
 
 // Load from localStorage
 let dailyData = [];
+let loanPaidAmount = 0;
 if(localStorage.getItem('dailyData')) dailyData = JSON.parse(localStorage.getItem('dailyData'));
+if(localStorage.getItem('loanPaid')) loanPaidAmount = parseInt(localStorage.getItem('loanPaid')) || 0;
+document.getElementById('loanPaid').checked = loanPaidAmount>0;
 calculate();
 
 // Add new day manually
@@ -99,11 +106,26 @@ function addDay(){
     calculate();
 }
 
+// Loan Paid toggle
+function updateLoan(){
+    let loan = parseInt(document.getElementById('loan').value);
+    if(document.getElementById('loanPaid').checked){
+        loanPaidAmount = loan;
+    } else {
+        loanPaidAmount = 0;
+    }
+    localStorage.setItem('loanPaid',loanPaidAmount);
+    calculate();
+}
+
 // Clear all data
 function clearAll(){
     if(confirm("Are you sure you want to delete all daily entries? This cannot be undone.")){
         dailyData = [];
         localStorage.removeItem('dailyData');
+        loanPaidAmount = 0;
+        localStorage.removeItem('loanPaid');
+        document.getElementById('loanPaid').checked = false;
         calculate();
     }
 }
@@ -117,8 +139,11 @@ function calculate(){
 
     // Update daily table
     const table = document.getElementById('dailyTable');
-    table.innerHTML = "<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th></tr>";
-    let totalExpense = house+loan;
+    table.innerHTML = "<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Daily Total</th><th>Total incl. Ghar+Loan</th></tr>";
+    let totalExpense = 0;
+    const dailyHouseShare = house/dailyData.length || 0;
+    const dailyLoanShare = loanPaidAmount/dailyData.length || 0;
+
     dailyData.forEach((day,index)=>{
         const row = table.insertRow();
         row.insertCell(0).innerText = index+1;
@@ -128,8 +153,12 @@ function calculate(){
         row.insertCell(4).innerText = day.bills;
         row.insertCell(5).innerText = day.entertainment;
         row.insertCell(6).innerText = day.total;
+        const totalWithHouseLoan = day.total + Math.round(dailyHouseShare + dailyLoanShare);
+        row.insertCell(7).innerText = totalWithHouseLoan;
         totalExpense += day.total;
     });
+
+    totalExpense += house + loanPaidAmount;
 
     const remaining = salary-totalExpense;
     document.getElementById('totalSalary').innerText = salary;
@@ -147,7 +176,7 @@ function calculate(){
     for(let i=1;i<=weekCount;i++){
         const start=(i-1)*weekLen;
         const end=i*weekLen;
-        let weekExpense = house/4 + loan/4;
+        let weekExpense = house/4 + loanPaidAmount/4;
         dailyData.slice(start,end).forEach(d=>weekExpense+=d.total);
         let weekSaving = salary/4 - weekExpense;
         document.getElementById('w'+i+'Expense').innerText = Math.round(weekExpense);
@@ -169,9 +198,14 @@ function calculate(){
 
 // Export CSV
 function exportCSV(){
-    let csv='Day,Food,Fuel,Snacks,Bills,Entertainment,Total\n';
+    let csv='Day,Food,Fuel,Snacks,Bills,Entertainment,Daily Total,Total incl. Ghar+Loan\n';
+    const house = parseInt(document.getElementById('house').value);
+    const loan = loanPaidAmount;
+    const dailyHouseShare = house/dailyData.length || 0;
+    const dailyLoanShare = loan/dailyData.length || 0;
     dailyData.forEach((d,index)=>{
-        csv+=`${index+1},${d.food},${d.fuel},${d.snacks},${d.bills},${d.entertainment},${d.total}\n`;
+        const totalWithHouseLoan = d.total + Math.round(dailyHouseShare + dailyLoanShare);
+        csv+=`${index+1},${d.food},${d.fuel},${d.snacks},${d.bills},${d.entertainment},${d.total},${totalWithHouseLoan}\n`;
     });
     let blob = new Blob([csv], {type:'text/csv'});
     let link = document.createElement('a');
