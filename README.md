@@ -1,23 +1,103 @@
-<MONTHLY>
+<monthly>
 <html>
 <head>
-  <title>Sweetie Salary Tracker</title>
+  <title>PocketTracker - Neon Salary Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { font-family: Arial; padding: 20px; background: #fefefe; color: #333; }
-    h1 { color: #4CAF50; }
-    input { padding: 5px; width: 120px; margin: 5px; }
-    button { padding: 8px 15px; margin: 10px 0; background: #4CAF50; color: white; border: none; cursor: pointer; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
-    th { background-color: #4CAF50; color: white; }
-    .green { background-color: #d4edda; }
-    .red { background-color: #f8d7da; }
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #000;
+      color: #0ff;
+      margin: 0;
+      padding: 20px;
+      transition: background 0.5s;
+    }
+    h1, h2 {
+      color: #0ff;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+    }
+    p.message {
+      color:#0ff;
+      text-shadow:0 0 5px #0ff, 0 0 10px #00f;
+      font-size:18px;
+      margin-top: 10px;
+    }
+    input {
+      padding: 8px;
+      width: 130px;
+      margin: 5px;
+      background: #111;
+      border: 2px solid #0ff;
+      border-radius: 5px;
+      color: #0ff;
+      outline: none;
+      transition: 0.3s;
+    }
+    input:focus {
+      box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+      border-color: #0ff;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px 0;
+      background: #00f;
+      border: none;
+      color: #0ff;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+      box-shadow: 0 0 5px #0ff, 0 0 15px #0ff;
+      transition: 0.3s;
+    }
+    button:hover {
+      box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+      transform: scale(1.05);
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+      background: #111;
+      border: 2px solid #0ff;
+      box-shadow: 0 0 10px #0ff;
+    }
+    th, td {
+      border: 1px solid #0ff;
+      padding: 12px;
+      text-align: center;
+      color: #0ff;
+      transition: 0.3s;
+    }
+    th {
+      background: #001f3f;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+    }
+    td:hover {
+      color: #00f;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #00f;
+    }
+    canvas {
+      margin-top: 20px;
+      background: #000;
+      box-shadow: 0 0 20px #0ff;
+      border-radius: 10px;
+    }
+    label {
+      display: inline-block;
+      margin: 5px;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+    }
   </style>
 </head>
 <body>
 
-<h1>Sweetie Salary Tracker</h1>
+<h1>🌌 PocketTracker - Neon Salary Dashboard 🌌</h1>
+
+<p class="message">Hey Sweetie! 😇 Ab tu apni salary, kharcha aur saving easy aur neon style me track kar sakta hai. Follow daily aur apna pocket control me rakho! 💸✨</p>
 
 <div>
   <label>Salary: <input type="number" id="salary" value="49800"></label>
@@ -80,14 +160,12 @@ function calculate() {
   document.getElementById('totalExpense').innerText = totalExpense;
   document.getElementById('remaining').innerText = remaining;
 
-  // Weekly Summary (6-7 workdays per week)
-  let dailyPerWeek = daily * 6.5; // approx
+  let dailyPerWeek = daily * 6.5; 
   for(let i=1;i<=4;i++){
     document.getElementById('w'+i+'Expense').innerText = (house/4 + loan/4 + dailyPerWeek).toFixed(0);
     document.getElementById('w'+i+'Saving').innerText = (salary/4 - (house/4 + loan/4 + dailyPerWeek)).toFixed(0);
   }
 
-  // Chart
   const ctx = document.getElementById('chart').getContext('2d');
   if(window.barChart) window.barChart.destroy();
   window.barChart = new Chart(ctx, {
@@ -97,10 +175,17 @@ function calculate() {
       datasets: [{
         label: 'PKR',
         data: [salary, totalExpense, remaining],
-        backgroundColor: ['#4CAF50','#f44336','#2196F3']
+        backgroundColor: ['#0ff','#00f','#0f0'],
+        borderColor: ['#0ff','#00f','#0f0'],
+        borderWidth: 2
       }]
     },
-    options: { responsive: true, plugins: { legend: { display: false } } }
+    options: { responsive: true, plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { color:'#0ff' } },
+        x: { ticks: { color:'#0ff' } }
+      }
+    }
   });
 }
 </script>
