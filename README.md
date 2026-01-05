@@ -1,34 +1,40 @@
-<monthly>
+<Monthly>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PocketTracker Pro Dashboard</title>
+<title>PocketTracker - Ultimate Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background: linear-gradient(135deg,#e0f7fa,#80deea);margin:0;padding:20px;color:#333;}
-h1,h2{text-align:center;color:#00796b;}
-#datetime{text-align:center;font-weight:bold;margin-bottom:10px;color:#004d40;}
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg,#e0f7fa,#80deea);
+    margin:0;
+    padding:20px;
+    color:#333;
+}
+h1,h2{text-align:center;color:#00796b;margin-bottom:10px;}
+#datetime{text-align:center;font-weight:bold;margin-bottom:15px;color:#004d40;}
 .dashboard{display:flex;flex-wrap:wrap;justify-content:center;margin-bottom:20px;}
-.card{background:#fff;box-shadow:0 4px 8px rgba(0,0,0,0.1);border-radius:12px;margin:10px;padding:15px;text-align:center;width:120px;cursor:pointer;transition:0.3s;}
-.card:hover{transform:scale(1.05);box-shadow:0 6px 12px rgba(0,0,0,0.2);}
+.card{background:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.15);border-radius:12px;margin:10px;padding:15px;text-align:center;width:120px;cursor:pointer;transition:0.3s;}
+.card:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(0,0,0,0.25);}
 .card span{display:block;font-size:24px;margin-bottom:5px;}
 table{border-collapse: collapse;width:100%;margin-top:20px;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
 th,td{border:1px solid #e0e0e0;padding:8px;text-align:center;color:#333;}
 th{background:#b2dfdb;}
 .progress-bar{height:25px;background:#c8e6c9;border-radius:12px;overflow:hidden;margin:10px 0;}
 .progress{height:100%;background:#00796b;width:0%;color:#fff;text-align:center;line-height:25px;font-weight:bold;transition:0.5s;}
-input.salaryInput,input.loginInput,input.licenseInput,input.goalInput{width:80px;text-align:center;border-radius:8px;border:2px solid #4a90e2;padding:5px;outline:none;transition:0.3s;margin-top:5px;}
-input.salaryInput:focus,input.loginInput:focus,input.licenseInput:focus,input.goalInput:focus{border-color:#357ABD; box-shadow:0 0 5px #357ABD;}
+input.salaryInput,input.loginInput,input.licenseInput,input.goalInput,input.loanInput{width:90px;text-align:center;border-radius:8px;border:2px solid #4a90e2;padding:5px;outline:none;transition:0.3s;margin-top:5px;}
+input.salaryInput:focus,input.loginInput:focus,input.licenseInput:focus,input.goalInput:focus,input.loanInput:focus{border-color:#357ABD; box-shadow:0 0 5px #357ABD;}
 #loginScreen,#licenseScreen,#dashboard{display:none;}
 button{padding:5px 10px;margin-top:5px;border-radius:8px;border:none;background:#00796b;color:#fff;cursor:pointer;transition:0.3s;}
 button:hover{background:#004d40;}
-.infoBox{display:flex;justify-content:space-around;margin:20px 0;background:#fff;padding:15px;border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,0.1);}
-.infoBox div{text-align:center;}
+.infoBox{display:flex;flex-wrap:wrap;justify-content:space-around;margin:20px 0;background:#fff;padding:15px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+.infoBox div{text-align:center;background:linear-gradient(135deg,#81d4fa,#29b6f6);color:#fff;padding:10px;margin:5px;border-radius:10px;flex:1;min-width:120px;box-shadow:0 3px 8px rgba(0,0,0,0.15);}
 </style>
 </head>
 <body>
 
-<h1>🌟 PocketTracker Pro 🌟</h1>
+<h1>💼 PocketTracker - Ultimate Dashboard 💼</h1>
 <div id="datetime"></div>
 
 <!-- Login Screen -->
@@ -61,7 +67,7 @@ button:hover{background:#004d40;}
         <div>Username<br><span id="infoUser">-</span></div>
         <div>Salary<br><input type="number" class="salaryInput" id="salaryInput" value="0" onchange="updateSalary()"></div>
         <div>Goal Saving<br><input type="number" class="goalInput" id="goalInput" value="10000" onchange="updateGoal()"></div>
-        <div>Loan Taken<br><span id="loanStatus">No</span><br><button onclick="toggleLoan()">Toggle</button></div>
+        <div>Loan Amount<br><input type="number" class="loanInput" id="loanInput" value="0" onchange="updateLoan()"></div>
     </div>
 
     <h2>Dashboard Summary</h2>
@@ -108,9 +114,9 @@ updateDateTime();
 // Multi-User Data
 let currentUser=null;
 let users = JSON.parse(localStorage.getItem('users')||"{}");
-let dailyData=[],loanPaid=false,salary=0,goal=10000;
+let dailyData=[],loanAmount=0,salary=0,goal=10000;
 
-// Check persistent login
+// Persistent login
 window.onload=function(){
     const savedUser = localStorage.getItem('currentUser');
     if(savedUser && users[savedUser]){
@@ -136,7 +142,7 @@ function register(){
     const pass=document.getElementById('loginPass').value;
     if(user && pass){
         if(users[user]){document.getElementById('loginMsg').innerText='User exists!'; return;}
-        users[user]={pass:pass,license:false,dailyData:[],salary:0,goal:10000,loan:false};
+        users[user]={pass:pass,license:false,dailyData:[],salary:0,goal:10000,loan:0};
         localStorage.setItem('users',JSON.stringify(users));
         document.getElementById('loginMsg').innerText='Registered! Login now.';
     }
@@ -150,7 +156,7 @@ function loadUserData(){
     } else {showDashboard();}
 }
 
-// License Check
+// License
 function checkLicense(){
     const key=document.getElementById('licenseInput').value.trim();
     if(key==='ABCD-1234'){
@@ -167,12 +173,12 @@ function showDashboard(){
     document.getElementById('welcomeUser').innerText=`Welcome, ${currentUser}!`;
     const u=users[currentUser];
     dailyData=u.dailyData||[];
-    loanPaid=u.loan||false;
     salary=u.salary||0;
     goal=u.goal||10000;
+    loanAmount=u.loan||0;
     document.getElementById('salaryInput').value=salary;
     document.getElementById('goalInput').value=goal;
-    updateLoanStatus();
+    document.getElementById('loanInput').value=loanAmount;
     calculate();
 }
 
@@ -197,27 +203,17 @@ function addDaily(type){
     calculate();
 }
 
-// Toggle Loan
-function toggleLoan(){
-    loanPaid=!loanPaid;
-    updateLoanStatus();
-    saveUserData();
-    calculate();
-}
-function updateLoanStatus(){
-    document.getElementById('loanStatus').innerText=loanPaid?'Yes':'No';
-}
-
-// Update Salary & Goal
+// Update salary, goal, loan
 function updateSalary(){salary=parseInt(document.getElementById('salaryInput').value)||0;saveUserData();calculate();}
 function updateGoal(){goal=parseInt(document.getElementById('goalInput').value)||10000;saveUserData();calculate();}
+function updateLoan(){loanAmount=parseInt(document.getElementById('loanInput').value)||0;saveUserData();calculate();}
 
 // Save User Data
 function saveUserData(){
     users[currentUser].dailyData=dailyData;
     users[currentUser].salary=salary;
     users[currentUser].goal=goal;
-    users[currentUser].loan=loanPaid;
+    users[currentUser].loan=loanAmount;
     localStorage.setItem('users',JSON.stringify(users));
 }
 
@@ -228,7 +224,7 @@ function clearAll(){if(confirm("Delete all data?")){dailyData=[];saveUserData();
 function calculate(){
     const table=document.getElementById('dailyTable');
     table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Daily Total</th><th>Total incl. Loan</th><th>Date</th></tr>";
-    let totalExpense=loanPaid?10000:0; // example loan value
+    let totalExpense=loanAmount;
     dailyData.forEach((day,index)=>{
         const row=table.insertRow();
         row.insertCell(0).innerText=index+1;
@@ -238,7 +234,7 @@ function calculate(){
         row.insertCell(4).innerText=day.bills;
         row.insertCell(5).innerText=day.entertainment;
         row.insertCell(6).innerText=day.total;
-        const totalWithLoan=day.total + (loanPaid?Math.round(10000/dailyData.length||0):0);
+        const totalWithLoan=day.total + Math.round(loanAmount/dailyData.length||0);
         row.insertCell(7).innerText=totalWithLoan;
         row.insertCell(8).innerText=day.date;
         totalExpense+=day.total;
@@ -261,13 +257,13 @@ function calculate(){
 function exportCSV(){
     let csv='Day,Food,Fuel,Snacks,Bills,Entertainment,Daily Total,Total incl. Loan,Date\n';
     dailyData.forEach((d,index)=>{
-        const totalWithLoan=d.total + (loanPaid?Math.round(10000/dailyData.length||0):0);
+        const totalWithLoan=d.total + Math.round(loanAmount/dailyData.length||0);
         csv+=`${index+1},${d.food},${d.fuel},${d.snacks},${d.bills},${d.entertainment},${d.total},${totalWithLoan},${d.date}\n`;
     });
     let blob=new Blob([csv],{type:'text/csv'});
     let link=document.createElement('a');
     link.href=URL.createObjectURL(blob);
-    link.download='PocketTracker_Pro.csv';
+    link.download='PocketTracker_Ultimate.csv';
     link.click();
 }
 </script>
