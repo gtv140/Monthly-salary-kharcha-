@@ -2,49 +2,47 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PocketTracker - Ultimate Dashboard</title>
+<title>PocketTracker - Ultimate Pro</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 body {
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg,#e0f7fa,#80deea);
+    background: linear-gradient(120deg,#1e3c72,#2a5298);
     margin:0;
     padding:20px;
-    color:#333;
+    color:#fff;
 }
-h1,h2{text-align:center;color:#00796b;margin-bottom:10px;}
-#datetime{text-align:center;font-weight:bold;margin-bottom:15px;color:#004d40;}
+h1,h2{text-align:center;margin-bottom:10px;}
+#datetime{text-align:center;font-weight:bold;margin-bottom:15px;color:#ffeb3b;}
 .dashboard{display:flex;flex-wrap:wrap;justify-content:center;margin-bottom:20px;}
-.card{background:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.15);border-radius:12px;margin:10px;padding:15px;text-align:center;width:120px;cursor:pointer;transition:0.3s;}
-.card:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(0,0,0,0.25);}
-.card span{display:block;font-size:24px;margin-bottom:5px;}
-table{border-collapse: collapse;width:100%;margin-top:20px;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-th,td{border:1px solid #e0e0e0;padding:8px;text-align:center;color:#333;}
-th{background:#b2dfdb;}
-.progress-bar{height:25px;background:#c8e6c9;border-radius:12px;overflow:hidden;margin:10px 0;}
-.progress{height:100%;background:#00796b;width:0%;color:#fff;text-align:center;line-height:25px;font-weight:bold;transition:0.5s;}
-input.salaryInput,input.loginInput,input.licenseInput,input.goalInput,input.loanInput{width:90px;text-align:center;border-radius:8px;border:2px solid #4a90e2;padding:5px;outline:none;transition:0.3s;margin-top:5px;}
-input.salaryInput:focus,input.loginInput:focus,input.licenseInput:focus,input.goalInput:focus,input.loanInput:focus{border-color:#357ABD; box-shadow:0 0 5px #357ABD;}
-#loginScreen,#licenseScreen,#dashboard{display:none;}
-button{padding:5px 10px;margin-top:5px;border-radius:8px;border:none;background:#00796b;color:#fff;cursor:pointer;transition:0.3s;}
-button:hover{background:#004d40;}
-.infoBox{display:flex;flex-wrap:wrap;justify-content:space-around;margin:20px 0;background:#fff;padding:15px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
-.infoBox div{text-align:center;background:linear-gradient(135deg,#81d4fa,#29b6f6);color:#fff;padding:10px;margin:5px;border-radius:10px;flex:1;min-width:120px;box-shadow:0 3px 8px rgba(0,0,0,0.15);}
+.card{background:linear-gradient(135deg,#29b6f6,#00acc1);box-shadow:0 4px 12px rgba(0,0,0,0.25);border-radius:12px;margin:10px;padding:15px;text-align:center;width:120px;cursor:pointer;transition:0.3s;color:#fff;font-weight:bold;}
+.card:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(0,0,0,0.35);}
+.card span{display:block;font-size:30px;margin-bottom:5px;}
+table{border-collapse: collapse;width:100%;margin-top:20px;background:#fff;color:#333;border-radius:8px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+th,td{border:1px solid #e0e0e0;padding:8px;text-align:center;}
+th{background:#0288d1;color:#fff;}
+input.salaryInput,input.loginInput,input.licenseInput,input.goalInput,input.loanInput{width:90px;text-align:center;border-radius:8px;border:2px solid #03a9f4;padding:5px;outline:none;transition:0.3s;margin-top:5px;}
+input.salaryInput:focus,input.loginInput:focus,input.licenseInput:focus,input.goalInput:focus,input.loanInput:focus{border-color:#0288d1;box-shadow:0 0 5px #0288d1;}
+button{padding:5px 10px;margin-top:5px;border-radius:8px;border:none;background:#0288d1;color:#fff;cursor:pointer;transition:0.3s;font-weight:bold;}
+button:hover{background:#01579b;}
+.infoBox{display:flex;flex-wrap:wrap;justify-content:space-around;margin:20px 0;background:rgba(255,255,255,0.1);padding:15px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.25);}
+.infoBox div{text-align:center;background:linear-gradient(135deg,#00acc1,#29b6f6);color:#fff;padding:15px;margin:5px;border-radius:12px;flex:1;min-width:140px;box-shadow:0 4px 12px rgba(0,0,0,0.25);transition:0.3s;font-weight:bold;}
+.infoBox div:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(0,0,0,0.35);}
 </style>
 </head>
 <body>
 
-<h1>💼 PocketTracker - Ultimate Dashboard 💼</h1>
+<h1>💼 PocketTracker - Ultimate Pro 💼</h1>
 <div id="datetime"></div>
 
 <!-- Login Screen -->
 <div id="loginScreen">
-    <h2>Login</h2>
+    <h2>Login / Register</h2>
     Username: <input type="text" id="loginUser" class="loginInput"><br>
     Password: <input type="password" id="loginPass" class="loginInput"><br>
     <button onclick="login()">Login</button>
     <button onclick="register()">Register</button>
-    <p id="loginMsg" style="color:red;"></p>
+    <p id="loginMsg" style="color:#ffeb3b;"></p>
 </div>
 
 <!-- License Screen -->
@@ -52,13 +50,13 @@ button:hover{background:#004d40;}
     <h2>Enter License Key</h2>
     <input type="text" id="licenseInput" class="licenseInput" placeholder="XXXX-XXXX"><br>
     <button onclick="checkLicense()">Unlock Dashboard</button>
-    <p id="licenseMsg" style="color:red;"></p>
+    <p id="licenseMsg" style="color:#ffeb3b;"></p>
 </div>
 
 <!-- Dashboard -->
 <div id="dashboard">
     <div style="text-align:right;margin-bottom:10px;">
-        <span id="welcomeUser" style="font-weight:bold;"></span>
+        <span id="welcomeUser" style="font-weight:bold;font-size:18px;"></span>
         <button onclick="logout()">Logout</button>
     </div>
 
@@ -116,6 +114,16 @@ let currentUser=null;
 let users = JSON.parse(localStorage.getItem('users')||"{}");
 let dailyData=[],loanAmount=0,salary=0,goal=10000;
 
+// Generate License Key
+function generateLicenseKey(){
+    const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let key='';
+    for(let i=0;i<4;i++) key+=chars[Math.floor(Math.random()*chars.length)];
+    key+='-';
+    for(let i=0;i<4;i++) key+=chars[Math.floor(Math.random()*chars.length)];
+    return key;
+}
+
 // Persistent login
 window.onload=function(){
     const savedUser = localStorage.getItem('currentUser');
@@ -142,9 +150,10 @@ function register(){
     const pass=document.getElementById('loginPass').value;
     if(user && pass){
         if(users[user]){document.getElementById('loginMsg').innerText='User exists!'; return;}
-        users[user]={pass:pass,license:false,dailyData:[],salary:0,goal:10000,loan:0};
+        const licenseKey=generateLicenseKey();
+        users[user]={pass:pass,license:false,licenseKey:licenseKey,dailyData:[],salary:0,goal:10000,loan:0};
         localStorage.setItem('users',JSON.stringify(users));
-        document.getElementById('loginMsg').innerText='Registered! Login now.';
+        document.getElementById('loginMsg').innerText=`Registered! Your License Key: ${licenseKey}`;
     }
 }
 
@@ -159,7 +168,7 @@ function loadUserData(){
 // License
 function checkLicense(){
     const key=document.getElementById('licenseInput').value.trim();
-    if(key==='ABCD-1234'){
+    if(key===users[currentUser].licenseKey){
         users[currentUser].license=true;
         localStorage.setItem('users',JSON.stringify(users));
         showDashboard();
@@ -179,6 +188,7 @@ function showDashboard(){
     document.getElementById('salaryInput').value=salary;
     document.getElementById('goalInput').value=goal;
     document.getElementById('loanInput').value=loanAmount;
+    document.getElementById('infoUser').innerText=currentUser;
     calculate();
 }
 
@@ -250,7 +260,7 @@ function calculate(){
     // Chart
     const ctx=document.getElementById('chart').getContext('2d');
     if(window.barChart) window.barChart.destroy();
-    window.barChart=new Chart(ctx,{type:'bar',data:{labels:['Salary','Total Expense','Current Saving'],datasets:[{label:'PKR',data:[salary,totalExpense,currentSaving],backgroundColor:['#00796b','#f39c12','#2ecc71'],borderColor:['#004d40','#d35400','#27ae60'],borderWidth:2}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+    window.barChart=new Chart(ctx,{type:'bar',data:{labels:['Salary','Total Expense','Current Saving'],datasets:[{label:'PKR',data:[salary,totalExpense,currentSaving],backgroundColor:['#00acc1','#f39c12','#2ecc71'],borderColor:['#00796b','#d35400','#27ae60'],borderWidth:2}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
 }
 
 // Export CSV
@@ -263,7 +273,7 @@ function exportCSV(){
     let blob=new Blob([csv],{type:'text/csv'});
     let link=document.createElement('a');
     link.href=URL.createObjectURL(blob);
-    link.download='PocketTracker_Ultimate.csv';
+    link.download='PocketTracker_Pro.csv';
     link.click();
 }
 </script>
