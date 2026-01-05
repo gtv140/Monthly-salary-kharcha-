@@ -7,197 +7,167 @@
 <style>
 body{
     font-family:'Roboto',sans-serif;
-    margin:0;
-    padding:0;
+    margin:0;padding:0;
     background: linear-gradient(135deg,#00c6ff,#0072ff);
     color:#fff;
 }
 header{
     text-align:center;
-    padding:20px;
     font-size:32px;
-    font-weight:bold;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    font-weight:700;
+    padding:20px;
+    background:linear-gradient(90deg,#ff512f,#dd2476);
+    text-shadow:2px 2px 5px rgba(0,0,0,0.3);
 }
-#loginScreen,#dashboard{max-width:800px;margin:auto;padding:20px;}
-input,button{padding:8px 12px;margin:5px;border-radius:8px;border:none;}
-button{cursor:pointer;font-weight:bold;background:#ff9800;color:#fff;}
-button:hover{opacity:0.85;}
-input{width:180px;outline:none;}
-.boxes{display:flex;flex-wrap:wrap;justify-content:center;margin:15px 0;}
+#datetime{text-align:center;margin:10px;font-weight:bold;}
+.container{max-width:1000px;margin:auto;padding:10px;}
+.boxes{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-around;
+    margin-bottom:20px;
+}
 .box{
     flex:1;
-    min-width:150px;
+    min-width:180px;
     margin:10px;
-    padding:15px;
-    text-align:center;
-    border-radius:15px;
     background:rgba(255,255,255,0.1);
-    box-shadow:0 6px 15px rgba(0,0,0,0.3);
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
     font-weight:bold;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    transition:0.3s;
 }
-.expenseBtn{flex:1;min-width:120px;margin:5px;padding:10px;background:#4caf50;color:#fff;border-radius:10px;}
-.expenseBtn:hover{opacity:0.85;}
-table{width:100%;border-collapse:collapse;margin-top:15px;background:rgba(255,255,255,0.95);color:#333;border-radius:10px;overflow:hidden;}
-th,td{border:1px solid #ddd;padding:8px;text-align:center;}
-th{background:#0288d1;color:#fff;}
-tr:nth-child(even){background:rgba(0,172,193,0.1);}
-tr:hover{background:rgba(0,172,193,0.2);}
-#datetime{text-align:center;margin:10px;font-weight:bold;color:#ffeb3b;}
+.box:hover{transform:scale(1.05);}
+input{padding:8px;border-radius:10px;border:none;width:100px;margin-top:5px;text-align:center;}
+button{padding:8px 12px;border:none;border-radius:8px;font-weight:bold;margin-top:10px;cursor:pointer;transition:0.3s;}
+button:hover{opacity:0.8;}
+table{
+    width:100%;border-collapse:collapse;margin-top:20px;background:rgba(255,255,255,0.95);color:#333;border-radius:10px;overflow:hidden;
+}
+th,td{padding:10px;text-align:center;border:1px solid #ddd;}
+th{background:#0072ff;color:#fff;}
+tr:nth-child(even){background:rgba(0,0,0,0.05);}
+tr:hover{background:rgba(0,0,0,0.1);}
+#themeToggle{position:fixed;top:20px;right:20px;padding:10px;background:#ff512f;color:#fff;font-weight:bold;border-radius:10px;cursor:pointer;}
 </style>
 </head>
 <body>
-
-<header>📊 Pocket Traker 📊</header>
+<header>Pocket Traker</header>
 <div id="datetime"></div>
+<button id="themeToggle" onclick="toggleTheme()">Toggle Theme</button>
 
-<!-- Login -->
-<div id="loginScreen">
-<h2>Login / Register</h2>
-<input type="text" id="username" placeholder="Username"><br>
-<input type="password" id="password" placeholder="Password"><br>
-<button onclick="login()">Login</button>
-<button onclick="register()">Register</button>
-<p id="loginMsg" style="color:#ffeb3b;"></p>
+<div class="container" id="loginScreen">
+    <h2>Login / Register</h2>
+    Username: <input type="text" id="loginUser"><br>
+    Password: <input type="password" id="loginPass"><br>
+    <button onclick="login()">Login</button>
+    <button onclick="register()">Register</button>
+    <p id="loginMsg" style="color:#ffeb3b;"></p>
 </div>
 
-<!-- Dashboard -->
-<div id="dashboard" style="display:none;">
-<div style="text-align:right;margin-bottom:10px;">
-<span id="welcomeUser"></span>
-<button onclick="logout()">Logout</button>
-</div>
+<div class="container" id="dashboard" style="display:none;">
+    <div style="text-align:right;"><span id="welcomeUser"></span> <button onclick="logout()">Logout</button></div>
+    <div class="boxes">
+        <div class="box">Username<br><span id="infoUser">-</span></div>
+        <div class="box">Salary<br><input type="number" id="salaryInput" value="0" onchange="updateSalary()"></div>
+        <div class="box">Goal Saving<br><input type="number" id="goalInput" value="10000" onchange="updateGoal()"></div>
+        <div class="box">Loan Amount<br><input type="number" id="loanInput" value="0" onchange="updateLoan()"></div>
+    </div>
 
-<div class="boxes">
-<div class="box">Username<br><span id="userBox">-</span></div>
-<div class="box">Salary<br><span id="salaryBox">0</span></div>
-<div class="box">Current Balance<br><span id="balanceBox">0</span></div>
-<div class="box">Saving<br><span id="savingBox">0</span></div>
-<div class="box">Loan<br><span id="loanBox">0</span></div>
-</div>
+    <div class="boxes">
+        <div class="box">Total Expense<br><span id="totalExpense">0</span></div>
+        <div class="box">Remaining Balance<br><span id="remaining">0</span></div>
+        <div class="box">Current Saving<br><span id="currentSaving">0</span></div>
+        <div class="box">Goal Achieved<br><span id="goalStatus">0%</span></div>
+    </div>
 
-<h3>Add Daily Expense</h3>
-<div class="boxes">
-<button class="expenseBtn" onclick="addExpense('Food')">🍔 Food</button>
-<button class="expenseBtn" onclick="addExpense('Fuel')">⛽ Fuel</button>
-<button class="expenseBtn" onclick="addExpense('Snacks')">🍿 Snacks</button>
-<button class="expenseBtn" onclick="addExpense('Bills')">💡 Bills</button>
-<button class="expenseBtn" onclick="addExpense('Fun')">🎮 Fun</button>
-<button class="expenseBtn" onclick="clearData()">🗑️ Clear All</button>
-</div>
+    <h2>Daily Expenses</h2>
+    <div class="boxes">
+        <div class="box" onclick="addDaily('food')">🍔 Food</div>
+        <div class="box" onclick="addDaily('fuel')">⛽ Fuel</div>
+        <div class="box" onclick="addDaily('snacks')">🍿 Snacks</div>
+        <div class="box" onclick="addDaily('bills')">💡 Bills</div>
+        <div class="box" onclick="addDaily('fun')">🎮 Fun</div>
+        <div class="box" onclick="clearAll()">🗑️ Clear All</div>
+    </div>
 
-<h3>Daily Expenses Table</h3>
-<table id="expenseTable">
-<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Date</th></tr>
-</table>
-
+    <table id="dailyTable">
+        <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Date</th></tr>
+    </table>
 </div>
 
 <script>
-// Timer
+let darkTheme=true;
 function updateDateTime(){
     const now=new Date();
-    document.getElementById('datetime').innerText=now.toLocaleDateString() + ' | ' + now.toLocaleTimeString();
+    document.getElementById('datetime').innerText=now.toLocaleDateString()+' | '+now.toLocaleTimeString();
 }
 setInterval(updateDateTime,1000);
 updateDateTime();
 
-// Users
-let users=JSON.parse(localStorage.getItem('users')||'{}');
-let currentUser=null;
+function toggleTheme(){
+    if(darkTheme){
+        document.body.style.background="#fff";
+        document.body.style.color="#333";
+        darkTheme=false;
+    } else{
+        document.body.style.background="linear-gradient(135deg,#00c6ff,#0072ff)";
+        document.body.style.color="#fff";
+        darkTheme=true;
+    }
+}
 
-// Login/Register
+let currentUser=null;
+let users=JSON.parse(localStorage.getItem('users')||"{}");
+let dailyData=[],salary=0,goal=10000,loan=0;
+
+window.onload=function(){
+    const savedUser=localStorage.getItem('currentUser');
+    if(savedUser && users[savedUser]){
+        currentUser=savedUser;
+        loadUserData();
+    }
+}
+
 function login(){
-    const u=document.getElementById('username').value.trim();
-    const p=document.getElementById('password').value;
-    if(users[u] && users[u].pass===p){
-        currentUser=u;
+    const user=document.getElementById('loginUser').value.trim();
+    const pass=document.getElementById('loginPass').value;
+    if(users[user] && users[user].pass===pass){
+        currentUser=user;
         localStorage.setItem('currentUser',currentUser);
-        loadDashboard();
+        loadUserData();
     } else {document.getElementById('loginMsg').innerText='Invalid login!';}
 }
+
 function register(){
-    const u=document.getElementById('username').value.trim();
-    const p=document.getElementById('password').value;
-    if(u && p){
-        if(users[u]){document.getElementById('loginMsg').innerText='User exists!'; return;}
-        users[u]={pass:p,salary:0,loan:0,daily:[]};
+    const user=document.getElementById('loginUser').value.trim();
+    const pass=document.getElementById('loginPass').value;
+    if(user && pass){
+        if(users[user]){document.getElementById('loginMsg').innerText='User exists!'; return;}
+        users[user]={pass:pass,dailyData:[],salary:0,goal:10000,loan:0};
         localStorage.setItem('users',JSON.stringify(users));
-        document.getElementById('loginMsg').innerText='Registered! Login now.';
+        document.getElementById('loginMsg').innerText='Registered! Now login.';
     }
 }
 
-// Load Dashboard
-function loadDashboard(){
+function loadUserData(){
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('dashboard').style.display='block';
-    currentUser=currentUser||localStorage.getItem('currentUser');
-    const userData=users[currentUser];
-    document.getElementById('welcomeUser').innerText=`Welcome, ${currentUser}!`;
-    document.getElementById('userBox').innerText=currentUser;
-    document.getElementById('salaryBox').innerText=userData.salary;
-    updateBalance();
-    renderTable();
+    document.getElementById('welcomeUser').innerText=`Welcome, ${currentUser}`;
+    const u=users[currentUser];
+    dailyData=u.dailyData||[];
+    salary=u.salary||0;
+    goal=u.goal||10000;
+    loan=u.loan||0;
+    document.getElementById('salaryInput').value=salary;
+    document.getElementById('goalInput').value=goal;
+    document.getElementById('loanInput').value=loan;
+    document.getElementById('infoUser').innerText=currentUser;
+    calculate();
 }
 
-// Update Balance and Saving
-function updateBalance(){
-    const userData=users[currentUser];
-    let totalExpense=0;
-    userData.daily.forEach(d=>{totalExpense+=d.total;});
-    const balance=userData.salary-totalExpense;
-    const saving=Math.max(balance,0);
-    document.getElementById('balanceBox').innerText=balance;
-    document.getElementById('savingBox').innerText=saving;
-    document.getElementById('loanBox').innerText=userData.loan;
-}
-
-// Add Expense
-function addExpense(type){
-    const amt=parseInt(prompt(`Enter ${type} amount:`,"0"))||0;
-    const date=new Date().toLocaleDateString();
-    let userData=users[currentUser];
-    if(!userData.daily.length || userData.daily[userData.daily.length-1].date!==date){
-        userData.daily.push({Food:0,Fuel:0,Snacks:0,Bills:0,Fun:0,total:0,date:date});
-    }
-    const today=userData.daily[userData.daily.length-1];
-    today[type]+=amt;
-    today.total=today.Food+today.Fuel+today.Snacks+today.Bills+today.Fun;
-    users[currentUser]=userData;
-    localStorage.setItem('users',JSON.stringify(users));
-    updateBalance();
-    renderTable();
-}
-
-// Render Table
-function renderTable(){
-    const userData=users[currentUser];
-    const table=document.getElementById('expenseTable');
-    table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Date</th></tr>";
-    userData.daily.forEach((d,i)=>{
-        const row=table.insertRow();
-        row.insertCell(0).innerText=i+1;
-        row.insertCell(1).innerText=d.Food;
-        row.insertCell(2).innerText=d.Fuel;
-        row.insertCell(3).innerText=d.Snacks;
-        row.insertCell(4).innerText=d.Bills;
-        row.insertCell(5).innerText=d.Fun;
-        row.insertCell(6).innerText=d.total;
-        row.insertCell(7).innerText=d.date;
-    });
-}
-
-// Clear All
-function clearData(){
-    if(confirm('Delete all daily data?')){
-        users[currentUser].daily=[];
-        localStorage.setItem('users',JSON.stringify(users));
-        updateBalance();
-        renderTable();
-    }
-}
-
-// Logout
 function logout(){
     localStorage.removeItem('currentUser');
     currentUser=null;
@@ -205,15 +175,52 @@ function logout(){
     document.getElementById('loginScreen').style.display='block';
 }
 
-// Auto load
-window.onload=function(){
-    const savedUser=localStorage.getItem('currentUser');
-    if(savedUser && users[savedUser]){
-        currentUser=savedUser;
-        loadDashboard();
+function addDaily(type){
+    const value=parseInt(prompt(`Enter ${type} expense:`,"0"))||0;
+    const today={food:0,fuel:0,snacks:0,bills:0,fun:0,total:0,date:new Date().toLocaleDateString()};
+    if(dailyData.length>0 && dailyData[dailyData.length-1].date===today.date){
+        let last=dailyData[dailyData.length-1];
+        last[type]+=value;
+        last.total=last.food+last.fuel+last.snacks+last.bills+last.fun;
+    } else {
+        today[type]=value;
+        today.total=today.food+today.fuel+today.snacks+today.bills+today.fun;
+        dailyData.push(today);
     }
-};
-</script>
+    saveUserData();
+    calculate();
+}
 
+function updateSalary(){salary=parseInt(document.getElementById('salaryInput').value)||0;saveUserData();calculate();}
+function updateGoal(){goal=parseInt(document.getElementById('goalInput').value)||10000;saveUserData();calculate();}
+function updateLoan(){loan=parseInt(document.getElementById('loanInput').value)||0;saveUserData();calculate();}
+function saveUserData(){users[currentUser].dailyData=dailyData;users[currentUser].salary=salary;users[currentUser].goal=goal;users[currentUser].loan=loan;localStorage.setItem('users',JSON.stringify(users));}
+function clearAll(){if(confirm("Delete all data?")){dailyData=[];saveUserData();calculate();}}
+
+function calculate(){
+    const table=document.getElementById('dailyTable');
+    table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Date</th></tr>";
+    let totalExpense=loan;
+    dailyData.forEach((day,index)=>{
+        const row=table.insertRow();
+        row.insertCell(0).innerText=index+1;
+        row.insertCell(1).innerText=day.food;
+        row.insertCell(2).innerText=day.fuel;
+        row.insertCell(3).innerText=day.snacks;
+        row.insertCell(4).innerText=day.bills;
+        row.insertCell(5).innerText=day.fun;
+        row.insertCell(6).innerText=day.total;
+        row.insertCell(7).innerText=day.date;
+        totalExpense+=day.total;
+    });
+    const remaining=salary-totalExpense;
+    const currentSaving=Math.max(0,remaining);
+    document.getElementById('totalExpense').innerText=totalExpense;
+    document.getElementById('remaining').innerText=remaining;
+    document.getElementById('currentSaving').innerText=currentSaving;
+    const goalPercent=Math.min(Math.round((currentSaving/goal)*100),100);
+    document.getElementById('goalStatus').innerText=goalPercent+'%';
+}
+</script>
 </body>
 </html>
