@@ -86,10 +86,10 @@ canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15)
 <section id="dashboard" class="page">
 <h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Your Dashboard</h2>
 <div class="dashboard">
-  <div class="box" onclick="showPage('daily')"><h3><i class="fas fa-user"></i> Username</h3><span id="infoUser">User</span></div>
-  <div class="box" onclick="showPage('daily')"><h3><i class="fas fa-wallet"></i> Current Balance</h3><span id="remaining">0</span> PKR</div>
-  <div class="box" onclick="showPage('daily')"><h3><i class="fas fa-piggy-bank"></i> Current Saving</h3><span id="currentSaving">0</span> PKR</div>
-  <div class="box" onclick="showPage('daily')"><h3><i class="fas fa-money-bill-wave"></i> Total Expense</h3><span id="totalExpense">0</span> PKR</div>
+  <div class="box"><h3><i class="fas fa-user"></i> Username</h3><span id="infoUser">User</span></div>
+  <div class="box"><h3><i class="fas fa-wallet"></i> Current Balance</h3><span id="remaining">0</span> PKR</div>
+  <div class="box"><h3><i class="fas fa-piggy-bank"></i> Current Saving</h3><span id="currentSaving">0</span> PKR</div>
+  <div class="box"><h3><i class="fas fa-money-bill-wave"></i> Total Expense</h3><span id="totalExpense">0</span> PKR</div>
 </div>
 </section>
 
@@ -155,108 +155,169 @@ canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15)
 </footer>
 
 <script>
-let username=localStorage.getItem('username')||'';
-let salary=Number(localStorage.getItem('salary'))||0;
-let loanAmount=Number(localStorage.getItem('loan'))||0;
-let initialSaving=Number(localStorage.getItem('saving'))||0;
-let dailyData=JSON.parse(localStorage.getItem('dailyData'))||[];
-let darkMode=localStorage.getItem('darkMode')==='true';
+// LocalStorage & App Logic
+let username = localStorage.getItem('username') || '';
+let salary = Number(localStorage.getItem('salary')) || 0;
+let loanAmount = Number(localStorage.getItem('loan')) || 0;
+let initialSaving = Number(localStorage.getItem('saving')) || 0;
+let dailyData = JSON.parse(localStorage.getItem('dailyData')) || [];
+let darkMode = localStorage.getItem('darkMode')==='true';
 if(darkMode) document.body.classList.add('dark');
 
-function toggleMode(){document.body.classList.toggle('dark');darkMode=document.body.classList.contains('dark');localStorage.setItem('darkMode',darkMode);}
-function showPage(pageId){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(pageId).classList.add('active');if(pageId==='dashboard') updateDashboard();if(pageId==='daily') updateDailyTable();if(pageId==='weekly') updateWeeklyTable();if(pageId==='monthly') updateMonthlyTable();if(pageId==='charts') drawChart();}
-function updateDateTime(){document.getElementById('currentDateTime').innerText=new Date().toLocaleString();}
+function toggleMode(){
+    document.body.classList.toggle('dark');
+    darkMode = document.body.classList.contains('dark');
+    localStorage.setItem('darkMode', darkMode);
+}
+
+function showPage(pageId){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    if(pageId==='dashboard') updateDashboard();
+    if(pageId==='daily') updateDailyTable();
+    if(pageId==='weekly') updateWeeklyTable();
+    if(pageId==='monthly') updateMonthlyTable();
+    if(pageId==='charts') drawChart();
+}
+
+function updateDateTime(){
+    document.getElementById('currentDateTime').innerText=new Date().toLocaleString();
+}
 setInterval(updateDateTime,1000);
 
-function enterUsername(){const val=document.getElementById('usernameInput').value.trim();if(!val){alert('Enter username!');return;}username=val;localStorage.setItem('username',username);showPage('dashboard');if(!salary) showPage('settings');updateDashboard();}
-function updateSettings(){salary=Number(document.getElementById('salaryInput').value)||0;loanAmount=Number(document.getElementById('loanInput').value)||0;initialSaving=Number(document.getElementById('savingInput').value)||0;localStorage.setItem('salary',salary);localStorage.setItem('loan',loanAmount);localStorage.setItem('saving',initialSaving);updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();alert("Settings saved!");}
+function enterUsername(){
+    const val=document.getElementById('usernameInput').value.trim();
+    if(!val){alert('Enter username!');return;}
+    username=val;localStorage.setItem('username',username);showPage('dashboard');
+    if(!salary) showPage('settings');
+    updateDashboard();
+}
 
-function updateDashboard(){if(!username) return;let totalExpense=dailyData.reduce((a,b)=>a+b.total,0);let remaining=salary+initialSaving-totalExpense-loanAmount;let currentSaving=Math.max(0,remaining);document.getElementById('infoUser').innerText=username;document.getElementById('totalExpense').innerText=totalExpense;document.getElementById('remaining').innerText=remaining;document.getElementById('currentSaving').innerText=currentSaving;}
+function updateSettings(){
+    salary=Number(document.getElementById('salaryInput').value)||0;
+    loanAmount=Number(document.getElementById('loanInput').value)||0;
+    initialSaving=Number(document.getElementById('savingInput').value)||0;
+    localStorage.setItem('salary',salary);
+    localStorage.setItem('loan',loanAmount);
+    localStorage.setItem('saving',initialSaving);
+    updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();
+    alert("Settings saved!");
+}
 
-function addDailyEntryForm(){const food=Number(document.getElementById('foodInput').value)||0;const fuel=Number(document.getElementById('fuelInput').value)||0;const snacks=Number(document.getElementById('snacksInput').value)||0;const bills=Number(document.getElementById('billsInput').value)||0;const entertainment=Number(document.getElementById('entertainmentInput').value)||0;const total=food+fuel+snacks+bills+entertainment;const date=new Date().toLocaleDateString();dailyData.push({food,fuel,snacks,bills,entertainment,total,date});localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();notifyDaily(total);notifyWeekly();notifyMonthly();}
+function updateDashboard(){
+    if(!username) return;
+    let totalExpense=dailyData.reduce((a,b)=>a+b.total,0);
+    let remaining=salary+initialSaving-totalExpense-loanAmount;
+    let currentSaving=Math.max(0,remaining);
+    document.getElementById('infoUser').innerText=username;
+    document.getElementById('totalExpense').innerText=totalExpense;
+    document.getElementById('remaining').innerText=remaining;
+    document.getElementById('currentSaving').innerText=currentSaving;
+}
 
-function notifyDaily(total){if(total>0) alert(`Sweetie! Today's total expense: ${total} PKR`);}
+// Add daily entry
+function addDailyEntryForm(){
+    const food=Number(document.getElementById('foodInput').value)||0;
+    const fuel=Number(document.getElementById('fuelInput').value)||0;
+    const snacks=Number(document.getElementById('snacksInput').value)||0;
+    const bills=Number(document.getElementById('billsInput').value)||0;
+    const entertainment=Number(document.getElementById('entertainmentInput').value)||0;
+    const total=food+fuel+snacks+bills+entertainment;
+    const date=new Date().toLocaleDateString();
+    dailyData.push({food,fuel,snacks,bills,entertainment,total,date});
+    localStorage.setItem('dailyData',JSON.stringify(dailyData));
+    updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();
+    if(total>0) alert(`Sweetie! Today's total expense: ${total} PKR`);
+}
 
-// Weekly & Monthly notifications
-function notifyWeekly(){let today=new Date();if(today.getDay()===0){let weekTotal=dailyData.slice(-7).reduce((a,b)=>a+b.total,0);let saving=Math.max(0,(salary+initialSaving-weekTotal-loanAmount));if(weekTotal>0) alert(`Sweetie! This week you spent ${weekTotal} PKR and saved ${saving} PKR`);}}
-function notifyMonthly(){let today=new Date();if(today.getDate()===1){let monthTotal=dailyData.reduce((a,b)=>a+b.total,0);let saving=Math.max(0,(salary+initialSaving-monthTotal-loanAmount));if(monthTotal>0) alert(`Sweetie! Last month total spent ${monthTotal} PKR, saving ${saving} PKR`);}}
-
-function updateDailyTable(){const table=document.getElementById('dailyTable');table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th><th>Date</th><th>Action</th></tr>";dailyData.forEach((d,i)=>{const row=table.insertRow();row.insertCell(0).innerText=i+1;row.insertCell(1).innerText=d.food;row.insertCell(2).innerText=d.fuel;row.insertCell(3).innerText=d.snacks;row.insertCell(4).innerText=d.bills;row.insertCell(5).innerText=d.entertainment;row.insertCell(6).innerText=d.total;row.insertCell(7).innerText=d.date;const delCell=row.insertCell(8);const delBtn=document.createElement('button');delBtn.className='btn';delBtn.innerText='Delete';delBtn.onclick=()=>{dailyData.splice(i,1);localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();};delCell.appendChild(delBtn);});}
-
-function resetDailyData(){if(confirm("Reset all daily data?")){dailyData=[];localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();}}
-
-// Weekly Table
-function updateWeeklyTable(){
-    const table=document.getElementById('weeklyTable');
-    table.innerHTML="<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";
-    let weekData=[],weekSum=0;
+// Daily table
+function updateDailyTable(){
+    const table=document.getElementById('dailyTable');
+    table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th><th>Date</th><th>Action</th></tr>";
     dailyData.forEach((d,i)=>{
-        weekSum+=d.total;
-        if((i+1)%7===0 || i===dailyData.length-1){
-            let saving=Math.max(0,(salary+initialSaving-weekSum-loanAmount));
-            let weekNumber=Math.ceil((i+1)/7);
-            const row=table.insertRow();
-            row.insertCell(0).innerText="Week "+weekNumber;
-            row.insertCell(1).innerText=weekSum;
-            row.insertCell(2).innerText=saving;
-            weekSum=0;
-        }
+        const row=table.insertRow();
+        row.insertCell(0).innerText=i+1;
+        row.insertCell(1).innerText=d.food;
+        row.insertCell(2).innerText=d.fuel;
+        row.insertCell(3).innerText=d.snacks;
+        row.insertCell(4).innerText=d.bills;
+        row.insertCell(5).innerText=d.entertainment;
+        row.insertCell(6).innerText=d.total;
+        row.insertCell(7).innerText=d.date;
+        const delCell=row.insertCell(8);
+        const delBtn=document.createElement('button');
+        delBtn.className='btn'; delBtn.innerText='Delete';
+        delBtn.onclick=()=>{dailyData.splice(i,1);localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();}
+        delCell.appendChild(delBtn);
     });
 }
 
-// Monthly Table
+function resetDailyData(){if(confirm("Reset all daily data?")){dailyData=[];localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();}}
+
+function resetAll(){if(confirm("Reset everything?")){dailyData=[];username='';salary=0;loanAmount=0;initialSaving=0;localStorage.clear();showPage('welcome');}}
+
+// Weekly table
+function updateWeeklyTable(){
+    const table=document.getElementById('weeklyTable');
+    table.innerHTML="<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";
+    for(let i==0;i<dailyData.length;i+=7){ // Weekly grouping
+        const week=dailyData.slice(i,i+7);
+        const total=week.reduce((a,b)=>a+b.total,0);
+        const saving=salary+initialSaving-loanAmount-total;
+        const row=table.insertRow();
+        row.insertCell(0).innerText=`Week ${Math.floor(i/7)+1}`;
+        row.insertCell(1).innerText=total;
+        row.insertCell(2).innerText=Math.max(0,saving);
+    }
+}
+
+// Monthly table
 function updateMonthlyTable(){
     const table=document.getElementById('monthlyTable');
     table.innerHTML="<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";
-    let months={};
+    const months={};
     dailyData.forEach(d=>{
-        let m=(new Date(d.date)).toLocaleString('default',{month:'long',year:'numeric'});
-        if(!months[m]) months[m]=0;
-        months[m]+=d.total;
+        const m=new Date(d.date).getMonth();
+        if(!months[m]) months[m]=[];
+        months[m].push(d.total);
     });
     Object.keys(months).forEach(m=>{
-        const total=months[m];
-        const saving=Math.max(0,(salary+initialSaving-total-loanAmount));
+        const total=months[m].reduce((a,b)=>a+b,0);
+        const saving=salary+initialSaving-loanAmount-total;
         const row=table.insertRow();
-        row.insertCell(0).innerText=m;
+        row.insertCell(0).innerText=new Date(2026,Number(m),1).toLocaleString('default',{month:'long'});
         row.insertCell(1).innerText=total;
-        row.insertCell(2).innerText=saving;
+        row.insertCell(2).innerText=Math.max(0,saving);
     });
 }
 
 // Charts
+let chart;
 function drawChart(){
     const ctx=document.getElementById('expenseChart').getContext('2d');
-    const labels=dailyData.map((d,i)=>i+1);
-    const data=dailyData.map(d=>d.total);
-    if(window.expChart) window.expChart.destroy();
-    window.expChart=new Chart(ctx,{
-        type:'line',
+    const labels=dailyData.map((d,i)=>`Day ${i+1}`);
+    const expenses=dailyData.map(d=>d.total);
+    const savings=dailyData.map(d=>Math.max(0,salary+initialSaving-loanAmount-d.total));
+    if(chart) chart.destroy();
+    chart=new Chart(ctx,{
+        type:'bar',
         data:{
             labels:labels,
-            datasets:[{
-                label:'Daily Expenses PKR',
-                data:data,
-                borderColor:'rgb(42,82,152)',
-                backgroundColor:'rgba(42,82,152,0.2)',
-                tension:0.3,
-                fill:true
-            }]
+            datasets:[
+                {label:'Expense',data:expenses,backgroundColor:'rgba(255,99,132,0.7)'},
+                {label:'Saving',data:savings,backgroundColor:'rgba(54,162,235,0.7)'}
+            ]
         },
         options:{
             responsive:true,
-            plugins:{legend:{display:true}}
+            plugins:{legend:{position:'top'},title:{display:true,text:'Daily Expense & Saving'}}
         }
     });
 }
 
-// Reset all
-function resetAll(){
-    if(confirm("Reset ALL data and settings?")){
-        localStorage.clear();
-        location.reload();
-    }
-}
+// Initialize
+if(username){showPage('dashboard');updateDashboard();}
 </script>
+
 </body>
 </html>
