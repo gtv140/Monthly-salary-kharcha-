@@ -15,7 +15,7 @@ p{margin:0 0 10px 0;}
 /* Header */
 header{background:linear-gradient(135deg,#1e3c72,#2a5298);color:#fff;padding:15px 0;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
 header .logo{font-size:28px;font-weight:700;}
-nav{margin-top:10px;}
+nav{margin-top:10px;display:flex;flex-wrap:wrap;justify-content:center;}
 nav button{margin:5px;cursor:pointer;padding:8px 15px;border:none;border-radius:8px;font-weight:600;background:#ffd700;color:#2a5298;transition:0.3s;box-shadow:0 4px 8px rgba(0,0,0,0.2);}
 nav button:hover{transform:translateY(-3px);opacity:0.85;}
 
@@ -49,7 +49,7 @@ th{background:#2a5298;color:#fff;font-weight:600;}
 tr:hover{background:rgba(42,82,152,0.1);}
 
 /* Cards */
-.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
 .card{background:rgba(255,255,255,0.85);padding:15px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);text-align:center;transition:0.3s;cursor:pointer;}
 .card i{font-size:24px;color:#2a5298;margin-bottom:8px;}
 .card:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.2);}
@@ -77,6 +77,7 @@ footer p{margin:5px;font-size:14px;}
     <button onclick="showPage('dashboard')">Dashboard</button>
     <button onclick="showPage('daily')">Daily</button>
     <button onclick="showPage('weekly')">Weekly</button>
+    <button onclick="showPage('monthly')">Monthly</button>
     <button onclick="showPage('charts')">Charts</button>
     <button onclick="showPage('settings')">Settings</button>
     <button onclick="showPage('tips')">Tips</button>
@@ -111,6 +112,7 @@ footer p{margin:5px;font-size:14px;}
     <div class="form-group"><input type="number" placeholder="Snacks" id="snacksInput"><input type="number" placeholder="Bills" id="billsInput"></div>
     <div class="form-group"><input type="number" placeholder="Entertainment" id="entertainmentInput"></div>
     <button class="btn" onclick="addDailyEntryForm()">Add Entry</button>
+    <button class="btn" onclick="resetDailyData()">Reset All</button>
   </div>
   <table id="dailyTable">
     <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Daily Total</th><th>Date</th><th>Action</th></tr>
@@ -122,6 +124,14 @@ footer p{margin:5px;font-size:14px;}
   <h2 style="text-align:center;color:#2a5298;margin-bottom:15px;">Weekly Summary</h2>
   <table id="weeklyTable">
     <tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>
+  </table>
+</section>
+
+<!-- Monthly -->
+<section id="monthly" class="page">
+  <h2 style="text-align:center;color:#2a5298;margin-bottom:15px;">Monthly Summary</h2>
+  <table id="monthlyTable">
+    <tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>
   </table>
 </section>
 
@@ -137,6 +147,7 @@ footer p{margin:5px;font-size:14px;}
   <p>Salary: <input type="number" id="salaryInput" value="50000"></p>
   <p>Loan Amount: <input type="number" id="loanInput" value="10000"></p>
   <button class="btn" onclick="updateSettings()">Save Settings</button>
+  <button class="btn" onclick="resetAll()">Reset All Data</button>
 </section>
 
 <!-- Tips -->
@@ -172,6 +183,7 @@ function showPage(pageId){
   if(pageId==='dashboard') updateDashboard();
   if(pageId==='daily') updateDailyTable();
   if(pageId==='weekly') updateWeeklyTable();
+  if(pageId==='monthly') updateMonthlyTable();
   if(pageId==='charts') drawChart();
 }
 
@@ -227,9 +239,14 @@ function deleteEntry(index){
     updateDashboard();
     updateDailyTable();
     updateWeeklyTable();
+    updateMonthlyTable();
     drawChart();
   }
 }
+
+// ===== Reset Functions =====
+function resetDailyData(){if(confirm("Reset all daily data?")){dailyData=[];localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();}}
+function resetAll(){if(confirm("Reset all data?")){dailyData=[];username='';salary=50000;loanAmount=10000;localStorage.clear();showPage('welcome');}}
 
 // ===== Weekly =====
 function updateWeeklyTable(){
@@ -247,6 +264,27 @@ function updateWeeklyTable(){
   }
 }
 
+// ===== Monthly =====
+function updateMonthlyTable(){
+  const table = document.getElementById('monthlyTable');
+  table.innerHTML="<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";
+  if(dailyData.length===0) return;
+  const monthMap={};
+  dailyData.forEach(d=>{
+    const m=new Date(d.date).getMonth()+1;
+    if(!monthMap[m]) monthMap[m]=0;
+    monthMap[m]+=d.total;
+  });
+  Object.keys(monthMap).forEach(m=>{
+    const total = monthMap[m];
+    const saving = Math.max(0,salary-total-loanAmount-total);
+    const row = table.insertRow();
+    row.insertCell(0).innerText=m;
+    row.insertCell(1).innerText=total;
+    row.insertCell(2).innerText=saving;
+  });
+}
+
 // ===== Settings =====
 function updateSettings(){
   salary = Number(document.getElementById('salaryInput').value);
@@ -256,6 +294,7 @@ function updateSettings(){
   alert('Settings updated!');
   updateDashboard();
   updateWeeklyTable();
+  updateMonthlyTable();
   drawChart();
 }
 
@@ -278,31 +317,67 @@ function addDailyEntryForm(){
   updateDashboard();
   updateDailyTable();
   updateWeeklyTable();
+  updateMonthlyTable();
   drawChart();
 }
 
-// ===== Chart =====
+// ===== Charts =====
 function drawChart(){
   const ctx = document.getElementById('expenseChart').getContext('2d');
   const labels = dailyData.map(d=>d.date);
   const expenseData = dailyData.map(d=>d.total);
-  const savingData = dailyData.map(d=>salary-d.total-loanAmount);
-  if(window.expChart) window.expChart.destroy();
-  window.expChart = new Chart(ctx,{
-    type:'line',
-    data:{
-      labels:labels,
-      datasets:[
-        {label:'Daily Expense',data:expenseData,borderColor:'#2a5298',backgroundColor:'rgba(42,82,152,0.2)',fill:true},
-        {label:'Remaining Saving',data:savingData,borderColor:'#ffd700',backgroundColor:'rgba(255,215,0,0.2)',fill:true}
+  const savingData = dailyData.map(d=>Math.max(0, salary - d.total - loanAmount));
+
+  if(window.myChart) window.myChart.destroy(); // destroy previous chart
+
+  window.myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Daily Expense',
+          data: expenseData,
+          backgroundColor: 'rgba(255, 99, 132, 0.6)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        },
+        {
+          label: 'Remaining Saving',
+          data: savingData,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }
       ]
     },
-    options:{responsive:true,plugins:{legend:{position:'top'}}}
+    options: {
+      responsive:true,
+      plugins:{
+        legend:{position:'top'},
+        tooltip:{mode:'index',intersect:false}
+      },
+      scales:{
+        x:{stacked:true},
+        y:{stacked:false,beginAtZero:true}
+      }
+    }
   });
 }
 
-// ===== Auto Load =====
-if(username){showPage('dashboard');}
+// ===== On Page Load =====
+window.onload = function(){
+  if(username){
+    showPage('dashboard');
+  } else {
+    showPage('welcome');
+  }
+  updateDashboard();
+  updateDailyTable();
+  updateWeeklyTable();
+  updateMonthlyTable();
+  drawChart();
+}
 </script>
 </body>
 </html>
