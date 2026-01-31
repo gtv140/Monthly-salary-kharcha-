@@ -326,46 +326,40 @@ function drawChart(){
   const ctx = document.getElementById('expenseChart').getContext('2d');
   const labels = dailyData.map(d=>d.date);
   const expenseData = dailyData.map(d=>d.total);
-  const savingData = dailyData.map(d=>Math.max(0, salary - d.total - loanAmount));
-
-  if(window.myChart) window.myChart.destroy(); // destroy previous chart
-
-  window.myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Daily Expense',
-          data: expenseData,
-          backgroundColor: 'rgba(255, 99, 132, 0.6)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1
-        },
-        {
-          label: 'Remaining Saving',
-          data: savingData,
-          backgroundColor: 'rgba(54, 162, 235, 0.6)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1
-        }
-      ]
+  const savingData = dailyData.map(d=>salary-d.total-loanAmount);
+  if(window.expenseChartInstance) window.expenseChartInstance.destroy();
+  window.expenseChartInstance = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:labels,
+      datasets:[
+        {label:'Daily Expense',data:expenseData,backgroundColor:'#2a5298'},
+        {label:'Remaining Saving',
+        data:savingData,
+        backgroundColor:'#ffd700'
+      }]
     },
-    options: {
+    options:{
       responsive:true,
       plugins:{
-        legend:{position:'top'},
-        tooltip:{mode:'index',intersect:false}
+        legend:{
+          position:'top'
+        },
+        title:{
+          display:true,
+          text:'Daily Expense vs Remaining Saving'
+        }
       },
       scales:{
-        x:{stacked:true},
-        y:{stacked:false,beginAtZero:true}
+        y:{
+          beginAtZero:true
+        }
       }
     }
   });
 }
 
-// ===== On Page Load =====
+// ===== On Load =====
 window.onload = function(){
   if(username){
     showPage('dashboard');
