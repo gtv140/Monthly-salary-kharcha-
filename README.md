@@ -12,47 +12,49 @@
 --accent-color:#ffd700;
 --bg-color:#f4f7fc;
 --text-color:#333;
+--tip-bg:#fffbea;
 }
 body{margin:0;font-family:'Roboto',sans-serif;background:var(--bg-color);color:var(--text-color);transition:0.3s;}
-body.dark{--main-color:#222;color:#eee;--bg-color:#121212;--accent-color:#ffbb00;}
+body.dark{--main-color:#222;color:#eee;--bg-color:#121212;--accent-color:#ffbb00;--tip-bg:#333;}
 header{background:var(--main-color);color:#fff;padding:15px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
 header .logo{font-size:28px;font-weight:700;}
 nav{margin-top:10px;display:flex;flex-wrap:wrap;justify-content:center;}
-nav button{margin:5px;cursor:pointer;padding:10px 18px;border:none;border-radius:8px;font-weight:600;background:var(--accent-color);color:var(--main-color);transition:0.3s;box-shadow:0 4px 8px rgba(0,0,0,0.2);}
+nav button{margin:5px;cursor:pointer;padding:10px 18px;border:none;border-radius:12px;font-weight:600;background:var(--accent-color);color:var(--main-color);transition:0.3s;box-shadow:0 4px 8px rgba(0,0,0,0.2);}
 nav button:hover{transform:translateY(-3px);opacity:0.85;}
-.hero{background:var(--main-color) url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png') center/100px no-repeat;color:#fff;padding:60px 20px;border-radius:12px;margin:20px 0;text-align:center;box-shadow:0 6px 15px rgba(0,0,0,0.2);}
-.hero h1{font-size:28px;margin-bottom:10px;}
-.hero p{font-size:16px;margin-bottom:15px;}
-.hero input{padding:10px;border-radius:8px;border:none;margin-bottom:10px;width:70%;max-width:300px;}
-.hero button{padding:12px 25px;border-radius:8px;background:var(--accent-color);color:var(--main-color);border:none;font-weight:700;cursor:pointer;transition:0.3s;}
+.hero{background:linear-gradient(rgba(42,82,152,0.8), rgba(42,82,152,0.8)), url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png') center/150px no-repeat;color:#fff;padding:80px 20px;border-radius:12px;margin:20px 0;text-align:center;box-shadow:0 6px 15px rgba(0,0,0,0.2);}
+.hero h1{font-size:32px;margin-bottom:10px;font-weight:700;}
+.hero p{font-size:18px;margin-bottom:15px;}
+.hero input{padding:12px;border-radius:12px;border:none;margin-bottom:10px;width:70%;max-width:300px;font-size:16px;}
+.hero button{padding:14px 30px;border-radius:12px;background:var(--accent-color);color:var(--main-color);border:none;font-weight:700;cursor:pointer;transition:0.3s;font-size:16px;}
 .hero button:hover{opacity:0.9;transform:translateY(-2px);}
-.container{width:95%;max-width:650px;margin:0 auto;padding-bottom:50px;}
+.container{width:95%;max-width:750px;margin:0 auto;padding-bottom:50px;}
 .page{display:none;}
 .page.active{display:block;animation:fadeIn 0.5s;}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-.dashboard{display:flex;flex-direction:column;gap:15px;margin-bottom:20px;}
-.box{background:#fff;padding:18px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15);display:flex;justify-content:space-between;align-items:center;transition:0.3s;cursor:pointer;}
-.box:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.25);}
-.box h3{font-size:16px;color:var(--main-color);display:flex;align-items:center;}
-.box h3 i{margin-right:8px;}
-.box span{font-size:18px;font-weight:700;}
+.dashboard{display:flex;flex-direction:column;gap:20px;margin-bottom:20px;}
+.box{background:#fff;padding:20px;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.15);display:flex;justify-content:space-between;align-items:center;transition:0.3s;cursor:pointer;}
+.box:hover{transform:translateY(-6px);box-shadow:0 10px 25px rgba(0,0,0,0.25);}
+.box h3{font-size:18px;color:var(--main-color);display:flex;align-items:center;}
+.box h3 i{margin-right:10px;}
+.box span{font-size:20px;font-weight:700;}
 table{width:100%;border-collapse:collapse;margin-bottom:20px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 6px 15px rgba(0,0,0,0.15);}
-th,td{padding:10px;text-align:center;border-bottom:1px solid #eee;font-size:13px;}
+th,td{padding:12px;text-align:center;border-bottom:1px solid #eee;font-size:14px;}
 th{background:var(--main-color);color:#fff;font-weight:600;}
 tr:hover{background:rgba(42,82,152,0.1);}
-.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
-.card{background:#fff;padding:15px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);text-align:center;transition:0.3s;cursor:pointer;}
-.card img{width:50px;margin-bottom:8px;}
-.card:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.2);}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-bottom:20px;}
+.card{background:var(--tip-bg);padding:18px;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,0.15);text-align:center;transition:0.3s;cursor:pointer;}
+.card img{width:60px;margin-bottom:10px;}
+.card:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,0,0,0.25);}
 .card p{font-size:14px;color:#555;}
-.btn{padding:8px 15px;border-radius:8px;background:var(--accent-color);color:var(--main-color);border:none;cursor:pointer;transition:0.3s;margin-top:5px;}
+.btn{padding:10px 20px;border-radius:12px;background:var(--accent-color);color:var(--main-color);border:none;cursor:pointer;transition:0.3s;margin-top:5px;font-weight:700;}
 .btn:hover{opacity:0.9;transform:translateY(-2px);}
 footer{background:var(--main-color);color:#fff;text-align:center;padding:15px;margin-top:20px;border-radius:12px;}
 footer p{margin:5px;font-size:14px;}
-.form-group{display:flex;justify-content:space-between;margin-bottom:10px;}
-.form-group input{width:45%;padding:8px;border-radius:6px;border:1px solid #ccc;}
-canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15);padding:10px;margin-bottom:20px;}
-.toggle-mode{position:fixed;top:10px;right:10px;padding:10px 15px;background:var(--accent-color);color:var(--main-color);border:none;border-radius:8px;cursor:pointer;z-index:1000;}
+.form-group{display:flex;justify-content:space-between;margin-bottom:12px;}
+.form-group input{width:48%;padding:10px;border-radius:8px;border:1px solid #ccc;font-size:14px;}
+canvas{background:#fff;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.15);padding:12px;margin-bottom:20px;}
+.toggle-mode{position:fixed;top:15px;right:15px;padding:12px 18px;background:var(--accent-color);color:var(--main-color);border:none;border-radius:12px;cursor:pointer;z-index:1000;font-weight:700;}
+#currentDateTime{font-size:14px;color:#555;margin-top:5px;text-align:center;}
 </style>
 </head>
 <body>
@@ -73,37 +75,88 @@ canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15)
 
 <section class="hero page active" id="welcome">
   <h1>Track & Save Smartly!</h1>
-  <p>Keep your expenses, savings and financial goals on track.</p>
+  <p>Manage your salary, savings & daily expenses efficiently.</p>
   <input type="text" id="usernameInput" placeholder="Enter your name"><br>
   <button class="btn" onclick="enterUsername()">Get Started</button>
 </section>
 
 <section id="dashboard" class="page">
-<h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Your Dashboard</h2>
-<div style="text-align:center;color:#555;margin-bottom:10px;" id="currentDateTime"></div>
+<h2 style="text-align:center;color:var(--main-color);margin-bottom:10px;">Your Dashboard</h2>
+<div id="currentDateTime"></div>
 <div class="dashboard">
   <div class="box" onclick="showPage('daily')"><h3><i class="fas fa-user"></i>Username</h3><span id="infoUser">User</span></div>
   <div class="box" onclick="showPage('daily')"><h3><i class="fas fa-wallet"></i>Current Balance</h3><span id="remaining">0</span> PKR</div>
   <div class="box" onclick="showPage('daily')"><h3><i class="fas fa-piggy-bank"></i>Current Saving</h3><span id="currentSaving">0</span> PKR</div>
   <div class="box" onclick="showPage('daily')"><h3><i class="fas fa-money-bill-wave"></i>Total Expense</h3><span id="totalExpense">0</span> PKR</div>
-</div><script>
-// ======= Initial Setup =======
+</div>
+</section>
+
+<section id="tips" class="page">
+<h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Tips & Advice</h2>
+<div class="card-grid">
+<div class="card" onclick="alert('Track your expenses daily to save more efficiently!')"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"/><p>Track daily to save efficiently.</p></div>
+<div class="card" onclick="alert('Set monthly saving goals and stick to them!')"><img src="https://cdn-icons-png.flaticon.com/512/833/833314.png"/><p>Set monthly saving goals.</p></div>
+<div class="card" onclick="alert('Review weekly expenses to spot unnecessary costs!')"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"/><p>Review weekly expenses.</p></div>
+<div class="card" onclick="alert('Use Pocket Tracker anywhere on mobile or desktop!')"><img src="https://cdn-icons-png.flaticon.com/512/2910/2910769.png"/><p>Use anywhere on mobile.</p></div>
+<div class="card" onclick="alert('Visual charts help you track expenses and saving!')"><img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png"/><p>Visual charts for all expenses.</p></div>
+</div>
+</section><section id="daily" class="page">
+<h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Daily Expenses</h2>
+<div id="dailyForm">
+  <div class="form-group"><input type="number" placeholder="Food" id="foodInput"><input type="number" placeholder="Fuel" id="fuelInput"></div>
+  <div class="form-group"><input type="number" placeholder="Snacks" id="snacksInput"><input type="number" placeholder="Bills" id="billsInput"></div>
+  <div class="form-group"><input type="number" placeholder="Entertainment" id="entertainmentInput"></div>
+  <button class="btn" onclick="addDailyEntry()">Add Entry</button>
+  <button class="btn" onclick="resetDailyData()">Reset Daily Data</button>
+</div>
+<table id="dailyTable"><tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th><th>Date</th><th>Action</th></tr></table>
+</section>
+
+<section id="weekly" class="page">
+<h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Weekly Summary</h2>
+<table id="weeklyTable"><tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr></table>
+</section>
+
+<section id="monthly" class="page">
+<h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Monthly Summary</h2>
+<table id="monthlyTable"><tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr></table>
+</section>
+
+<section id="charts" class="page">
+<h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Expense & Saving Charts</h2>
+<canvas id="expenseChart"></canvas>
+</section>
+
+<section id="settings" class="page">
+<h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Settings</h2>
+<p>Salary: <input type="number" id="salaryInput" placeholder="Enter your salary"></p>
+<p>Loan Amount: <input type="number" id="loanInput" placeholder="Enter your loan"></p>
+<p>Current Saving: <input type="number" id="savingInput" placeholder="Enter current saving"></p>
+<button class="btn" onclick="updateSettings()">Save Settings</button>
+<button class="btn" onclick="resetAll()">Reset All Data</button>
+</section>
+
+<footer>
+<p>&copy; 2026 Pocket Tracker</p>
+<p>Contact: support@pockettracker.com</p>
+</footer>
+
+<script>
 let username = localStorage.getItem('username') || '';
 let salary = Number(localStorage.getItem('salary')) || 0;
 let loanAmount = Number(localStorage.getItem('loan')) || 0;
 let currentSaving = Number(localStorage.getItem('saving')) || 0;
 let dailyData = JSON.parse(localStorage.getItem('dailyData')) || [];
 let darkMode = localStorage.getItem('darkMode')==='true';
+
 if(darkMode) document.body.classList.add('dark');
 
-// ======= Toggle Dark/Light Mode =======
 function toggleMode(){
   document.body.classList.toggle('dark');
   darkMode = document.body.classList.contains('dark');
   localStorage.setItem('darkMode', darkMode);
 }
 
-// ======= Show Pages =======
 function showPage(pageId){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
@@ -112,57 +165,45 @@ function showPage(pageId){
   if(pageId==='weekly') updateWeeklyTable();
   if(pageId==='monthly') updateMonthlyTable();
   if(pageId==='charts') drawChart();
-  if(pageId==='settings') fillSettings();
 }
 
-// ======= Username Entry =======
 function enterUsername(){
   const val=document.getElementById('usernameInput').value.trim();
-  if(!val){alert('Enter a username!');return;}
+  if(!val){alert('Enter a username!'); return;}
   username=val;
-  localStorage.setItem('username',username);
-  // If first time login, salary/loan/saving set 0
-  if(salary===0) salary=0; 
-  if(loanAmount===0) loanAmount=0;
-  if(currentSaving===0) currentSaving=0;
-  localStorage.setItem('salary',salary);
-  localStorage.setItem('loan',loanAmount);
-  localStorage.setItem('saving',currentSaving);
-  updateDashboard();
+  localStorage.setItem('username', username);
   showPage('dashboard');
+  updateDashboard();
 }
 
-// ======= Update Dashboard =======
 function updateDashboard(){
-  document.getElementById('infoUser').innerText=username||'User';
-  let totalExpense = dailyData.reduce((a,b)=>a+b.total,0);
-  let remaining = Math.max(0, salary - loanAmount - totalExpense);
-  let saving = Math.max(0, remaining);
-  currentSaving = saving;
-  localStorage.setItem('saving',currentSaving);
-
+  if(!username) return;
+  document.getElementById('infoUser').innerText=username;
+  const totalExpense = dailyData.reduce((a,b)=>a+b.total,0);
+  const remaining = salary - loanAmount - totalExpense;
+  const saving = currentSaving + remaining;
   document.getElementById('totalExpense').innerText=totalExpense;
   document.getElementById('remaining').innerText=remaining;
-  document.getElementById('currentSaving').innerText=currentSaving;
-
-  // Update Date & Time
-  const now = new Date();
-  document.getElementById('currentDateTime').innerText = now.toLocaleString();
+  document.getElementById('currentSaving').innerText=saving;
+  updateCurrentDateTime();
 }
 
-// ======= Daily Expenses =======
-function addDailyEntryForm(){
+function addDailyEntry(){
   const food=Number(document.getElementById('foodInput').value)||0;
   const fuel=Number(document.getElementById('fuelInput').value)||0;
   const snacks=Number(document.getElementById('snacksInput').value)||0;
   const bills=Number(document.getElementById('billsInput').value)||0;
   const entertainment=Number(document.getElementById('entertainmentInput').value)||0;
-  const total=food+fuel+snacks+bills+entertainment;
+  const total = food + fuel + snacks + bills + entertainment;
   const date = new Date().toLocaleDateString();
   dailyData.push({food,fuel,snacks,bills,entertainment,total,date});
-  localStorage.setItem('dailyData',JSON.stringify(dailyData));
-  updateDailyTable();
-  updateDashboard();
+  localStorage.setItem('dailyData', JSON.stringify(dailyData));
+  updateDailyTable(); updateDashboard(); updateWeeklyTable(); updateMonthlyTable(); drawChart();
+  document.getElementById('foodInput').value='';
+  document.getElementById('fuelInput').value='';
+  document.getElementById('snacksInput').value='';
+  document.getElementById('billsInput').value='';
+  document.getElementById('entertainmentInput').value='';
 }
 
 function updateDailyTable(){
@@ -178,41 +219,19 @@ function updateDailyTable(){
     row.insertCell(5).innerText=d.entertainment;
     row.insertCell(6).innerText=d.total;
     row.insertCell(7).innerText=d.date;
-    const actionCell=row.insertCell(8);
+    const delCell=row.insertCell(8);
     const delBtn=document.createElement('button');
     delBtn.className='btn';
     delBtn.innerText='Delete';
-    delBtn.onclick=()=>{deleteEntry(i);};
-    actionCell.appendChild(delBtn);
+    delBtn.onclick=()=>{dailyData.splice(i,1); localStorage.setItem('dailyData', JSON.stringify(dailyData)); updateDailyTable(); updateDashboard(); updateWeeklyTable(); updateMonthlyTable(); drawChart();}
+    delCell.appendChild(delBtn);
   });
 }
 
-// ======= Delete / Reset =======
-function deleteEntry(index){
-  if(confirm("Delete this entry?")){
-    dailyData.splice(index,1);
-    localStorage.setItem('dailyData',JSON.stringify(dailyData));
-    updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();
-  }
-}
+function resetDailyData(){if(confirm('Reset all daily data?')){dailyData=[];localStorage.setItem('dailyData',JSON.stringify(dailyData)); updateDailyTable(); updateDashboard(); updateWeeklyTable(); updateMonthlyTable(); drawChart();}}
 
-function resetDailyData(){
-  if(confirm("Reset all daily data?")){
-    dailyData=[]; 
-    localStorage.setItem('dailyData',JSON.stringify(dailyData));
-    updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();
-  }
-}
+function resetAll(){if(confirm('Reset everything?')){localStorage.clear();location.reload();}}
 
-function resetAll(){
-  if(confirm("Reset all data?")){
-    dailyData=[]; username=''; salary=0; loanAmount=0; currentSaving=0;
-    localStorage.clear(); 
-    showPage('welcome');
-  }
-}
-
-// ======= Weekly / Monthly =======
 function updateWeeklyTable(){
   const table=document.getElementById('weeklyTable');
   table.innerHTML="<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";
@@ -220,7 +239,7 @@ function updateWeeklyTable(){
   for(let i=0;i<dailyData.length;i+=7){
     const weekData=dailyData.slice(i,i+7);
     const total=weekData.reduce((a,b)=>a+b.total,0);
-    const saving=Math.max(0,salary-loanAmount-total);
+    const saving = salary - loanAmount - total;
     const row=table.insertRow();
     row.insertCell(0).innerText=week++;
     row.insertCell(1).innerText=total;
@@ -231,7 +250,6 @@ function updateWeeklyTable(){
 function updateMonthlyTable(){
   const table=document.getElementById('monthlyTable');
   table.innerHTML="<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";
-  if(dailyData.length===0) return;
   const monthMap={};
   dailyData.forEach(d=>{
     const m=new Date(d.date).getMonth()+1;
@@ -240,7 +258,7 @@ function updateMonthlyTable(){
   });
   Object.keys(monthMap).forEach(m=>{
     const total=monthMap[m];
-    const saving=Math.max(0,salary-loanAmount-total);
+    const saving=salary - loanAmount - total;
     const row=table.insertRow();
     row.insertCell(0).innerText=m;
     row.insertCell(1).innerText=total;
@@ -248,50 +266,34 @@ function updateMonthlyTable(){
   });
 }
 
-// ======= Settings =======
-function fillSettings(){
-  document.getElementById('salaryInput').value = salary;
-  document.getElementById('loanInput').value = loanAmount;
+function drawChart(){
+  const ctx=document.getElementById('expenseChart').getContext('2d');
+  const labels=dailyData.map((d,i)=>`Day ${i+1}`);
+  const data=dailyData.map(d=>d.total);
+  if(window.expChart) window.expChart.destroy();
+  window.expChart=new Chart(ctx,{type:'line',data:{labels:labels,datasets:[{label:'Daily Expense',data:data,fill:true,backgroundColor:'rgba(255,215,0,0.3)',borderColor:'#ffd700',tension:0.4}]}});
 }
 
 function updateSettings(){
   salary=Number(document.getElementById('salaryInput').value)||0;
   loanAmount=Number(document.getElementById('loanInput').value)||0;
+  currentSaving=Number(document.getElementById('savingInput').value)||0;
   localStorage.setItem('salary',salary);
   localStorage.setItem('loan',loanAmount);
-  alert('Settings updated!');
-  updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();
+  localStorage.setItem('saving',currentSaving);
+  alert('Settings saved!');
+  updateDashboard();
+  updateWeeklyTable();
+  updateMonthlyTable();
+  drawChart();
 }
 
-// ======= Charts =======
-function drawChart(){
-  const ctx=document.getElementById('expenseChart').getContext('2d');
-  const labels=dailyData.map((d,i)=>"Day "+(i+1));
-  const expenses=dailyData.map(d=>d.total);
-  if(window.expChart) window.expChart.destroy();
-  window.expChart=new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:labels,
-      datasets:[{
-        label:'Daily Expense',
-        data:expenses,
-        backgroundColor:'rgba(42,82,152,0.7)'
-      }]
-    },
-    options:{
-      responsive:true,
-      plugins:{legend:{display:true}}
-    }
-  });
+function updateCurrentDateTime(){
+  const now=new Date();
+  document.getElementById('currentDateTime').innerText=now.toLocaleString();
 }
 
-// ======= Auto Date/Time Update =======
-setInterval(()=>{
-  if(document.getElementById('currentDateTime'))
-    document.getElementById('currentDateTime').innerText = new Date().toLocaleString();
-},1000);
-
+setInterval(updateCurrentDateTime,1000);
 </script>
 </body>
 </html>
