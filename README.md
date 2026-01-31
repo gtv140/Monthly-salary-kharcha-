@@ -2,153 +2,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker - Modern Dashboard</title>
+<title>Pocket Tracker - Mobile Modern</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ===== Base Styles ===== */
-body{margin:0;font-family:'Roboto',sans-serif;background:#f4f7ff;color:#333;line-height:1.6;}
-a{text-decoration:none;color:inherit;}
-.container{width:90%;max-width:1200px;margin:0 auto;}
+/* ===== Base ===== */
+body{margin:0;font-family:'Roboto',sans-serif;background:#f0f4ff;color:#333;}
+h1,h2,h3{margin:0 0 10px 0;font-weight:700;}
+p{margin:0 0 10px 0;}
+.container{width:95%;max-width:500px;margin:0 auto;}
 
-/* ===== Header / Navbar ===== */
-header{background:#2a5298;color:#fff;padding:20px 0;box-shadow:0 4px 15px rgba(0,0,0,0.1);}
-header .logo{font-size:28px;font-weight:700;text-align:center;}
-nav{margin-top:10px;text-align:center;}
-nav a{margin:0 15px;font-weight:500;color:#fff;transition:0.3s;}
+/* ===== Header ===== */
+header{background:#2a5298;color:#fff;padding:15px 0;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+header .logo{font-size:28px;font-weight:700;}
+nav{margin-top:10px;}
+nav a{margin:0 10px;color:#fff;font-weight:500;transition:0.3s;}
 nav a:hover{color:#ffd700;}
 
-/* ===== Hero Section ===== */
-.hero{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px;background:linear-gradient(135deg,#1e3c72,#2a5298);color:#fff;}
-.hero h1{font-size:48px;margin:10px 0;}
-.hero p{font-size:20px;margin:10px 0;}
-.hero .cta{margin-top:20px;}
-.hero .cta button{padding:12px 25px;font-size:16px;font-weight:bold;border:none;border-radius:8px;background:#ffd700;color:#2a5298;cursor:pointer;transition:0.3s;}
-.hero .cta button:hover{opacity:0.85;}
+/* ===== Hero ===== */
+.hero{background:linear-gradient(135deg,#1e3c72,#2a5298);color:#fff;text-align:center;padding:40px 20px;border-radius:12px;margin:15px 0;}
+.hero h1{font-size:28px;margin-bottom:10px;}
+.hero p{font-size:16px;margin-bottom:15px;}
+.hero button{padding:10px 20px;font-size:16px;font-weight:bold;border:none;border-radius:8px;background:#ffd700;color:#2a5298;cursor:pointer;transition:0.3s;}
+.hero button:hover{opacity:0.85;}
 
-/* ===== Features Section ===== */
-.features{padding:60px 0;background:#f4f7ff;text-align:center;}
-.features h2{font-size:32px;margin-bottom:40px;}
-.features .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;}
-.features .card{background:#fff;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.1);padding:30px;transition:0.4s;}
-.features .card:hover{transform:translateY(-8px);box-shadow:0 12px 25px rgba(0,0,0,0.15);}
-.features .card i{font-size:40px;color:#2a5298;margin-bottom:15px;}
-.features .card h3{font-size:20px;margin-bottom:10px;}
-.features .card p{font-size:16px;color:#555;}
+/* ===== Dashboard Boxes ===== */
+.dashboard{display:flex;flex-direction:column;gap:15px;margin-bottom:20px;}
+.box{background:#fff;padding:20px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.1);display:flex;justify-content:space-between;align-items:center;transition:0.3s;}
+.box:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.15);}
+.box h3{font-size:16px;color:#2a5298;}
+.box span{font-size:20px;font-weight:700;}
 
-/* ===== Dashboard Section ===== */
-.dashboard-section{padding:60px 0;background:#e0f2ff;}
-.dashboard-section h2{text-align:center;font-size:32px;margin-bottom:40px;}
-.dashboard{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;}
-.box{background:#fff;padding:25px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.1);flex:1;min-width:220px;text-align:center;transition:0.3s;}
-.box:hover{transform:translateY(-6px);box-shadow:0 10px 25px rgba(0,0,0,0.15);}
-.box h3{font-size:20px;margin-bottom:10px;}
-.box span{font-size:24px;font-weight:700;color:#2a5298;}
+/* ===== Table ===== */
+table{width:100%;border-collapse:collapse;margin-bottom:20px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 6px 15px rgba(0,0,0,0.1);}
+th,td{padding:10px;text-align:center;border-bottom:1px solid #eee;}
+th{background:#2a5298;color:#fff;font-weight:600;}
+tr:hover{background:#f0f8ff;}
 
-/* ===== Daily Expenses Table ===== */
-.table-section{padding:60px 0;text-align:center;}
-.table-section table{width:100%;border-collapse:collapse;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,0.05);border-radius:12px;overflow:hidden;}
-.table-section th, .table-section td{padding:12px;border-bottom:1px solid #eee;}
-.table-section th{background:#2a5298;color:#fff;font-weight:600;}
-.table-section tr:hover{background:#f0f8ff;}
-
-/* ===== Tips Section ===== */
-.tips{padding:60px 20px;background:#fff;text-align:center;}
-.tips h2{font-size:32px;margin-bottom:40px;}
-.tips .tip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;}
-.tips .tip-card{background:#e0f2ff;padding:25px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.1);}
-.tips .tip-card i{font-size:30px;color:#2a5298;margin-bottom:15px;display:block;}
-.tips .tip-card p{font-size:16px;}
+/* ===== Features / Tips ===== */
+.features,.tips{margin-bottom:20px;}
+.features h2,.tips h2{text-align:center;margin-bottom:15px;color:#2a5298;font-size:22px;}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.card{background:#fff;padding:15px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);text-align:center;transition:0.3s;}
+.card i{font-size:24px;color:#2a5298;margin-bottom:8px;}
+.card:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+.card p{font-size:14px;color:#555;}
 
 /* ===== Footer ===== */
-footer{background:#2a5298;color:#fff;text-align:center;padding:25px;margin-top:40px;}
-footer p{margin:5px;}
-
-/* ===== Responsive ===== */
-@media(max-width:768px){.hero h1{font-size:36px;} .hero p{font-size:18px;}}
+footer{background:#2a5298;color:#fff;text-align:center;padding:15px;margin-top:20px;border-radius:12px;}
+footer p{margin:5px;font-size:14px;}
 </style>
 </head>
 <body>
 
-<!-- Header -->
-<header>
-  <div class="logo">Pocket Tracker</div>
-  <nav>
-    <a href="#features">Features</a>
-    <a href="#dashboard">Dashboard</a>
-    <a href="#tips">Tips</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
+<div class="container">
+  <!-- Header -->
+  <header>
+    <div class="logo">Pocket Tracker</div>
+  </header>
 
-<!-- Hero Section -->
-<section class="hero">
-  <h1>Manage Your Money Effortlessly</h1>
-  <p>Track expenses, savings, and budget with ease — anywhere, anytime!</p>
-  <div class="cta">
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Manage Your Money Easily</h1>
+    <p>Track daily expenses, savings, and budget all in one place.</p>
     <button onclick="scrollToSection('dashboard')">Go to Dashboard</button>
-  </div>
-</section>
+  </section>
 
-<!-- Features Section -->
-<section id="features" class="features">
-  <h2>Awesome Features</h2>
-  <div class="grid">
-    <div class="card"><i class="fas fa-wallet"></i><h3>Expense Tracker</h3><p>Add daily expenses quickly and see totals.</p></div>
-    <div class="card"><i class="fas fa-chart-line"></i><h3>Visual Charts</h3><p>See your progress with beautiful graphs.</p></div>
-    <div class="card"><i class="fas fa-piggy-bank"></i><h3>Goal Saving</h3><p>Set savings goals and track progress.</p></div>
-    <div class="card"><i class="fas fa-coins"></i><h3>Salary & Loan</h3><p>Manage salary, loans, and remaining balance.</p></div>
-    <div class="card"><i class="fas fa-mobile-alt"></i><h3>Mobile Friendly</h3><p>Use on any device seamlessly.</p></div>
-    <div class="card"><i class="fas fa-cloud-upload-alt"></i><h3>Backup & Restore</h3><p>Save data locally and restore anytime.</p></div>
-  </div>
-</section>
+  <!-- Dashboard -->
+  <section id="dashboard">
+    <h2 style="text-align:center;color:#2a5298;margin-bottom:15px;">Your Dashboard</h2>
+    <div class="dashboard">
+      <div class="box"><h3>Username</h3><span id="infoUser">User</span></div>
+      <div class="box"><h3>Current Balance</h3><span id="remaining">0</span> PKR</div>
+      <div class="box"><h3>Current Saving</h3><span id="currentSaving">0</span> PKR</div>
+      <div class="box"><h3>Total Expense</h3><span id="totalExpense">0</span> PKR</div>
+    </div>
 
-<!-- Dashboard Section -->
-<section id="dashboard" class="dashboard-section">
-  <h2>Your Dashboard</h2>
-  <div class="dashboard">
-    <div class="box"><h3>Username</h3><span id="infoUser">User</span></div>
-    <div class="box"><h3>Current Balance</h3><span id="remaining">0</span> PKR</div>
-    <div class="box"><h3>Current Saving</h3><span id="currentSaving">0</span> PKR</div>
-    <div class="box"><h3>Total Expense</h3><span id="totalExpense">0</span> PKR</div>
-  </div>
-  <!-- Daily Expenses Table -->
-  <div class="table-section">
-    <h2>Daily Expenses</h2>
+    <!-- Daily Table -->
     <table id="dailyTable">
       <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Daily Total</th><th>Date</th></tr>
     </table>
-  </div>
-</section>
+  </section>
 
-<!-- Tips Section -->
-<section id="tips" class="tips">
-  <h2>Money & Budget Tips</h2>
-  <div class="tip-grid">
-    <div class="tip-card"><i class="fas fa-lightbulb"></i><p>Track your daily expenses carefully to save money.</p></div>
-    <div class="tip-card"><i class="fas fa-hand-holding-usd"></i><p>Set a monthly saving goal and stick to it.</p></div>
-    <div class="tip-card"><i class="fas fa-clock"></i><p>Review expenses weekly to avoid overspending.</p></div>
-    <div class="tip-card"><i class="fas fa-mobile-alt"></i><p>Use Pocket Tracker anywhere, even on mobile.</p></div>
-  </div>
-</section>
+  <!-- Features -->
+  <section class="features">
+    <h2>Features</h2>
+    <div class="card-grid">
+      <div class="card"><i class="fas fa-wallet"></i><p>Quickly add daily expenses.</p></div>
+      <div class="card"><i class="fas fa-chart-line"></i><p>Visual charts for savings and expenses.</p></div>
+      <div class="card"><i class="fas fa-piggy-bank"></i><p>Set and track saving goals.</p></div>
+      <div class="card"><i class="fas fa-coins"></i><p>Manage salary and loans.</p></div>
+    </div>
+  </section>
 
-<!-- Footer -->
-<footer id="contact">
-  <p>&copy; 2026 Pocket Tracker. All Rights Reserved.</p>
-  <p>Contact: support@pockettracker.com</p>
-</footer>
+  <!-- Tips -->
+  <section class="tips">
+    <h2>Tips</h2>
+    <div class="card-grid">
+      <div class="card"><i class="fas fa-lightbulb"></i><p>Track daily to save efficiently.</p></div>
+      <div class="card"><i class="fas fa-hand-holding-usd"></i><p>Set a monthly saving goal.</p></div>
+      <div class="card"><i class="fas fa-clock"></i><p>Review weekly expenses.</p></div>
+      <div class="card"><i class="fas fa-mobile-alt"></i><p>Use anywhere on mobile.</p></div>
+    </div>
+  </section>
 
-<!-- ===== Scripts ===== -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Pocket Tracker</p>
+    <p>Contact: support@pockettracker.com</p>
+  </footer>
+</div>
+
 <script>
 // ===== Sample Dashboard Data =====
 let dailyData=[],salary=50000,goal=10000,loanAmount=10000;
 
 function updateDashboard(){
     let totalExpense=0;
-    dailyData.forEach(d=>{
-        totalExpense+=d.total;
-    });
+    dailyData.forEach(d=>{totalExpense+=d.total;});
     const remaining=salary-totalExpense-loanAmount;
     const currentSaving=Math.max(0,remaining);
     document.getElementById('infoUser').innerText='User';
@@ -175,7 +146,7 @@ function updateDashboard(){
 // ===== Scroll Helper =====
 function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
 
-// ===== Sample Daily Data =====
+// ===== Sample Data =====
 dailyData=[
   {food:50,fuel:40,snacks:30,bills:70,entertainment:60,total:250,date:'2026-02-01'},
   {food:60,fuel:50,snacks:20,bills:80,entertainment:40,total:250,date:'2026-02-02'},
