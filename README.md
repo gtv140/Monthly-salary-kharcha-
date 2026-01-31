@@ -2,58 +2,60 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker - Ultimate Modern</title>
+<title>Pocket Tracker - WebHub Modern</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-/* ===== Base ===== */
-body{margin:0;font-family:'Roboto',sans-serif;background:#f0f4ff;color:#333;}
+body{margin:0;font-family:'Roboto',sans-serif;background:linear-gradient(135deg,#e0f0ff,#f0f4ff);color:#333;}
 h1,h2,h3{margin:0 0 10px 0;font-weight:700;}
 p{margin:0 0 10px 0;}
 .container{width:95%;max-width:500px;margin:0 auto;padding-bottom:50px;}
-button,input{outline:none;}
 
-/* ===== Header ===== */
-header{background:#2a5298;color:#fff;padding:15px 0;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+/* Header */
+header{background:linear-gradient(135deg,#1e3c72,#2a5298);color:#fff;padding:15px 0;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
 header .logo{font-size:28px;font-weight:700;}
 nav{margin-top:10px;}
-nav button{margin:5px;cursor:pointer;padding:8px 15px;border:none;border-radius:8px;font-weight:600;background:#ffd700;color:#2a5298;transition:0.3s;}
-nav button:hover{opacity:0.85;}
+nav button{margin:5px;cursor:pointer;padding:8px 15px;border:none;border-radius:8px;font-weight:600;background:#ffd700;color:#2a5298;transition:0.3s;box-shadow:0 4px 8px rgba(0,0,0,0.2);}
+nav button:hover{transform:translateY(-3px);opacity:0.85;}
 
-/* ===== Page Sections ===== */
+/* Pages */
 .page{display:none;}
-.page.active{display:block;}
+.page.active{display:block;animation:fadeIn 0.5s;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 
-/* ===== Hero / Welcome ===== */
+/* Welcome */
 #welcome h1{font-size:26px;text-align:center;margin:15px 0;}
 #welcome p{text-align:center;margin-bottom:15px;}
 #welcome input{width:80%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bottom:10px;}
-#welcome button{padding:10px 20px;border-radius:8px;background:#2a5298;color:#fff;cursor:pointer;}
+#welcome button{padding:10px 20px;border-radius:8px;background:#2a5298;color:#fff;cursor:pointer;transition:0.3s;}
+#welcome button:hover{opacity:0.9;}
 
-/* ===== Dashboard Boxes ===== */
+/* Dashboard Boxes */
 .dashboard{display:flex;flex-direction:column;gap:15px;margin-bottom:20px;}
-.box{background:#fff;padding:15px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.1);display:flex;justify-content:space-between;align-items:center;transition:0.3s;}
-.box:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.15);}
+.box{background:rgba(255,255,255,0.85);padding:15px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15);display:flex;justify-content:space-between;align-items:center;transition:0.3s;}
+.box:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.25);}
 .box h3{font-size:16px;color:#2a5298;}
 .box span{font-size:18px;font-weight:700;}
 
-/* ===== Table ===== */
-table{width:100%;border-collapse:collapse;margin-bottom:20px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 6px 15px rgba(0,0,0,0.1);}
+/* Tables */
+table{width:100%;border-collapse:collapse;margin-bottom:20px;background:rgba(255,255,255,0.85);border-radius:12px;overflow:hidden;box-shadow:0 6px 15px rgba(0,0,0,0.15);}
 th,td{padding:10px;text-align:center;border-bottom:1px solid #eee;font-size:13px;}
 th{background:#2a5298;color:#fff;font-weight:600;}
-tr:hover{background:#f0f8ff;}
+tr:hover{background:rgba(42,82,152,0.1);}
 
-/* ===== Features / Tips ===== */
-.features,.tips{margin-bottom:20px;}
-.features h2,.tips h2{text-align:center;margin-bottom:15px;color:#2a5298;font-size:22px;}
+/* Cards */
 .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.card{background:#fff;padding:15px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);text-align:center;transition:0.3s;}
+.card{background:rgba(255,255,255,0.85);padding:15px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);text-align:center;transition:0.3s;cursor:pointer;}
 .card i{font-size:24px;color:#2a5298;margin-bottom:8px;}
-.card:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+.card:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.2);}
 .card p{font-size:14px;color:#555;}
 
-/* ===== Footer ===== */
-footer{background:#2a5298;color:#fff;text-align:center;padding:15px;margin-top:20px;border-radius:12px;}
+/* Charts */
+canvas{background:rgba(255,255,255,0.85);border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15);padding:10px;margin-bottom:20px;}
+
+/* Footer */
+footer{background:linear-gradient(135deg,#1e3c72,#2a5298);color:#fff;text-align:center;padding:15px;margin-top:20px;border-radius:12px;}
 footer p{margin:5px;font-size:14px;}
 </style>
 </head>
@@ -67,21 +69,22 @@ footer p{margin:5px;font-size:14px;}
     <button onclick="showPage('dashboard')">Dashboard</button>
     <button onclick="showPage('daily')">Daily</button>
     <button onclick="showPage('weekly')">Weekly</button>
+    <button onclick="showPage('charts')">Charts</button>
     <button onclick="showPage('settings')">Settings</button>
     <button onclick="showPage('tips')">Tips</button>
   </nav>
 </header>
 
-<!-- Welcome Page -->
+<!-- Welcome -->
 <section id="welcome" class="page active">
-  <h1>Welcome!</h1>
+  <h1>Welcome to Pocket Tracker!</h1>
   <p>Enter your username to continue:</p>
   <input type="text" id="usernameInput" placeholder="Your Name">
   <br>
   <button onclick="enterUsername()">Continue</button>
 </section>
 
-<!-- Dashboard Page -->
+<!-- Dashboard -->
 <section id="dashboard" class="page">
   <h2 style="text-align:center;color:#2a5298;margin-bottom:15px;">Your Dashboard</h2>
   <div class="dashboard">
@@ -92,16 +95,16 @@ footer p{margin:5px;font-size:14px;}
   </div>
 </section>
 
-<!-- Daily Page -->
+<!-- Daily -->
 <section id="daily" class="page">
   <h2 style="text-align:center;color:#2a5298;margin-bottom:15px;">Daily Expenses</h2>
   <table id="dailyTable">
     <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Daily Total</th><th>Date</th></tr>
   </table>
-  <button onclick="addDailyEntry()">Add Entry</button>
+  <button onclick="addDailyEntry()">Add Daily Entry</button>
 </section>
 
-<!-- Weekly Page -->
+<!-- Weekly -->
 <section id="weekly" class="page">
   <h2 style="text-align:center;color:#2a5298;margin-bottom:15px;">Weekly Summary</h2>
   <table id="weeklyTable">
@@ -109,22 +112,29 @@ footer p{margin:5px;font-size:14px;}
   </table>
 </section>
 
-<!-- Settings Page -->
+<!-- Charts -->
+<section id="charts" class="page">
+  <h2 style="text-align:center;color:#2a5298;margin-bottom:15px;">Expense & Saving Charts</h2>
+  <canvas id="expenseChart"></canvas>
+</section>
+
+<!-- Settings -->
 <section id="settings" class="page">
   <h2 style="text-align:center;color:#2a5298;margin-bottom:15px;">Settings</h2>
   <p>Salary: <input type="number" id="salaryInput" value="50000"></p>
   <p>Loan Amount: <input type="number" id="loanInput" value="10000"></p>
-  <button onclick="updateSettings()">Save</button>
+  <button onclick="updateSettings()">Save Settings</button>
 </section>
 
-<!-- Tips Page -->
+<!-- Tips -->
 <section id="tips" class="page">
-  <h2>Tips</h2>
+  <h2 style="text-align:center;color:#2a5298;margin-bottom:15px;">Tips & Advice</h2>
   <div class="card-grid">
     <div class="card"><i class="fas fa-lightbulb"></i><p>Track daily to save efficiently.</p></div>
-    <div class="card"><i class="fas fa-hand-holding-usd"></i><p>Set a monthly saving goal.</p></div>
+    <div class="card"><i class="fas fa-hand-holding-usd"></i><p>Set monthly saving goals.</p></div>
     <div class="card"><i class="fas fa-clock"></i><p>Review weekly expenses.</p></div>
     <div class="card"><i class="fas fa-mobile-alt"></i><p>Use anywhere on mobile.</p></div>
+    <div class="card"><i class="fas fa-chart-line"></i><p>Visual charts for all expenses.</p></div>
   </div>
 </section>
 
@@ -142,13 +152,14 @@ let salary = Number(localStorage.getItem('salary')) || 50000;
 let loanAmount = Number(localStorage.getItem('loan')) || 10000;
 let dailyData = JSON.parse(localStorage.getItem('dailyData')) || [];
 
-// ===== Page Switching =====
+// ===== Page Switch =====
 function showPage(pageId){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
   if(pageId==='dashboard') updateDashboard();
   if(pageId==='daily') updateDailyTable();
   if(pageId==='weekly') updateWeeklyTable();
+  if(pageId==='charts') drawChart();
 }
 
 // ===== Username =====
@@ -160,7 +171,7 @@ function enterUsername(){
   showPage('dashboard');
 }
 
-// ===== Dashboard Update =====
+// ===== Dashboard =====
 function updateDashboard(){
   let totalExpense=0;
   dailyData.forEach(d=>totalExpense+=d.total);
@@ -172,7 +183,7 @@ function updateDashboard(){
   document.getElementById('currentSaving').innerText=currentSaving;
 }
 
-// ===== Daily Table =====
+// ===== Daily =====
 function updateDailyTable(){
   const table = document.getElementById('dailyTable');
   table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Daily Total</th><th>Date</th></tr>";
@@ -189,7 +200,7 @@ function updateDailyTable(){
   });
 }
 
-// ===== Weekly Table =====
+// ===== Weekly =====
 function updateWeeklyTable(){
   const table = document.getElementById('weeklyTable');
   table.innerHTML="<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";
@@ -214,6 +225,7 @@ function updateSettings(){
   alert('Settings updated!');
   updateDashboard();
   updateWeeklyTable();
+  drawChart();
 }
 
 // ===== Add Daily Entry =====
@@ -230,6 +242,27 @@ function addDailyEntry(){
   updateDashboard();
   updateDailyTable();
   updateWeeklyTable();
+  drawChart();
+}
+
+// ===== Chart =====
+function drawChart(){
+  const ctx = document.getElementById('expenseChart').getContext('2d');
+  const labels = dailyData.map(d=>d.date);
+  const expenseData = dailyData.map(d=>d.total);
+  const savingData = dailyData.map(d=>salary-d.total-loanAmount);
+  if(window.expChart) window.expChart.destroy();
+  window.expChart = new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:labels,
+      datasets:[
+        {label:'Daily Expense',data:expenseData,borderColor:'#2a5298',backgroundColor:'rgba(42,82,152,0.2)',fill:true},
+        {label:'Remaining Saving',data:savingData,borderColor:'#ffd700',backgroundColor:'rgba(255,215,0,0.2)',fill:true}
+      ]
+    },
+    options:{responsive:true,plugins:{legend:{position:'top'}}}
+  });
 }
 
 // ===== Auto Load =====
