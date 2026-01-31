@@ -20,10 +20,10 @@ header .logo{font-size:28px;font-weight:700;}
 nav{margin-top:10px;display:flex;flex-wrap:wrap;justify-content:center;}
 nav button{margin:5px;cursor:pointer;padding:10px 18px;border:none;border-radius:8px;font-weight:600;background:var(--accent-color);color:var(--main-color);transition:0.3s;box-shadow:0 4px 8px rgba(0,0,0,0.2);}
 nav button:hover{transform:translateY(-3px);opacity:0.85;}
-.hero{background:var(--main-color) url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png') center/80px no-repeat;color:#fff;padding:50px 20px;border-radius:12px;margin:20px 0;text-align:center;box-shadow:0 6px 15px rgba(0,0,0,0.2);}
+.hero{background:var(--main-color) url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png') center/100px no-repeat;color:#fff;padding:60px 20px;border-radius:12px;margin:20px 0;text-align:center;box-shadow:0 6px 15px rgba(0,0,0,0.2);}
 .hero h1{font-size:28px;margin-bottom:10px;}
 .hero p{font-size:16px;margin-bottom:15px;}
-.hero input{padding:10px;border-radius:8px;border:none;margin-bottom:10px;width:70%;}
+.hero input{padding:10px;border-radius:8px;border:none;margin-bottom:10px;width:70%;max-width:300px;}
 .hero button{padding:12px 25px;border-radius:8px;background:var(--accent-color);color:var(--main-color);border:none;font-weight:700;cursor:pointer;transition:0.3s;}
 .hero button:hover{opacity:0.9;transform:translateY(-2px);}
 .container{width:95%;max-width:650px;margin:0 auto;padding-bottom:50px;}
@@ -164,10 +164,10 @@ if(pageId==='charts') drawChart();
 }
 
 function enterUsername(){
-const val = document.getElementById('usernameInput').value.trim();
-if(!val){alert('Enter a username!'); return;}
-username = val;
-localStorage.setItem('username', username);
+const val=document.getElementById('usernameInput').value.trim();
+if(!val){alert('Enter a username!');return;}
+username=val;
+localStorage.setItem('username',username);
 updateDashboard();
 showPage('dashboard');
 }
@@ -181,8 +181,8 @@ document.getElementById('currentSaving').innerText=0;
 return;
 }
 let totalExpense=dailyData.reduce((a,b)=>a+b.total,0);
-let remaining = salary-totalExpense-loanAmount;
-let currentSaving = Math.max(0,remaining);
+let remaining=salary-totalExpense-loanAmount;
+let currentSaving=Math.max(0,remaining);
 document.getElementById('infoUser').innerText=username;
 document.getElementById('totalExpense').innerText=totalExpense;
 document.getElementById('remaining').innerText=remaining;
@@ -272,60 +272,48 @@ const fuel=Number(document.getElementById('fuelInput').value)||0;
 const snacks=Number(document.getElementById('snacksInput').value)||0;
 const bills=Number(document.getElementById('billsInput').value)||0;
 const entertainment=Number(document.getElementById('entertainmentInput').value)||0;
-const total=food+fuel+snacks+bills+entertainment;
-const date=new Date().toLocaleDateString();
-dailyData.push({food,fuel,snacks,bills,entertainment,total,date});
+const total=food + fuel + snacks + bills + entertainment;
+const today = new Date().toLocaleDateString();
+dailyData.push({food, fuel, snacks, bills, entertainment, total, date: today});
+updateDailyTable();
+updateDashboard();
+updateWeeklyTable();
+updateMonthlyTable();
+drawChart();
 document.getElementById('foodInput').value='';
 document.getElementById('fuelInput').value='';
 document.getElementById('snacksInput').value='';
 document.getElementById('billsInput').value='';
 document.getElementById('entertainmentInput').value='';
-updateDashboard();
-updateDailyTable();
-updateWeeklyTable();
-updateMonthlyTable();
-drawChart();
 }
 
+// Chart
 function drawChart(){
 const ctx=document.getElementById('expenseChart').getContext('2d');
-const labels=dailyData.map((d,i)=>`Day ${i+1}`);
-const foodData=dailyData.map(d=>d.food);
-const fuelData=dailyData.map(d=>d.fuel);
-const snacksData=dailyData.map(d=>d.snacks);
-const billsData=dailyData.map(d=>d.bills);
-const entertainmentData=dailyData.map(d=>d.entertainment);
-if(window.expenseChartInstance) window.expenseChartInstance.destroy();
-window.expenseChartInstance=new Chart(ctx,{
+let labels=dailyData.map((d,i)=>`Day ${i+1}`);
+let expenses=dailyData.map(d=>d.total);
+let saving=dailyData.map(d=>Math.max(0,salary-d.total-loanAmount));
+if(window.expChart) window.expChart.destroy();
+window.expChart=new Chart(ctx,{
 type:'bar',
 data:{
-labels:labels,
+labels,
 datasets:[
-{label:'Food',data:foodData,backgroundColor:'#ff6384'},
-{label:'Fuel',data:fuelData,backgroundColor:'#36a2eb'},
-{label:'Snacks',data:snacksData,backgroundColor:'#ffce56'},
-{label:'Bills',data:billsData,backgroundColor:'#4bc0c0'},
-{label:'Entertainment',data:entertainmentData,backgroundColor:'#9966ff'}
+{label:'Daily Expense',data:expenses,backgroundColor:'rgba(42,82,152,0.7)'},
+{label:'Saving',data:saving,backgroundColor:'rgba(255,215,0,0.7)'}
 ]
 },
 options:{
 responsive:true,
-plugins:{legend:{position:'top'},title:{display:true,text:'Daily Expenses Breakdown'}},
+plugins:{legend:{position:'top'}},
 scales:{y:{beginAtZero:true}}
 }
 });
 }
 
-// On page load
-window.onload=function(){
-if(username){
-document.getElementById('usernameInput').value=username;
-updateDashboard();
-showPage('dashboard');
-}else{
-showPage('welcome');
-}
-};
+// On load
+if(username) showPage('dashboard');
 </script>
+</div>
 </body>
 </html>
