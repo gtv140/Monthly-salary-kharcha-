@@ -2,227 +2,186 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker - Ultimate Modern</title>
+<title>Pocket Tracker - Modern Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ===== Base ===== */
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Roboto',sans-serif;}
-body{background:#f5f6fa;color:#2f3640;line-height:1.5;}
+/* ===== Base Styles ===== */
+body{margin:0;font-family:'Roboto',sans-serif;background:#f4f7ff;color:#333;line-height:1.6;}
 a{text-decoration:none;color:inherit;}
+.container{width:90%;max-width:1200px;margin:0 auto;}
 
-/* ===== Header / Hero ===== */
-header{position:relative;background:linear-gradient(135deg,#6a11cb,#2575fc);color:#fff;padding:40px 20px;text-align:center;font-size:32px;font-weight:700;text-shadow:1px 1px 6px rgba(0,0,0,0.3);border-bottom-left-radius:15px;border-bottom-right-radius:15px;overflow:hidden;}
-header::before{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:url('https://images.unsplash.com/photo-1612831455545-d1d3f165e06d?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;opacity:0.2;border-bottom-left-radius:15px;border-bottom-right-radius:15px;}
+/* ===== Header / Navbar ===== */
+header{background:#2a5298;color:#fff;padding:20px 0;box-shadow:0 4px 15px rgba(0,0,0,0.1);}
+header .logo{font-size:28px;font-weight:700;text-align:center;}
+nav{margin-top:10px;text-align:center;}
+nav a{margin:0 15px;font-weight:500;color:#fff;transition:0.3s;}
+nav a:hover{color:#ffd700;}
 
-/* ===== Container ===== */
-.container{max-width:1200px;margin:20px auto;padding:15px;}
+/* ===== Hero Section ===== */
+.hero{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px;background:linear-gradient(135deg,#1e3c72,#2a5298);color:#fff;}
+.hero h1{font-size:48px;margin:10px 0;}
+.hero p{font-size:20px;margin:10px 0;}
+.hero .cta{margin-top:20px;}
+.hero .cta button{padding:12px 25px;font-size:16px;font-weight:bold;border:none;border-radius:8px;background:#ffd700;color:#2a5298;cursor:pointer;transition:0.3s;}
+.hero .cta button:hover{opacity:0.85;}
 
-/* ===== Info Boxes ===== */
-.infoBoxes{display:flex;flex-wrap:wrap;gap:15px;margin-bottom:20px;}
-.box{flex:1;min-width:180px;background:linear-gradient(145deg,#ff9a9e,#fad0c4);color:#fff;padding:20px;border-radius:15px;box-shadow:0 8px 15px rgba(0,0,0,0.2);transition:0.3s;cursor:pointer;text-align:center;font-weight:700;position:relative;overflow:hidden;}
-.box:hover{transform:translateY(-5px);box-shadow:0 12px 20px rgba(0,0,0,0.3);}
-.box span{display:block;font-size:24px;margin-top:10px;}
+/* ===== Features Section ===== */
+.features{padding:60px 0;background:#f4f7ff;text-align:center;}
+.features h2{font-size:32px;margin-bottom:40px;}
+.features .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;}
+.features .card{background:#fff;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.1);padding:30px;transition:0.4s;}
+.features .card:hover{transform:translateY(-8px);box-shadow:0 12px 25px rgba(0,0,0,0.15);}
+.features .card i{font-size:40px;color:#2a5298;margin-bottom:15px;}
+.features .card h3{font-size:20px;margin-bottom:10px;}
+.features .card p{font-size:16px;color:#555;}
 
-/* Box animations */
-.box::after{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:rgba(255,255,255,0.1);transform:rotate(45deg);transition:0.5s;}
-.box:hover::after{top:0;left:0;}
+/* ===== Dashboard Section ===== */
+.dashboard-section{padding:60px 0;background:#e0f2ff;}
+.dashboard-section h2{text-align:center;font-size:32px;margin-bottom:40px;}
+.dashboard{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;}
+.box{background:#fff;padding:25px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.1);flex:1;min-width:220px;text-align:center;transition:0.3s;}
+.box:hover{transform:translateY(-6px);box-shadow:0 10px 25px rgba(0,0,0,0.15);}
+.box h3{font-size:20px;margin-bottom:10px;}
+.box span{font-size:24px;font-weight:700;color:#2a5298;}
 
-/* ===== Buttons ===== */
-button{padding:10px 20px;border:none;border-radius:10px;background:#2575fc;color:#fff;font-weight:700;cursor:pointer;transition:0.3s;margin:5px;}
-button:hover{opacity:0.85;}
+/* ===== Daily Expenses Table ===== */
+.table-section{padding:60px 0;text-align:center;}
+.table-section table{width:100%;border-collapse:collapse;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,0.05);border-radius:12px;overflow:hidden;}
+.table-section th, .table-section td{padding:12px;border-bottom:1px solid #eee;}
+.table-section th{background:#2a5298;color:#fff;font-weight:600;}
+.table-section tr:hover{background:#f0f8ff;}
 
-/* ===== Table ===== */
-table{width:100%;border-collapse:collapse;margin-top:20px;border-radius:10px;overflow:hidden;box-shadow:0 6px 15px rgba(0,0,0,0.1);}
-th,td{text-align:center;padding:12px;border-bottom:1px solid #ddd;}
-th{background:#2575fc;color:#fff;letter-spacing:1px;}
-tr:hover{background:rgba(37,117,252,0.1);}
+/* ===== Tips Section ===== */
+.tips{padding:60px 20px;background:#fff;text-align:center;}
+.tips h2{font-size:32px;margin-bottom:40px;}
+.tips .tip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;}
+.tips .tip-card{background:#e0f2ff;padding:25px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.1);}
+.tips .tip-card i{font-size:30px;color:#2a5298;margin-bottom:15px;display:block;}
+.tips .tip-card p{font-size:16px;}
 
-/* ===== Inputs ===== */
-input[type="number"], input[type="text"]{padding:8px 12px;border-radius:10px;border:2px solid #2575fc;outline:none;margin:5px;width:120px;transition:0.3s;}
-input:focus{border-color:#6a11cb;box-shadow:0 0 8px #6a11cb;}
-
-/* ===== Tips ===== */
-.tipBox{background:linear-gradient(135deg,#ffecd2,#fcb69f);padding:15px;margin:15px 0;border-radius:12px;color:#333;font-weight:500;box-shadow:0 6px 12px rgba(0,0,0,0.15);}
-.tipBox strong{color:#2575fc;}
-
-/* ===== Hero Images / Banner Section ===== */
-.heroImages{display:flex;overflow-x:auto;gap:15px;margin:20px 0;}
-.heroImages img{min-width:300px;height:180px;object-fit:cover;border-radius:15px;box-shadow:0 8px 15px rgba(0,0,0,0.2);transition:0.3s;cursor:pointer;}
-.heroImages img:hover{transform:scale(1.05);}
+/* ===== Footer ===== */
+footer{background:#2a5298;color:#fff;text-align:center;padding:25px;margin-top:40px;}
+footer p{margin:5px;}
 
 /* ===== Responsive ===== */
-@media(max-width:768px){.infoBoxes{flex-direction:column;} .heroImages img{min-width:250px;}}
+@media(max-width:768px){.hero h1{font-size:36px;} .hero p{font-size:18px;}}
 </style>
 </head>
 <body>
 
-<header>💼 Pocket Tracker 💼</header>
-<div class="container">
+<!-- Header -->
+<header>
+  <div class="logo">Pocket Tracker</div>
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#tips">Tips</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
 
-<!-- Hero Images / Modern Visuals -->
-<div class="heroImages">
-<img src="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80" alt="Budget Planning">
-<img src="https://images.unsplash.com/photo-1581093588401-2e4f133ee625?auto=format&fit=crop&w=800&q=80" alt="Expense Tracking">
-<img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=800&q=80" alt="Savings">
-</div>
+<!-- Hero Section -->
+<section class="hero">
+  <h1>Manage Your Money Effortlessly</h1>
+  <p>Track expenses, savings, and budget with ease — anywhere, anytime!</p>
+  <div class="cta">
+    <button onclick="scrollToSection('dashboard')">Go to Dashboard</button>
+  </div>
+</section>
 
-<!-- User Info Boxes -->
-<div class="infoBoxes">
-<div class="box" onclick="updateSalaryPrompt()">💰 Salary <span id="salaryDisplay">0</span> PKR</div>
-<div class="box" onclick="updateLoanPrompt()">💳 Loan <span id="loanDisplay">0</span> PKR</div>
-<div class="box" onclick="updateBalancePrompt()">💸 Current Balance <span id="balanceDisplay">0</span> PKR</div>
-<div class="box">💾 Total Saving <span id="savingDisplay">0</span> PKR</div>
-</div>
+<!-- Features Section -->
+<section id="features" class="features">
+  <h2>Awesome Features</h2>
+  <div class="grid">
+    <div class="card"><i class="fas fa-wallet"></i><h3>Expense Tracker</h3><p>Add daily expenses quickly and see totals.</p></div>
+    <div class="card"><i class="fas fa-chart-line"></i><h3>Visual Charts</h3><p>See your progress with beautiful graphs.</p></div>
+    <div class="card"><i class="fas fa-piggy-bank"></i><h3>Goal Saving</h3><p>Set savings goals and track progress.</p></div>
+    <div class="card"><i class="fas fa-coins"></i><h3>Salary & Loan</h3><p>Manage salary, loans, and remaining balance.</p></div>
+    <div class="card"><i class="fas fa-mobile-alt"></i><h3>Mobile Friendly</h3><p>Use on any device seamlessly.</p></div>
+    <div class="card"><i class="fas fa-cloud-upload-alt"></i><h3>Backup & Restore</h3><p>Save data locally and restore anytime.</p></div>
+  </div>
+</section>
 
-<!-- Expense Buttons -->
-<div class="infoBoxes">
-<div class="box" onclick="addExpense('Food')">🍔 Food</div>
-<div class="box" onclick="addExpense('Fuel')">⛽ Fuel</div>
-<div class="box" onclick="addExpense('Snacks')">🍿 Snacks</div>
-<div class="box" onclick="addExpense('Bills')">💡 Bills</div>
-<div class="box" onclick="addExpense('Entertainment')">🎮 Fun</div>
-<div class="box" onclick="clearExpenses()">🗑️ Clear All</div>
-</div>
+<!-- Dashboard Section -->
+<section id="dashboard" class="dashboard-section">
+  <h2>Your Dashboard</h2>
+  <div class="dashboard">
+    <div class="box"><h3>Username</h3><span id="infoUser">User</span></div>
+    <div class="box"><h3>Current Balance</h3><span id="remaining">0</span> PKR</div>
+    <div class="box"><h3>Current Saving</h3><span id="currentSaving">0</span> PKR</div>
+    <div class="box"><h3>Total Expense</h3><span id="totalExpense">0</span> PKR</div>
+  </div>
+  <!-- Daily Expenses Table -->
+  <div class="table-section">
+    <h2>Daily Expenses</h2>
+    <table id="dailyTable">
+      <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Daily Total</th><th>Date</th></tr>
+    </table>
+  </div>
+</section>
 
-<!-- Daily Expense Table -->
-<h2>Daily Expenses</h2>
-<table id="expenseTable">
-<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th></tr>
-</table>
+<!-- Tips Section -->
+<section id="tips" class="tips">
+  <h2>Money & Budget Tips</h2>
+  <div class="tip-grid">
+    <div class="tip-card"><i class="fas fa-lightbulb"></i><p>Track your daily expenses carefully to save money.</p></div>
+    <div class="tip-card"><i class="fas fa-hand-holding-usd"></i><p>Set a monthly saving goal and stick to it.</p></div>
+    <div class="tip-card"><i class="fas fa-clock"></i><p>Review expenses weekly to avoid overspending.</p></div>
+    <div class="tip-card"><i class="fas fa-mobile-alt"></i><p>Use Pocket Tracker anywhere, even on mobile.</p></div>
+  </div>
+</section>
 
-<!-- Chart -->
-<h2>Visual Overview</h2>
-<canvas id="expenseChart" height="200"></canvas>
+<!-- Footer -->
+<footer id="contact">
+  <p>&copy; 2026 Pocket Tracker. All Rights Reserved.</p>
+  <p>Contact: support@pockettracker.com</p>
+</footer>
 
-<!-- User Tips -->
-<div class="tipBox">
-💡 <strong>Tips:</strong> Track every expense daily, keep balance under control, save regularly, and review weekly.
-</div>
-<div class="tipBox">
-📱 Mobile friendly! Tap boxes to update salary, loan, or add expenses. Interactive charts & colourful UI.
-</div>
-<div class="tipBox">
-✨ Hero banners above give modern feel like top web platforms. Scroll horizontally to see visuals.
-</div>
-</div>
-
+<!-- ===== Scripts ===== -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// ===== Local Storage Data =====
-let userData = JSON.parse(localStorage.getItem('pocketUser')||'{"salary":0,"loan":0,"balance":0,"expenses":[],"saving":0}');
-updateDisplay();
+// ===== Sample Dashboard Data =====
+let dailyData=[],salary=50000,goal=10000,loanAmount=10000;
 
-// ===== Functions =====
-function updateDisplay(){
-    document.getElementById('salaryDisplay').innerText=userData.salary;
-    document.getElementById('loanDisplay').innerText=userData.loan;
-    document.getElementById('balanceDisplay').innerText=userData.balance;
-    document.getElementById('savingDisplay').innerText=userData.saving;
-    updateTable();
-    updateChart();
-}
+function updateDashboard(){
+    let totalExpense=0;
+    dailyData.forEach(d=>{
+        totalExpense+=d.total;
+    });
+    const remaining=salary-totalExpense-loanAmount;
+    const currentSaving=Math.max(0,remaining);
+    document.getElementById('infoUser').innerText='User';
+    document.getElementById('totalExpense').innerText=totalExpense;
+    document.getElementById('remaining').innerText=remaining;
+    document.getElementById('currentSaving').innerText=currentSaving;
 
-function updateSalaryPrompt(){
-    let val = parseInt(prompt("Enter Salary:",userData.salary))||0;
-    userData.salary = val;
-    userData.balance = val - userData.loan - totalExpenses();
-    userData.saving = userData.balance;
-    saveData();
-}
-
-function updateLoanPrompt(){
-    let val = parseInt(prompt("Enter Loan Amount:",userData.loan))||0;
-    userData.loan = val;
-    userData.balance = userData.salary - userData.loan - totalExpenses();
-    userData.saving = userData.balance;
-    saveData();
-}
-
-function updateBalancePrompt(){
-    let val = parseInt(prompt("Enter Current Balance:",userData.balance))||0;
-    userData.balance = val;
-    saveData();
-}
-
-function addExpense(type){
-    let val = parseInt(prompt(`Enter ${type} expense:`,"0"))||0;
-    let today = new Date().toLocaleDateString();
-    let dayData = userData.expenses.find(e=>e.date===today);
-    if(!dayData){
-        dayData = {date:today,Food:0,Fuel:0,Snacks:0,Bills:0,Entertainment:0,Total:0};
-        userData.expenses.push(dayData);
-    }
-    dayData[type] += val;
-    dayData.Total = dayData.Food + dayData.Fuel + dayData.Snacks + dayData.Bills + dayData.Entertainment;
-    userData.balance = userData.salary - userData.loan - totalExpenses();
-    userData.saving = userData.balance;
-    saveData();
-}
-
-function clearExpenses(){
-    if(confirm("Clear all expenses?")){
-        userData.expenses = [];
-        userData.balance = userData.salary - userData.loan;
-        userData.saving = userData.balance;
-        saveData();
-    }
-}
-
-function totalExpenses(){
-    return userData.expenses.reduce((acc,d)=>acc+d.Total,0);
-}
-
-function updateTable(){
-    let table = document.getElementById('expenseTable');
-    table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th></tr>";
-    userData.expenses.forEach((d,i)=>{
-        let row = table.insertRow();
+    // Update table
+    const table=document.getElementById('dailyTable');
+    table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Daily Total</th><th>Date</th></tr>";
+    dailyData.forEach((d,i)=>{
+        const row=table.insertRow();
         row.insertCell(0).innerText=i+1;
-        row.insertCell(1).innerText=d.Food;
-        row.insertCell(2).innerText=d.Fuel;
-        row.insertCell(3).innerText=d.Snacks;
-        row.insertCell(4).innerText=d.Bills;
-        row.insertCell(5).innerText=d.Entertainment;
-        row.insertCell(6).innerText=d.Total;
+        row.insertCell(1).innerText=d.food;
+        row.insertCell(2).innerText=d.fuel;
+        row.insertCell(3).innerText=d.snacks;
+        row.insertCell(4).innerText=d.bills;
+        row.insertCell(5).innerText=d.entertainment;
+        row.insertCell(6).innerText=d.total;
+        row.insertCell(7).innerText=d.date;
     });
 }
 
-function saveData(){
-    localStorage.setItem('pocketUser',JSON.stringify(userData));
-    updateDisplay();
-}
+// ===== Scroll Helper =====
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
 
-// ===== Chart =====
-let chart;
-function updateChart(){
-    const ctx = document.getElementById('expenseChart').getContext('2d');
-    const labels = userData.expenses.map(d=>d.date);
-    const dataFood = userData.expenses.map(d=>d.Food);
-    const dataFuel = userData.expenses.map(d=>d.Fuel);
-    const dataSnacks = userData.expenses.map(d=>d.Snacks);
-    const dataBills = userData.expenses.map(d=>d.Bills);
-    const dataFun = userData.expenses.map(d=>d.Entertainment);
-
-    if(chart) chart.destroy();
-    chart = new Chart(ctx,{
-        type:'bar',
-        data:{
-            labels:labels,
-            datasets:[
-                {label:'Food',data:dataFood,backgroundColor:'#ff6b6b'},
-                {label:'Fuel',data:dataFuel,backgroundColor:'#4ecdc4'},
-                {label:'Snacks',data:dataSnacks,backgroundColor:'#f7b731'},
-                {label:'Bills',data:dataBills,backgroundColor:'#45aaf2'},
-                {label:'Fun',data:dataFun,backgroundColor:'#a55eea'}
-            ]
-        },
-        options:{
-            responsive:true,
-            plugins:{legend:{position:'top'}},
-            scales:{y:{beginAtZero:true}}
-        }
-    });
-}
+// ===== Sample Daily Data =====
+dailyData=[
+  {food:50,fuel:40,snacks:30,bills:70,entertainment:60,total:250,date:'2026-02-01'},
+  {food:60,fuel:50,snacks:20,bills:80,entertainment:40,total:250,date:'2026-02-02'},
+  {food:55,fuel:45,snacks:25,bills:75,entertainment:50,total:250,date:'2026-02-03'}
+];
+updateDashboard();
 </script>
 </body>
 </html>
