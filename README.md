@@ -263,77 +263,86 @@ function updateDailyTable(){
 function resetDailyData(){if(confirm("Reset all daily data?")){dailyData=[];localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();}}
 function resetAll(){if(confirm("Reset everything?")){dailyData=[];username='';salary=0;loanAmount=0;initialSaving=0;localStorage.clear();showPage('welcome');}}
 
-// ===== Weekly =====
+// ===== Weekly Summary =====
 function updateWeeklyTable(){
-    const table = document.getElementById('weeklyTable');
-    table.innerHTML = "<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";
+    const table=document.getElementById('weeklyTable');
+    table.innerHTML="<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";
     if(dailyData.length===0) return;
-    let weekTotals = [];
-    let week = 1;
-    for(let i=0; i<dailyData.length; i+=7){
-        const weekData = dailyData.slice(i,i+7);
-        const totalExpense = weekData.reduce((a,b)=>a+b.total,0);
-        const saving = (salary/4 || 0) - totalExpense;
-        weekTotals.push({week,totalExpense,saving});
-        const row = table.insertRow();
-        row.insertCell(0).innerText = week;
-        row.insertCell(1).innerText = totalExpense;
-        row.insertCell(2).innerText = saving;
-        week++;
+    let weekTotals=[];
+    let weekCount=Math.ceil(dailyData.length/7);
+    for(let w=0;w<weekCount;w++){
+        let weekData=dailyData.slice(w*7,(w+1)*7);
+        let total=weekData.reduce((a,b)=>a+b.total,0);
+        let saving=Math.max(0,(salary/4)-total); // approx weekly saving
+        weekTotals.push({week:w+1,total,saving});
     }
+    weekTotals.forEach(wk=>{
+        const row=table.insertRow();
+        row.insertCell(0).innerText=wk.week;
+        row.insertCell(1).innerText=wk.total;
+        row.insertCell(2).innerText=wk.saving;
+    });
 }
 
-// ===== Monthly =====
+// ===== Monthly Summary =====
 function updateMonthlyTable(){
-    const table = document.getElementById('monthlyTable');
-    table.innerHTML = "<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";
+    const table=document.getElementById('monthlyTable');
+    table.innerHTML="<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";
     if(dailyData.length===0) return;
-    let monthMap = {};
+    let months={};
     dailyData.forEach(d=>{
-        const m = new Date(d.date).getMonth()+1; // 1-12
-        if(!monthMap[m]) monthMap[m] = {total:0};
-        monthMap[m].total += d.total;
+        let m=new Date(d.date).toLocaleString('default',{month:'long',year:'numeric'});
+        if(!months[m]) months[m]=0;
+        months[m]+=d.total;
     });
-    Object.keys(monthMap).forEach(m=>{
-        const totalExpense = monthMap[m].total;
-        const saving = (salary/12 || 0) - totalExpense;
-        const row = table.insertRow();
-        row.insertCell(0).innerText = m;
-        row.insertCell(1).innerText = totalExpense;
-        row.insertCell(2).innerText = saving;
-    });
+    for(let m in months){
+        let saving=Math.max(0,salary-months[m]-loanAmount);
+        const row=table.insertRow();
+        row.insertCell(0).innerText=m;
+        row.insertCell(1).innerText=months[m];
+        row.insertCell(2).innerText=saving;
+    }
 }
 
 // ===== Charts =====
 function drawChart(){
-    const ctx = document.getElementById('expenseChart').getContext('2d');
-    const labels = dailyData.map((d,i)=>`Day ${i+1}`);
-    const expenses = dailyData.map(d=>d.total);
-    const savings = dailyData.map(d=>Math.max(0,salary/30 - d.total));
-    if(window.myChart) window.myChart.destroy();
-    window.myChart = new Chart(ctx,{
-        type:'bar',
+    const ctx=document.getElementById('expenseChart').getContext('2d');
+    const labels=dailyData.map((d,i)=>`Day ${i+1}`);
+    const expenses=dailyData.map(d=>d.total);
+    const savings=dailyData.map(d=>Math.max(0,(salary+initialSaving-loanAmount)-d.total));
+    if(window.expenseChart) window.expenseChart.destroy();
+    window.expenseChart=new Chart(ctx,{
+        type:'line',
         data:{
             labels:labels,
             datasets:[
-                {label:'Daily Expense',data:expenses,backgroundColor:'rgba(42,82,152,0.8)'},
-                {label:'Estimated Saving',data:savings,backgroundColor:'rgba(255,215,0,0.8)'}
+                {label:'Expense',data:expenses,borderColor:'#ff4d4d',backgroundColor:'rgba(255,77,77,0.2)',fill:true,tension:0.3},
+                {label:'Saving',data:savings,borderColor:'#4caf50',backgroundColor:'rgba(76,175,80,0.2)',fill:true,tension:0.3}
             ]
         },
         options:{
             responsive:true,
-            plugins:{legend:{position:'top'}},
-            scales:{y:{beginAtZero:true}}
+            plugins:{
+                legend:{position:'top'},
+                tooltip:{mode:'index',intersect:false}
+            },
+            interaction:{mode:'nearest',intersect:false},
+            scales:{
+                y:{beginAtZero:true}
+            }
         }
     });
 }
 
-// ===== Initialize =====
+// ===== Initial Setup =====
 document.addEventListener('DOMContentLoaded',()=>{
-    if(username){
-        document.getElementById('infoUser').innerText=username;
-        showPage('dashboard');
-    }else{
-        showPage('welcome');
-    }
+    if(username) document.getElementById('infoUser').innerText=username;
+    updateDashboard();
+    updateDailyTable();
+    updateWeeklyTable();
+    updateMonthlyTable();
+    drawChart();
 });
+</script>
+</body>
+</html>
