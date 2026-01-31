@@ -76,22 +76,6 @@ header{
 }
 .infoBox div:hover{transform:scale(1.05);}
 
-/* ===== Table ===== */
-table{
-    border-collapse: collapse;
-    width:100%;
-    margin-top:20px;
-    background:rgba(255,255,255,0.95);
-    color:#333;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 6px 15px rgba(0,0,0,0.2);
-}
-th,td{border:1px solid #e0e0e0;padding:10px;text-align:center;}
-th{background:#0288d1;color:#fff;letter-spacing:1px;}
-tr:nth-child(even){background:rgba(0,172,193,0.1);}
-tr:hover{background:rgba(0,172,193,0.2);}
-
 /* ===== Buttons ===== */
 button.primary{background:#ffeb3b;color:#1e3c72;}
 button.secondary{background:#4caf50;color:#fff;}
@@ -136,9 +120,7 @@ button.secondary{background:#4caf50;color:#fff;}
     <div class="card" onclick="addExpense('Bills')">💡 Bills</div>
     <div class="card" onclick="addExpense('Entertainment')">🎮 Fun</div>
     <div class="card" onclick="clearAll()">🗑️ Clear All</div>
-</div>
-
-<h2 style="text-align:center;">📊 Expenses Table</h2>
+</div><h2 style="text-align:center;">📊 Expenses Table</h2>
 <table id="expenseTable">
 <tr><th>Date</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Action</th></tr>
 </table>
@@ -175,7 +157,6 @@ updateChart();
 function addExpense(type){
 let val = parseInt(prompt(`Enter ${type} expense:`,0)) || 0;
 let today = new Date().toLocaleDateString();
-let total = val;
 let expenseObj = {date:today, Food:0, Fuel:0, Snacks:0, Bills:0, Entertainment:0, total:0};
 expenseObj[type] = val;
 expenseObj.total = val;
