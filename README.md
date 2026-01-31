@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker</title>
+<title>Pocket Tracker Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
@@ -11,67 +11,72 @@ body{
     font-family:'Roboto',sans-serif;
     margin:0;
     padding:0;
-    background: linear-gradient(135deg,#1e3c72,#2a5298);
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
     color:#fff;
     overflow-x:hidden;
+    transition:0.5s;
 }
 h1,h2{text-align:center;margin:10px;font-weight:700;}
 #datetime{text-align:center;font-weight:bold;margin-bottom:15px;color:#ffeb3b;letter-spacing:1px;font-size:18px;}
-button{cursor:pointer;transition:0.3s;font-weight:700;border:none;}
-button:hover{opacity:0.85;}
-input{padding:8px;border-radius:10px;border:2px solid #03a9f4;outline:none;margin:3px;width:140px;}
-input:focus{border-color:#0288d1;box-shadow:0 0 8px #0288d1;}
+button{cursor:pointer;transition:0.3s;font-weight:700;border:none;border-radius:8px;padding:8px 12px;}
+button:hover{opacity:0.85;transform:scale(1.05);}
+input{padding:8px;border-radius:10px;border:2px solid #03a9f4;outline:none;margin:5px;width:160px;}
+input:focus{border-color:#0288d1;box-shadow:0 0 10px #0288d1;}
 
 /* ===== Header ===== */
 header{
-    background:linear-gradient(135deg,#29b6f6,#00acc1);
+    background:linear-gradient(135deg,#ff416c,#ff4b2b);
     padding:20px;
     text-align:center;
-    font-size:34px;
+    font-size:36px;
     font-weight:bold;
     color:#fff;
-    text-shadow:2px 2px 5px rgba(0,0,0,0.3);
-    box-shadow:0 4px 10px rgba(0,0,0,0.3);
-    border-bottom-left-radius:15px;
-    border-bottom-right-radius:15px;
+    text-shadow:2px 2px 6px rgba(0,0,0,0.4);
+    box-shadow:0 4px 12px rgba(0,0,0,0.4);
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px;
 }
 
-/* ===== Dashboard Styles ===== */
+/* ===== Dashboard ===== */
 .dashboard{display:flex;flex-wrap:wrap;justify-content:center;margin:20px;}
 .card{
-    background:linear-gradient(145deg,#00acc1,#29b6f6);
-    box-shadow:0 8px 20px rgba(0,0,0,0.35);
-    border-radius:15px;
-    margin:10px;
+    background:linear-gradient(145deg,#ff4b2b,#ff416c);
+    box-shadow:0 10px 25px rgba(0,0,0,0.4);
+    border-radius:20px;
+    margin:12px;
     padding:25px;
     text-align:center;
-    width:140px;
+    width:150px;
     cursor:pointer;
-    transition:0.4s;
+    transition:0.5s;
     font-weight:bold;
     color:#fff;
     display:flex;
     flex-direction:column;
     align-items:center;
+    text-shadow:0 1px 2px rgba(0,0,0,0.3);
 }
-.card img{width:40px;height:40px;margin-bottom:5px;}
-.card:hover{transform:scale(1.08);box-shadow:0 10px 30px rgba(0,0,0,0.45);}
+.card img{width:50px;height:50px;margin-bottom:8px;}
+.card:hover{transform:scale(1.1) rotate(2deg);box-shadow:0 12px 30px rgba(0,0,0,0.5);}
+
 .infoBox{display:flex;flex-wrap:wrap;justify-content:center;margin:20px;}
 .infoBox div{
     text-align:center;
     background:rgba(255,255,255,0.1);
-    backdrop-filter:blur(8px);
+    backdrop-filter:blur(12px);
     color:#fff;
-    padding:20px;
+    padding:25px;
     margin:10px;
-    border-radius:15px;
+    border-radius:20px;
     flex:1;
-    min-width:150px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.25);
-    transition:0.4s;
+    min-width:160px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    transition:0.5s;
     font-weight:bold;
 }
-.infoBox div:hover{transform:scale(1.05);}
+.infoBox div:hover{transform:scale(1.05) rotate(-1deg);}
+
+/* ===== Table ===== */
 table{
     border-collapse: collapse;
     width:95%;
@@ -80,13 +85,17 @@ table{
     color:#333;
     border-radius:12px;
     overflow:hidden;
-    box-shadow:0 6px 15px rgba(0,0,0,0.2);
+    box-shadow:0 6px 20px rgba(0,0,0,0.3);
 }
-th,td{border:1px solid #e0e0e0;padding:10px;text-align:center;}
-th{background:#0288d1;color:#fff;letter-spacing:1px;}
-tr:nth-child(even){background:rgba(0,172,193,0.1);}
-tr:hover{background:rgba(0,172,193,0.2);}
-#themeToggle{position:fixed;top:15px;right:15px;padding:8px 12px;background:#0288d1;color:#fff;border-radius:8px;font-weight:bold;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
+th,td{border:1px solid #e0e0e0;padding:12px;text-align:center;}
+th{background:#ff416c;color:#fff;letter-spacing:1px;}
+tr:nth-child(even){background:rgba(255,75,43,0.1);}
+tr:hover{background:rgba(255,75,43,0.2);}
+
+/* ===== Theme Toggle ===== */
+#themeToggle{position:fixed;top:15px;right:15px;background:#ff416c;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.4);}
+
+/* ===== Floating Lights ===== */
 .floating{
     position:absolute;
     border-radius:50%;
@@ -96,9 +105,10 @@ tr:hover{background:rgba(0,172,193,0.2);}
 }
 @keyframes float{
     0%{transform:translateY(0) rotate(0deg);}
-    50%{transform:translateY(-50px) rotate(180deg);}
+    50%{transform:translateY(-60px) rotate(180deg);}
     100%{transform:translateY(0) rotate(360deg);}
 }
+
 @media(max-width:768px){
     .dashboard{flex-direction:column;align-items:center;}
     .infoBox{flex-direction:column;align-items:center;}
@@ -107,13 +117,13 @@ tr:hover{background:rgba(0,172,193,0.2);}
 </head>
 <body>
 
-<header>💼 Pocket Tracker 💼</header>
+<header>🚀 Pocket Tracker Pro 🚀</header>
 <div id="datetime"></div>
 <button id="themeToggle" onclick="toggleTheme()">Toggle Theme</button>
 
-<!-- Username input -->
-<div id="loginScreen" style="text-align:center; margin-top:30px;">
-    <h2>Enter Username</h2>
+<!-- Username Input -->
+<div id="loginScreen" style="text-align:center; margin-top:40px;">
+    <h2>Enter Your Name</h2>
     <input type="text" id="usernameInput" placeholder="Your Name">
     <button onclick="startDashboard()">Start</button>
 </div>
@@ -170,12 +180,13 @@ tr:hover{background:rgba(0,172,193,0.2);}
 
     <h2>Visual Overview</h2>
     <canvas id="chart" width="400" height="200"></canvas>
+
 </div>
 
 <!-- Floating Lights -->
-<div class="floating" style="width:20px;height:20px;background:#ffeb3b;top:50px;left:30px;"></div>
-<div class="floating" style="width:15px;height:15px;background:#03a9f4;top:150px;left:120px;"></div>
-<div class="floating" style="width:20px;height:20px;background:#4caf50;top:300px;left:200px;"></div>
+<div class="floating" style="width:20px;height:20px;background:#ffeb3b;top:50px;left:40px;"></div>
+<div class="floating" style="width:15px;height:15px;background:#03a9f4;top:200px;left:100px;"></div>
+<div class="floating" style="width:18px;height:18px;background:#4caf50;top:350px;left:250px;"></div>
 <div class="floating" style="width:12px;height:12px;background:#ff5722;top:400px;left:50px;"></div>
 
 <script>
@@ -196,7 +207,7 @@ function toggleTheme(){
         document.body.style.color="#333";
         darkTheme=false;
     }else{
-        document.body.style.background="linear-gradient(135deg,#1e3c72,#2a5298)";
+        document.body.style.background="linear-gradient(135deg,#0f2027,#203a43,#2c5364)";
         document.body.style.color="#fff";
         darkTheme=true;
     }
