@@ -1,144 +1,158 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Pocket Tracker Modern</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 /* ===== Base Styles ===== */
-body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0; padding: 0;
-  background: linear-gradient(135deg,#1e3c72,#2a5298);
-  color: #fff;
-  transition: 0.5s;
+body{
+    font-family:'Roboto',sans-serif;
+    margin:0;padding:0;
+    background: linear-gradient(135deg,#1e3c72,#2a5298);
+    color:#fff;
+    overflow-x:hidden;
+    transition:0.5s;
 }
-h1,h2,h3{text-align:center;margin:10px;font-weight:700;}
-button{cursor:pointer;font-weight:700;transition:0.3s;}
+h1,h2{text-align:center;margin:10px;font-weight:700;}
+#datetime{text-align:center;font-weight:bold;margin-bottom:15px;color:#ffeb3b;letter-spacing:1px;font-size:18px;}
+button{cursor:pointer;transition:0.3s;font-weight:700;border:none;border-radius:8px;padding:8px 12px;}
 button:hover{opacity:0.85;}
-input{padding:8px;border-radius:10px;border:none;margin:3px;width:120px;}
+input{padding:8px;border-radius:10px;border:2px solid #03a9f4;outline:none;margin:3px;width:120px;}
+input:focus{border-color:#0288d1;box-shadow:0 0 8px #0288d1;}
 
 /* ===== Header ===== */
-header {
-  background: linear-gradient(135deg,#29b6f6,#00acc1);
-  padding: 20px;
-  text-align: center;
-  font-size: 28px;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+header{
+    background:linear-gradient(135deg,#ff6f61,#de6262);
+    padding:15px;
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    color:#fff;
+    text-shadow:2px 2px 5px rgba(0,0,0,0.3);
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+    border-bottom-left-radius:15px;
+    border-bottom-right-radius:15px;
 }
 
-/* ===== Theme Toggle ===== */
-#themeToggle {
-  position: fixed; top: 15px; right: 15px;
-  padding: 10px 15px;
-  background: #0288d1;
-  color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  font-weight: bold;
+/* ===== Cards ===== */
+.cards{display:flex;flex-wrap:wrap;justify-content:center;margin:20px;}
+.card{
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(10px);
+    border-radius:15px;
+    margin:10px;
+    padding:20px;
+    text-align:center;
+    width:160px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.35);
+    transition:0.4s;
+    cursor:pointer;
 }
-
-/* ===== Dashboard Layout ===== */
-.dashboard-container {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 0 15px;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.card {
-  background: linear-gradient(145deg,#00acc1,#29b6f6);
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
-  text-align: center;
-  transition: 0.4s;
-}
-.card:hover { transform: scale(1.05); box-shadow:0 10px 30px rgba(0,0,0,0.45); }
-.card i { font-size: 32px; margin-bottom: 10px; }
+.card:hover{transform:scale(1.05);box-shadow:0 10px 30px rgba(0,0,0,0.45);}
+.card span{display:block;font-size:30px;margin-bottom:10px;}
 
 /* ===== Table ===== */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: rgba(255,255,255,0.95);
-  color: #333;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-  margin-bottom: 30px;
+table{
+    border-collapse: collapse;
+    width:100%;
+    margin-top:20px;
+    background:rgba(255,255,255,0.95);
+    color:#333;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 6px 15px rgba(0,0,0,0.2);
 }
-th, td { padding: 10px; text-align: center; }
-th { background: #0288d1; color: #fff; letter-spacing: 1px; }
-tr:nth-child(even){background: rgba(0,172,193,0.1);}
-tr:hover { background: rgba(0,172,193,0.2); }
+th,td{border:1px solid #e0e0e0;padding:10px;text-align:center;}
+th{background:#0288d1;color:#fff;letter-spacing:1px;}
+tr:nth-child(even){background:rgba(0,172,193,0.1);}
+tr:hover{background:rgba(0,172,193,0.2);}
 
-/* ===== Footer Floating Lights ===== */
-.floating {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.3;
-  animation: float 10s infinite;
-  z-index:0;
+/* ===== Theme Toggle ===== */
+#themeToggle{position:fixed;top:15px;right:15px;padding:8px 12px;background:#0288d1;color:#fff;z-index:1000;}
+
+/* ===== Floating Background Lights ===== */
+.floating{
+    position:absolute;
+    border-radius:50%;
+    opacity:0.3;
+    animation:float 10s infinite;
+    z-index:0;
 }
-@keyframes float {
-  0%{transform:translateY(0) rotate(0deg);}
-  50%{transform:translateY(-50px) rotate(180deg);}
-  100%{transform:translateY(0) rotate(360deg);}
+@keyframes float{
+    0%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-50px) rotate(180deg);}
+    100%{transform:translateY(0) rotate(360deg);}
 }
 
 /* ===== Responsive ===== */
 @media(max-width:600px){
-  header { font-size: 22px; padding: 15px;}
-  #themeToggle { padding: 8px 10px; font-size:14px; }
+    .cards{flex-direction:column;align-items:center;}
+    .card{width:80%;}
+    input{width:80%;}
 }
 </style>
 </head>
 <body>
 
-<header>Pocket Tracker 💼</header>
+<header>💼 Pocket Tracker 💼</header>
+<div id="datetime"></div>
 <button id="themeToggle" onclick="toggleTheme()">Toggle Theme</button>
 
-<div class="dashboard-container">
+<!-- Dashboard -->
+<div id="dashboard" style="padding:10px;">
 
-  <!-- User Info Cards -->
-  <div class="card-grid">
-    <div class="card"><i>👤</i><h3 id="username">User</h3><p>Username</p></div>
-    <div class="card"><i>💰</i><h3 id="currentBalance">0</h3><p>Current Balance</p></div>
-    <div class="card"><i>💵</i><h3 id="totalSaving">0</h3><p>Total Saving</p></div>
-    <div class="card"><i>📊</i><h3 id="totalExpense">0</h3><p>Total Expense</p></div>
-  </div>
+    <!-- User Info Cards -->
+    <div class="cards">
+        <div class="card">
+            <span>👤</span>
+            Username<br><b id="infoUser">User</b>
+        </div>
+        <div class="card">
+            <span>💰</span>
+            Current Balance<br><b id="currentBalance">0</b>
+        </div>
+        <div class="card">
+            <span>📈</span>
+            Total Saving<br><b id="totalSaving">0</b>
+        </div>
+        <div class="card">
+            <span>💸</span>
+            Total Expense<br><b id="totalExpense">0</b>
+        </div>
+    </div>
 
-  <!-- Controls -->
-  <div class="card-grid">
-    <div class="card" onclick="addSalary()"><i>💵</i><p>Add Salary</p></div>
-    <div class="card" onclick="addLoan()"><i>💳</i><p>Add Loan</p></div>
-    <div class="card" onclick="addExpense()"><i>🛒</i><p>Add Expense</p></div>
-    <div class="card" onclick="clearAll()"><i>🗑️</i><p>Clear All</p></div>
-  </div>
+    <!-- Input Fields -->
+    <div class="cards">
+        <div class="card">
+            Salary<br><input type="number" id="salaryInput" value="0" onchange="updateSalary()">
+        </div>
+        <div class="card">
+            Loan<br><input type="number" id="loanInput" value="0" onchange="updateLoan()">
+        </div>
+    </div>
 
-  <!-- Daily Expenses Table -->
-  <h2>Daily Expenses</h2>
-  <table id="dailyTable">
-    <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Daily Total</th><th>Date</th></tr>
-  </table>
+    <!-- Expense Buttons -->
+    <h2 style="text-align:center;">Daily Expenses</h2>
+    <div class="cards">
+        <div class="card" onclick="addDaily('food')"><span>🍔</span>Food</div>
+        <div class="card" onclick="addDaily('fuel')"><span>⛽</span>Fuel</div>
+        <div class="card" onclick="addDaily('snacks')"><span>🍿</span>Snacks</div>
+        <div class="card" onclick="addDaily('bills')"><span>💡</span>Bills</div>
+        <div class="card" onclick="addDaily('entertainment')"><span>🎮</span>Fun</div>
+        <div class="card" onclick="clearAll()"><span>🗑️</span>Clear All</div>
+    </div>
 
-  <!-- Charts -->
-  <h2>Overview</h2>
-  <canvas id="chart" width="400" height="200"></canvas>
+    <!-- Daily Table -->
+    <h2 style="text-align:center;">Daily Expenses Table</h2>
+    <table id="dailyTable">
+        <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th><th>Date</th></tr>
+    </table>
 
+    <!-- Chart -->
+    <h2 style="text-align:center;">Visual Overview</h2>
+    <canvas id="chart" width="400" height="200"></canvas>
 </div>
 
 <!-- Floating Lights -->
@@ -148,115 +162,106 @@ tr:hover { background: rgba(0,172,193,0.2); }
 <div class="floating" style="width:10px;height:10px;background:#ff5722;top:400px;left:50px;"></div>
 
 <script>
+// ===== Timer =====
+function updateDateTime(){
+    const now=new Date();
+    document.getElementById('datetime').innerText=now.toLocaleDateString()+' | '+now.toLocaleTimeString();
+}
+setInterval(updateDateTime,1000);
+updateDateTime();
+
 // ===== Theme Toggle =====
 let darkTheme=true;
 function toggleTheme(){
-  if(darkTheme){
-    document.body.style.background="#fff";
-    document.body.style.color="#333";
-    darkTheme=false;
-  }else{
-    document.body.style.background="linear-gradient(135deg,#1e3c72,#2a5298)";
-    document.body.style.color="#fff";
-    darkTheme=true;
-  }
+    if(darkTheme){
+        document.body.style.background="#fff";
+        document.body.style.color="#333";
+        darkTheme=false;
+    }else{
+        document.body.style.background="linear-gradient(135deg,#1e3c72,#2a5298)";
+        document.body.style.color="#fff";
+        darkTheme=true;
+    }
 }
 
-// ===== Local Storage Data =====
-let username = localStorage.getItem('username') || prompt("Enter your name") || "User";
-let salary = parseInt(localStorage.getItem('salary')||0);
-let loan = parseInt(localStorage.getItem('loan')||0);
-let dailyData = JSON.parse(localStorage.getItem('dailyData')||"[]");
+// ===== Data =====
+let dailyData=JSON.parse(localStorage.getItem('dailyData')||"[]");
+let salary=0,loan=0;
 
-document.getElementById('username').innerText = username;
-
-function saveData(){
-  localStorage.setItem('salary', salary);
-  localStorage.setItem('loan', loan);
-  localStorage.setItem('dailyData', JSON.stringify(dailyData));
+// ===== Update Cards =====
+function updateCards(){
+    const totalExpense=dailyData.reduce((a,b)=>a+b.food+b.fuel+b.snacks+b.bills+b.entertainment,0)+loan;
+    const currentBalance=Math.max(0,salary-totalExpense);
+    const totalSaving=currentBalance;
+    document.getElementById('currentBalance').innerText=currentBalance;
+    document.getElementById('totalExpense').innerText=totalExpense;
+    document.getElementById('totalSaving').innerText=totalSaving;
 }
 
-// ===== Add Functions =====
-function addSalary(){
-  let val = parseInt(prompt("Enter salary:","0"))||0;
-  salary += val;
-  updateDashboard();
-  saveData();
-}
-
-function addLoan(){
-  let val = parseInt(prompt("Enter loan:","0"))||0;
-  loan += val;
-  updateDashboard();
-  saveData();
-}
-
-function addExpense(){
-  let food = parseInt(prompt("Food expense:","0"))||0;
-  let fuel = parseInt(prompt("Fuel expense:","0"))||0;
-  let snacks = parseInt(prompt("Snacks:","0"))||0;
-  let bills = parseInt(prompt("Bills:","0"))||0;
-  let fun = parseInt(prompt("Fun expense:","0"))||0;
-  let date = new Date().toLocaleDateString();
-  let daily = {food,fuel,snacks,bills,fun,date};
-  daily.total = food+fuel+snacks+bills+fun;
-  dailyData.push(daily);
-  updateDashboard();
-  saveData();
-}
-
-function clearAll(){
-  if(confirm("Clear all data?")){
-    dailyData = [];
-    salary = 0;
-    loan = 0;
-    updateDashboard();
+// ===== Add Daily Expense =====
+function addDaily(type){
+    const value=parseInt(prompt(`Enter ${type} amount:`,"0"))||0;
+    const today=new Date().toLocaleDateString();
+    let last=dailyData[dailyData.length-1];
+    if(last && last.date===today){
+        last[type]=(last[type]||0)+value;
+    } else {
+        let newDay={food:0,fuel:0,snacks:0,bills:0,entertainment:0,date:today};
+        newDay[type]=value;
+        dailyData.push(newDay);
+    }
     saveData();
-  }
+    renderTable();
+    updateCards();
 }
 
-// ===== Update Dashboard =====
-function updateDashboard(){
-  let totalExpense = dailyData.reduce((a,b)=>a+b.total,0)+loan;
-  let totalSaving = Math.max(0,salary-totalExpense);
-  let currentBalance = salary-totalExpense;
-  document.getElementById('currentBalance').innerText = currentBalance;
-  document.getElementById('totalSaving').innerText = totalSaving;
-  document.getElementById('totalExpense').innerText = totalExpense;
+// ===== Update Salary & Loan =====
+function updateSalary(){salary=parseInt(document.getElementById('salaryInput').value)||0;saveData();updateCards();}
+function updateLoan(){loan=parseInt(document.getElementById('loanInput').value)||0;saveData();updateCards();}
 
-  // Table
-  const table = document.getElementById('dailyTable');
-  table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Daily Total</th><th>Date</th></tr>";
-  dailyData.forEach((d,i)=>{
-    const row = table.insertRow();
-    row.insertCell(0).innerText = i+1;
-    row.insertCell(1).innerText = d.food;
-    row.insertCell(2).innerText = d.fuel;
-    row.insertCell(3).innerText = d.snacks;
-    row.insertCell(4).innerText = d.bills;
-    row.insertCell(5).innerText = d.fun;
-    row.insertCell(6).innerText = d.total;
-    row.insertCell(7).innerText = d.date;
-  });
+// ===== Clear All =====
+function clearAll(){if(confirm("Delete all data?")){dailyData=[];saveData();renderTable();updateCards();}}
 
-  // Chart
-  const ctx = document.getElementById('chart').getContext('2d');
-  if(window.barChart) window.barChart.destroy();
-  window.barChart = new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:['Salary','Total Expense','Total Saving'],
-      datasets:[{
-        label:'PKR',
-        data:[salary,totalExpense,totalSaving],
-        backgroundColor:['#4caf50','#f44336','#2196f3']
-      }]
-    },
-    options:{responsive:true,plugins:{legend:{display:false}}}
-  });
+// ===== Save / Load =====
+function saveData(){localStorage.setItem('dailyData',JSON.stringify(dailyData));localStorage.setItem('salary',salary);localStorage.setItem('loan',loan);}
+function loadData(){salary=parseInt(localStorage.getItem('salary'))||0;loan=parseInt(localStorage.getItem('loan'))||0;document.getElementById('salaryInput').value=salary;document.getElementById('loanInput').value=loan;updateCards();renderTable();}
+loadData();
+
+// ===== Render Table =====
+function renderTable(){
+    const table=document.getElementById('dailyTable');
+    table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th><th>Date</th></tr>";
+    dailyData.forEach((day,i)=>{
+        const row=table.insertRow();
+        row.insertCell(0).innerText=i+1;
+        row.insertCell(1).innerText=day.food||0;
+        row.insertCell(2).innerText=day.fuel||0;
+        row.insertCell(3).innerText=day.snacks||0;
+        row.insertCell(4).innerText=day.bills||0;
+        row.insertCell(5).innerText=day.entertainment||0;
+        const total=(day.food||0)+(day.fuel||0)+(day.snacks||0)+(day.bills||0)+(day.entertainment||0);
+        row.insertCell(6).innerText=total;
+        row.insertCell(7).innerText=day.date;
+    });
+    renderChart();
 }
 
-updateDashboard();
+// ===== Chart =====
+let chart=null;
+function renderChart(){
+    const ctx=document.getElementById('chart').getContext('2d');
+    const labels=dailyData.map(d=>d.date);
+    const data=dailyData.map(d=>(d.food||0)+(d.fuel||0)+(d.snacks||0)+(d.bills||0)+(d.entertainment||0));
+    if(chart) chart.destroy();
+    chart=new Chart(ctx,{
+        type:'bar',
+        data:{
+            labels:labels,
+            datasets:[{label:'Daily Expense',data:data,backgroundColor:'rgba(255,99,132,0.6)'}]
+        },
+        options:{responsive:true,plugins:{legend:{display:true}}}
+    });
+}
 </script>
 
 </body>
