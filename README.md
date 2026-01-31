@@ -110,9 +110,7 @@ canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15)
 <section id="monthly" class="page">
 <h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Monthly Summary</h2>
 <table id="monthlyTable"><tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr></table>
-</section>
-
-<section id="charts" class="page">
+</section><section id="charts" class="page">
 <h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Expense & Saving Charts</h2>
 <canvas id="expenseChart"></canvas>
 </section>
@@ -167,7 +165,6 @@ updateDashboard();
 }
 
 function updateDashboard(){
-if(!username) return;
 let totalExpense=dailyData.reduce((a,b)=>a+b.total,0);
 let remaining=salary+initialSaving-totalExpense-loanAmount;
 let currentSaving=Math.max(0,remaining);
@@ -214,8 +211,36 @@ delCell.appendChild(delBtn);
 
 function resetDailyData(){if(confirm("Reset all daily data?")){dailyData=[];localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();}}
 function resetAll(){if(confirm("Reset everything?")){dailyData=[];username='';salary=0;loanAmount=0;initialSaving=0;localStorage.clear();showPage('welcome');}}
-function updateWeeklyTable(){const table=document.getElementById('weeklyTable');table.innerHTML="<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";let week=1;for(let i=0;i<dailyData.length;i+=7){const weekData=dailyData.slice(i,i+7);const total=weekData.reduce((a,b)=>a+b.total,0);const saving=Math.max(0,salary+initialSaving-total-loanAmount);const row=table.insertRow();row.insertCell(0).innerText=week++;row.insertCell(1).innerText=total;row.insertCell(2).innerText=saving;}}
-function updateMonthlyTable(){const table=document.getElementById('monthlyTable');table.innerHTML="<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";const monthMap={};dailyData.forEach(d=>{const m=new Date(d.date).getMonth()+1;if(!monthMap[m]) monthMap[m]=0;monthMap[m]+=d.total;});Object.keys(monthMap).forEach(m=>{const total=monthMap[m];const saving=Math.max(0,salary+initialSaving-total-loanAmount);const row=table.insertRow();row.insertCell(0).innerText=m;
+
+function updateWeeklyTable(){
+const table=document.getElementById('weeklyTable');
+table.innerHTML="<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";
+let week=1;
+for(let i=0;i<dailyData.length;i+=7){
+const weekData=dailyData.slice(i,i+7);
+const total=weekData.reduce((a,b)=>a+b.total,0);
+const saving=Math.max(0,salary+initialSaving-total-loanAmount);
+const row=table.insertRow();
+row.insertCell(0).innerText=week++;
+row.insertCell(1).innerText=total;
+row.insertCell(2).innerText=saving;
+}
+}
+
+function updateMonthlyTable(){
+const table=document.getElementById('monthlyTable');
+table.innerHTML="<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";
+const monthMap={};
+dailyData.forEach(d=>{
+const m=new Date(d.date).getMonth()+1;
+if(!monthMap[m]) monthMap[m]=0;
+monthMap[m]+=d.total;
+});
+Object.keys(monthMap).forEach(m=>{
+const total=monthMap[m];
+const saving=Math.max(0,salary+initialSaving-total-loanAmount);
+const row=table.insertRow();
+row.insertCell(0).innerText="Month "+m;
 row.insertCell(1).innerText=total;
 row.insertCell(2).innerText=saving;
 });
@@ -223,45 +248,33 @@ row.insertCell(2).innerText=saving;
 
 function drawChart(){
 const ctx=document.getElementById('expenseChart').getContext('2d');
-const labels=dailyData.map((d,i)=>`Day ${i+1}`);
-const expenseData=dailyData.map(d=>d.total);
-const savingData=dailyData.map((d,i)=>Math.max(0,salary+initialSaving-dailyData.slice(0,i+1).reduce((a,b)=>a+b.total,0)-loanAmount));
-
-if(window.expChart) window.expChart.destroy();
-window.expChart=new Chart(ctx,{
+const labels=dailyData.map((d,i)=>"Day "+(i+1));
+const expenses=dailyData.map(d=>d.total);
+const savings=dailyData.map(d=>Math.max(0,salary+initialSaving-d.total-loanAmount));
+if(window.expenseChart) window.expenseChart.destroy();
+window.expenseChart=new Chart(ctx,{
 type:'line',
 data:{
 labels:labels,
 datasets:[
-{label:'Daily Expense',data:expenseData,borderColor:'red',backgroundColor:'rgba(255,0,0,0.2)',fill:true,tension:0.3},
-{label:'Cumulative Saving',data:savingData,borderColor:'green',backgroundColor:'rgba(0,255,0,0.2)',fill:true,tension:0.3}
+{label:'Expense',data:expenses,borderColor:'red',backgroundColor:'rgba(255,0,0,0.2)',tension:0.3},
+{label:'Saving',data:savings,borderColor:'green',backgroundColor:'rgba(0,255,0,0.2)',tension:0.3}
 ]
 },
-options:{
-responsive:true,
-plugins:{legend:{position:'top'}},
-scales:{y:{beginAtZero:true}}
-}
+options:{responsive:true,plugins:{legend:{position:'top'}}}
 });
 }
 
 function updateSettings(){
-const s=Number(document.getElementById('salaryInput').value)||0;
-const l=Number(document.getElementById('loanInput').value)||0;
-const save=Number(document.getElementById('savingInput').value)||0;
-salary=s;
-loanAmount=l;
-initialSaving=save;
+salary=Number(document.getElementById('salaryInput').value)||0;
+loanAmount=Number(document.getElementById('loanInput').value)||0;
+initialSaving=Number(document.getElementById('savingInput').value)||0;
 localStorage.setItem('salary',salary);
 localStorage.setItem('loan',loanAmount);
 localStorage.setItem('saving',initialSaving);
-alert('Settings updated!');
-updateDashboard();
-updateWeeklyTable();
-updateMonthlyTable();
-drawChart();
+updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();
+alert('Settings Updated!');
 }
 </script>
-</div>
 </body>
 </html>
