@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker Ultimate</title>
+<title>Pocket Tracker - Web Hub Style</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -18,7 +18,7 @@ header{background:linear-gradient(135deg,#1e3c72,#2a5298);color:#fff;padding:15p
 header .logo{font-size:28px;font-weight:700;}
 
 /* ===== Menu ===== */
-nav{display:flex;justify-content:center;margin:15px 0;gap:15px;flex-wrap:wrap;}
+nav{display:flex;justify-content:center;margin:15px 0;gap:10px;flex-wrap:wrap;}
 nav button{padding:10px 15px;border:none;border-radius:8px;background:#ffd700;color:#2a5298;font-weight:600;cursor:pointer;transition:0.3s;}
 nav button:hover{opacity:0.85;}
 
@@ -64,7 +64,7 @@ footer p{margin:5px;font-size:14px;}
 <div class="container">
   <!-- Header -->
   <header>
-    <div class="logo">Pocket Tracker Ultimate</div>
+    <div class="logo">Pocket Tracker</div>
   </header>
 
   <!-- Menu -->
@@ -233,6 +233,7 @@ function saveData(){
   localStorage.setItem('salary',salary);
   localStorage.setItem('loanAmount',loanAmount);
   localStorage.setItem('goal',goal);
+  localStorage.setItem('username',username);
 }
 
 // ===== Load Data =====
@@ -255,6 +256,5 @@ Date.prototype.getWeek=function(){
   return weekNo;
 }
 </script>
-
 </body>
 </html>
