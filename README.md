@@ -326,5 +326,3 @@ window.onload=function(){
     updateDateTime();
 }
 </script>
-</body>
-</html>
