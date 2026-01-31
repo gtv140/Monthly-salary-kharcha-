@@ -1,245 +1,294 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pocket Traker</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* ===== Base Styles ===== */
-body {
-    margin:0;
-    padding:0;
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    color: #fff;
+body{
+    font-family:'Roboto',sans-serif;
+    margin:0;padding:0;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:#fff;
+    overflow-x:hidden;
     transition:0.5s;
 }
-header{
-    background: linear-gradient(135deg,#29b6f6,#00acc1);
-    padding: 20px;
-    text-align: center;
-    font-size: 28px;
-    font-weight: 700;
-    color: #fff;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-h2{margin:15px 0; text-align:center;}
-#datetime{text-align:center;margin:10px 0;color:#ffeb3b;font-weight:700;}
+h1,h2{text-align:center;margin:10px;font-weight:700;}
+#datetime{text-align:center;font-weight:bold;margin-bottom:15px;color:#ffeb3b;letter-spacing:1px;font-size:18px;}
+button{cursor:pointer;transition:0.3s;font-weight:700;border:none;border-radius:10px;}
+button:hover{opacity:0.85;}
+input{padding:10px;border-radius:12px;border:2px solid #00bcd4;outline:none;margin:5px;width:150px;}
+input:focus{border-color:#03a9f4;box-shadow:0 0 8px #03a9f4;}
 
-/* ===== Dashboard Boxes ===== */
-.dashboard {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 20px;
-    gap: 15px;
+/* ===== Header ===== */
+header{
+    background:linear-gradient(135deg,#1cb5e0,#000851);
+    padding:20px;
+    text-align:center;
+    font-size:32px;
+    font-weight:bold;
+    color:#fff;
+    text-shadow:2px 2px 8px rgba(0,0,0,0.4);
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.5);
 }
-.card {
-    background: linear-gradient(145deg,#00acc1,#29b6f6);
-    width: 140px;
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    transition: 0.4s;
+
+/* ===== Dashboard Cards ===== */
+.dashboard{display:flex;flex-wrap:wrap;justify-content:center;margin:20px 0;}
+.card{
+    backdrop-filter:blur(10px);
+    background:rgba(255,255,255,0.1);
+    border-radius:20px;
+    margin:10px;
+    padding:25px;
+    text-align:center;
+    width:150px;
+    cursor:pointer;
+    transition:0.5s;
+    box-shadow:0 8px 25px rgba(0,0,0,0.3);
+    font-weight:bold;
 }
-.card:hover{transform: scale(1.08); box-shadow:0 10px 30px rgba(0,0,0,0.5);}
-input{padding:8px;border-radius:10px;border:2px solid #03a9f4;width:120px;margin:3px;}
-input:focus{border-color:#0288d1;box-shadow:0 0 8px #0288d1;outline:none;}
+.card:hover{transform:scale(1.1);box-shadow:0 12px 35px rgba(0,0,0,0.5);}
+.card span{font-size:28px;display:block;margin-bottom:10px;}
 
 /* ===== Info Boxes ===== */
 .infoBox{
     display:flex;
-    flex-wrap: wrap;
-    justify-content:center;
-    margin: 15px;
-    gap:15px;
+    flex-wrap:wrap;
+    justify-content:space-around;
+    margin:20px;
 }
 .infoBox div{
-    background: rgba(255,255,255,0.1);
-    padding:20px;
-    border-radius:15px;
-    min-width:150px;
     text-align:center;
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(12px);
+    color:#fff;
+    padding:25px;
+    margin:10px;
+    border-radius:20px;
+    flex:1;
+    min-width:150px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+    transition:0.4s;
     font-weight:bold;
-    box-shadow:0 6px 15px rgba(0,0,0,0.3);
 }
-.infoBox div span{display:block;margin-top:5px;font-size:18px;color:#ffeb3b;}
+.infoBox div:hover{transform:scale(1.05);}
 
 /* ===== Table ===== */
 table{
-    width:100%;
     border-collapse: collapse;
-    margin:20px 0;
-    background: rgba(255,255,255,0.95);
+    width:100%;
+    margin-top:20px;
+    background:rgba(255,255,255,0.95);
     color:#333;
-    border-radius:12px;
+    border-radius:15px;
     overflow:hidden;
     box-shadow:0 6px 15px rgba(0,0,0,0.2);
 }
-th, td{padding:10px;text-align:center;border:1px solid #e0e0e0;}
-th{background:#0288d1;color:#fff;}
-tr:nth-child(even){background:rgba(0,172,193,0.1);}
-tr:hover{background:rgba(0,172,193,0.2);}
+th,td{border:1px solid #e0e0e0;padding:10px;text-align:center;}
+th{background:#03a9f4;color:#fff;letter-spacing:1px;}
+tr:nth-child(even){background:rgba(0,188,212,0.1);}
+tr:hover{background:rgba(0,188,212,0.2);}
 
-/* ===== Footer floating shapes ===== */
-.floating{
-    position:absolute;
-    border-radius:50%;
-    opacity:0.3;
-    animation: float 12s infinite;
-    z-index:0;
+/* ===== Theme Toggle ===== */
+#themeToggle{position:fixed;top:15px;right:15px;padding:10px 15px;background:#03a9f4;color:#fff;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
+
+/* ===== Modal ===== */
+.modal{
+    position:fixed;
+    top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,0.5);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:10;
 }
-@keyframes float{
-    0%{transform:translateY(0) rotate(0deg);}
-    50%{transform:translateY(-50px) rotate(180deg);}
-    100%{transform:translateY(0) rotate(360deg);}
+.modalContent{
+    background:linear-gradient(135deg,#00bcd4,#2196f3);
+    padding:30px;
+    border-radius:25px;
+    text-align:center;
+    color:#fff;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
 }
 
 /* ===== Responsive ===== */
-@media(max-width:768px){
-    .dashboard{flex-direction:column;align-items:center;}
+@media(max-width:600px){
     .infoBox{flex-direction:column;align-items:center;}
+    .card{width:120px;padding:15px;}
+    input{width:120px;}
 }
 </style>
 </head>
 <body>
-<header>💼 Pocket Traker 💼</header>
+
+<header>📊 Pocket Traker 📊</header>
 <div id="datetime"></div>
+<button id="themeToggle" onclick="toggleTheme()">Toggle Theme</button>
 
-<h2>User Dashboard</h2>
-<div class="infoBox">
-    <div>Username<br><span id="username">Guest</span></div>
-    <div>Salary<br><input type="number" id="salaryInput" value="0" onchange="updateSalary()"></div>
-    <div>Loan<br><input type="number" id="loanInput" value="0" onchange="updateLoan()"></div>
-    <div>Goal Saving<br><input type="number" id="goalInput" value="10000" onchange="updateGoal()"></div>
+<!-- Username Input -->
+<div id="usernameScreen" style="text-align:center;margin-top:30px;">
+    <h2>Enter Your Name</h2>
+    <input type="text" id="usernameInput" placeholder="Your Name">
+    <button onclick="enterUsername()">Start Dashboard</button>
 </div>
 
-<h2>Summary</h2>
-<div class="infoBox">
-    <div>Current Balance<br><span id="currentBalance">0</span></div>
-    <div>Remaining Balance<br><span id="remainingBalance">0</span></div>
-    <div>Current Saving<br><span id="currentSaving">0</span></div>
-    <div>Goal Achieved<br><span id="goalPercent">0%</span></div>
+<!-- Dashboard -->
+<div id="dashboard" style="display:none;">
+    <div style="text-align:right;margin:10px 20px;">
+        <span id="welcomeUser" style="font-weight:bold;font-size:18px;"></span>
+    </div>
+
+    <h2>💰 User Info</h2>
+    <div class="infoBox">
+        <div>Username<br><span id="infoUser">-</span></div>
+        <div>Current Balance<br><span id="currentBalance">0</span></div>
+        <div>Total Saving<br><span id="currentSaving">0</span></div>
+        <div>Loan<br><span id="loanAmount">0</span></div>
+    </div>
+
+    <h2>Add Data</h2>
+    <div class="dashboard" id="expenseCards">
+        <div class="card" onclick="addDaily('food')"><span>🍔</span>Food</div>
+        <div class="card" onclick="addDaily('fuel')"><span>⛽</span>Fuel</div>
+        <div class="card" onclick="addDaily('snacks')"><span>🍿</span>Snacks</div>
+        <div class="card" onclick="addDaily('bills')"><span>💡</span>Bills</div>
+        <div class="card" onclick="addDaily('entertainment')"><span>🎮</span>Fun</div>
+        <div class="card" onclick="updateSalary()">💰 Update Salary</div>
+        <div class="card" onclick="updateLoan()">🏦 Update Loan</div>
+        <div class="card" onclick="clearAll()">🗑️ Clear All</div>
+    </div>
+
+    <h2>Daily Expenses Table</h2>
+    <table id="dailyTable">
+        <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Daily Total</th><th>Date</th></tr>
+    </table>
+
+    <h2>Visual Overview</h2>
+    <canvas id="chart" width="400" height="200"></canvas>
 </div>
-
-<h2>Daily Expenses</h2>
-<div class="dashboard">
-    <div class="card" onclick="addDaily('food')">🍔 Food</div>
-    <div class="card" onclick="addDaily('fuel')">⛽ Fuel</div>
-    <div class="card" onclick="addDaily('snacks')">🍿 Snacks</div>
-    <div class="card" onclick="addDaily('bills')">💡 Bills</div>
-    <div class="card" onclick="addDaily('fun')">🎮 Fun</div>
-    <div class="card" onclick="clearAll()">🗑️ Clear</div>
-</div>
-
-<h2>Daily Table</h2>
-<table id="dailyTable">
-    <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Date</th></tr>
-</table>
-
-<h2>Overview Chart</h2>
-<canvas id="chart" width="400" height="200"></canvas>
-
-<!-- Floating Shapes -->
-<div class="floating" style="width:15px;height:15px;background:#ffeb3b;top:50px;left:30px;"></div>
-<div class="floating" style="width:12px;height:12px;background:#03a9f4;top:150px;left:120px;"></div>
-<div class="floating" style="width:18px;height:18px;background:#4caf50;top:300px;left:200px;"></div>
-<div class="floating" style="width:10px;height:10px;background:#ff5722;top:400px;left:50px;"></div>
 
 <script>
 // ===== Timer =====
 function updateDateTime(){
     const now=new Date();
-    const options={weekday:'long',year:'numeric',month:'long',day:'numeric'};
-    document.getElementById('datetime').innerText = now.toLocaleDateString('en-US',options)+' | '+now.toLocaleTimeString();
+    document.getElementById('datetime').innerText=now.toLocaleDateString()+' | '+now.toLocaleTimeString();
 }
 setInterval(updateDateTime,1000);
 updateDateTime();
 
-// ===== Local Storage =====
-let username = prompt("Enter your name:","Guest");
-document.getElementById('username').innerText=username;
-
-let dailyData = JSON.parse(localStorage.getItem(username+'_data')||"[]");
-let salary = parseInt(localStorage.getItem(username+'_salary')||"0");
-let loan = parseInt(localStorage.getItem(username+'_loan')||"0");
-let goal = parseInt(localStorage.getItem(username+'_goal')||"10000");
-
-document.getElementById('salaryInput').value=salary;
-document.getElementById('loanInput').value=loan;
-document.getElementById('goalInput').value=goal;
-
-// ===== Functions =====
-function saveData(){
-    localStorage.setItem(username+'_data', JSON.stringify(dailyData));
-    localStorage.setItem(username+'_salary', salary);
-    localStorage.setItem(username+'_loan', loan);
-    localStorage.setItem(username+'_goal', goal);
-}
-
-function updateSalary(){salary=parseInt(document.getElementById('salaryInput').value)||0;calculate();saveData();}
-function updateLoan(){loan=parseInt(document.getElementById('loanInput').value)||0;calculate();saveData();}
-function updateGoal(){goal=parseInt(document.getElementById('goalInput').value)||10000;calculate();saveData();}
-
-function addDaily(type){
-    const value = parseInt(prompt(`Enter ${type} amount:`,"0"))||0;
-    const today = new Date().toLocaleDateString();
-    let dayData = {food:0,fuel:0,snacks:0,bills:0,fun:0,total:0,date:today};
-    if(dailyData.length>0 && dailyData[dailyData.length-1].date===today){
-        dayData = dailyData[dailyData.length-1];
-        dayData[type]+=value;
-    } else {
-        dayData[type]=value;
-        dailyData.push(dayData);
+// ===== Theme Toggle =====
+let darkTheme=true;
+function toggleTheme(){
+    if(darkTheme){
+        document.body.style.background="#f1f1f1";
+        document.body.style.color="#333";
+        darkTheme=false;
+    }else{
+        document.body.style.background="linear-gradient(135deg,#0f2027,#203a43,#2c5364)";
+        document.body.style.color="#fff";
+        darkTheme=true;
     }
-    dayData.total = dayData.food+dayData.fuel+dayData.snacks+dayData.bills+dayData.fun;
-    saveData();
-    calculate();
 }
 
-function clearAll(){if(confirm("Clear all data?")){dailyData=[];saveData();calculate();}}
+// ===== Local Storage & User =====
+let username=null;
+let dailyData=[],salary=0,loanAmount=0;
 
-// ===== Calculate & Update =====
-function calculate(){
+// Enter Username
+function enterUsername(){
+    username=document.getElementById('usernameInput').value.trim()||'User';
+    localStorage.setItem('username',username);
+    dailyData=JSON.parse(localStorage.getItem(username+'_data')||'[]');
+    salary=parseInt(localStorage.getItem(username+'_salary'))||0;
+    loanAmount=parseInt(localStorage.getItem(username+'_loan'))||0;
+    document.getElementById('usernameScreen').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    document.getElementById('welcomeUser').innerText=`Welcome, ${username}!`;
+    updateDashboard();
+}
+
+// Add Daily Expense
+function addDaily(type){
+    let value=parseInt(prompt(`Enter ${type} amount:`))||0;
+    const today=new Date().toLocaleDateString();
+    const dayObj={food:0,fuel:0,snacks:0,bills:0,entertainment:0,total:0,date:today};
+    if(dailyData.length>0 && dailyData[dailyData.length-1].date===today){
+        let last=dailyData[dailyData.length-1];
+        last[type]+=value;
+        last.total=last.food+last.fuel+last.snacks+last.bills+last.entertainment;
+    } else {
+        dayObj[type]=value;
+        dayObj.total=dayObj.food+dayObj.fuel+dayObj.snacks+dayObj.bills+dayObj.entertainment;
+        dailyData.push(dayObj);
+    }
+    localStorage.setItem(username+'_data',JSON.stringify(dailyData));
+    updateDashboard();
+}
+
+// Update Salary
+function updateSalary(){
+    let s=parseInt(prompt("Enter Your Monthly Salary:"))||0;
+    salary=s;
+    localStorage.setItem(username+'_salary',salary);
+    updateDashboard();
+}
+
+// Update Loan
+function updateLoan(){
+    let l=parseInt(prompt("Enter Loan Amount:"))||0;
+    loanAmount=l;
+    localStorage.setItem(username+'_loan',loanAmount);
+    updateDashboard();
+}
+
+// Clear All
+function clearAll(){
+    if(confirm("Clear all data?")){
+        dailyData=[];
+        localStorage.setItem(username+'_data','[]');
+        updateDashboard();
+    }
+}
+
+// Update Dashboard
+function updateDashboard(){
+    let totalExp=loanAmount;
+    let saving=0;
     const table=document.getElementById('dailyTable');
-    table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Date</th></tr>";
-    let totalExpense=loan;
-    dailyData.forEach((day,index)=>{
+    table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Daily Total</th><th>Date</th></tr>";
+    dailyData.forEach((day,i)=>{
         const row=table.insertRow();
-        row.insertCell(0).innerText=index+1;
+        row.insertCell(0).innerText=i+1;
         row.insertCell(1).innerText=day.food;
         row.insertCell(2).innerText=day.fuel;
         row.insertCell(3).innerText=day.snacks;
         row.insertCell(4).innerText=day.bills;
-        row.insertCell(5).innerText=day.fun;
+        row.insertCell(5).innerText=day.entertainment;
         row.insertCell(6).innerText=day.total;
         row.insertCell(7).innerText=day.date;
-        totalExpense+=day.total;
+        totalExp+=day.total;
     });
-    const remaining = salary - totalExpense;
-    const saving = Math.max(0, remaining);
-    document.getElementById('currentBalance').innerText=salary;
-    document.getElementById('remainingBalance').innerText=remaining;
+    saving=Math.max(0,salary-totalExp);
+    document.getElementById('infoUser').innerText=username;
+    document.getElementById('currentBalance').innerText=salary-totalExp;
     document.getElementById('currentSaving').innerText=saving;
-    document.getElementById('goalPercent').innerText=Math.min(Math.round(saving/goal*100),100)+'%';
-    
+    document.getElementById('loanAmount').innerText=loanAmount;
+
     // Chart
     const ctx=document.getElementById('chart').getContext('2d');
-    if(window.myChart) window.myChart.destroy();
-    window.myChart = new Chart(ctx,{
+    if(window.barChart) window.barChart.destroy();
+    window.barChart=new Chart(ctx,{
         type:'bar',
         data:{
-            labels:['Salary','Total Expense','Current Saving'],
+            labels:['Salary','Expenses','Saving'],
             datasets:[{
                 label:'PKR',
-                data:[salary,totalExpense,saving],
-                backgroundColor:['#00acc1','#f39c12','#4caf50']
+                data:[salary,totalExp,saving],
+                backgroundColor:['#03a9f4','#f44336','#4caf50']
             }]
         },
         options:{
@@ -248,8 +297,6 @@ function calculate(){
         }
     });
 }
-
-calculate();
 </script>
 </body>
 </html>
