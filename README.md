@@ -143,7 +143,6 @@ canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15)
 </footer>
 
 <script>
-// All JS as per previous final version
 let username = localStorage.getItem('username') || '';
 let salary = Number(localStorage.getItem('salary')) || 0;
 let loanAmount = Number(localStorage.getItem('loan')) || 0;
@@ -156,71 +155,113 @@ function toggleMode(){document.body.classList.toggle('dark');darkMode=document.b
 function showPage(pageId){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(pageId).classList.add('active');if(pageId==='dashboard') updateDashboard();if(pageId==='daily') updateDailyTable();if(pageId==='weekly') updateWeeklyTable();if(pageId==='monthly') updateMonthlyTable();if(pageId==='charts') drawChart();}
 function updateDateTime(){const now=new Date();document.getElementById('currentDateTime').innerText=now.toLocaleString();}
 setInterval(updateDateTime,1000);
-function enterUsername(){const val=document.getElementById('usernameInput').value.trim();if(!val){alert('Enter username!');return;}username=val;localStorage.setItem('username',username);showPage('dashboard');if(!salary) showPage('settings');updateDashboard();}
-function updateDashboard(){if(!username) return;let totalExpense=dailyData.reduce((a,b)=>a+b.total,0);let remaining=salary+initialSaving-totalExpense-loanAmount;let currentSaving=Math.max(0,remaining);document.getElementById('infoUser').innerText=username;document.getElementById('totalExpense').innerText=totalExpense;document.getElementById('remaining').innerText=remaining;document.getElementById('currentSaving').innerText=currentSaving;}
-function addDailyEntryForm(){const food=Number(document.getElementById('foodInput').value)||0;const fuel=Number(document.getElementById('fuelInput').value)||0;const snacks=Number(document.getElementById('snacksInput').value)||0;const bills=Number(document.getElementById('billsInput').value)||0;const entertainment=Number(document.getElementById('entertainmentInput').value)||0;const total=food+fuel+snacks+bills+entertainment;const date=new Date().toLocaleDateString();dailyData.push({food,fuel,snacks,bills,entertainment,total,date});localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();}
-function updateDailyTable(){const table=document.getElementById('dailyTable');table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th><th>Date</th><th>Action</th></tr>";dailyData.forEach((d,i)=>{const row=table.insertRow();row.insertCell(0).innerText=i+1;row.insertCell(1).innerText=d.food;row.insertCell(2).innerText=d.fuel;row.insertCell(3).innerText=d.snacks;row.insertCell(4).innerText=d.bills;row.insertCell(5).innerText=d.entertainment;row.insertCell(6).innerText=d.total;row.insertCell(7).innerText=d.date;const delCell=row.insertCell(8);const delBtn=document.createElement('button');delBtn.className='btn';delBtn.innerText='Delete';delBtn.onclick=()=>{dailyData.splice(i,1);localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();};delCell.appendChild(delBtn);});}
+
+function enterUsername(){
+const val=document.getElementById('usernameInput').value.trim();
+if(!val){alert('Enter username!');return;}
+username=val;
+localStorage.setItem('username',username);
+showPage('dashboard');
+if(!salary) showPage('settings');
+updateDashboard();
+}
+
+function updateDashboard(){
+if(!username) return;
+let totalExpense=dailyData.reduce((a,b)=>a+b.total,0);
+let remaining=salary+initialSaving-totalExpense-loanAmount;
+let currentSaving=Math.max(0,remaining);
+document.getElementById('infoUser').innerText=username;
+document.getElementById('totalExpense').innerText=totalExpense;
+document.getElementById('remaining').innerText=remaining;
+document.getElementById('currentSaving').innerText=currentSaving;
+}
+
+function addDailyEntryForm(){
+const food=Number(document.getElementById('foodInput').value)||0;
+const fuel=Number(document.getElementById('fuelInput').value)||0;
+const snacks=Number(document.getElementById('snacksInput').value)||0;
+const bills=Number(document.getElementById('billsInput').value)||0;
+const entertainment=Number(document.getElementById('entertainmentInput').value)||0;
+const total=food+fuel+snacks+bills+entertainment;
+const date=new Date().toLocaleDateString();
+dailyData.push({food,fuel,snacks,bills,entertainment,total,date});
+localStorage.setItem('dailyData',JSON.stringify(dailyData));
+updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();
+}
+
+function updateDailyTable(){
+const table=document.getElementById('dailyTable');
+table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th><th>Date</th><th>Action</th></tr>";
+dailyData.forEach((d,i)=>{
+const row=table.insertRow();
+row.insertCell(0).innerText=i+1;
+row.insertCell(1).innerText=d.food;
+row.insertCell(2).innerText=d.fuel;
+row.insertCell(3).innerText=d.snacks;
+row.insertCell(4).innerText=d.bills;
+row.insertCell(5).innerText=d.entertainment;
+row.insertCell(6).innerText=d.total;
+row.insertCell(7).innerText=d.date;
+const delCell=row.insertCell(8);
+const delBtn=document.createElement('button');
+delBtn.className='btn';
+delBtn.innerText='Delete';
+delBtn.onclick=()=>{dailyData.splice(i,1);localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();};
+delCell.appendChild(delBtn);
+});
+}
+
 function resetDailyData(){if(confirm("Reset all daily data?")){dailyData=[];localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();}}
 function resetAll(){if(confirm("Reset everything?")){dailyData=[];username='';salary=0;loanAmount=0;initialSaving=0;localStorage.clear();showPage('welcome');}}
 function updateWeeklyTable(){const table=document.getElementById('weeklyTable');table.innerHTML="<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";let week=1;for(let i=0;i<dailyData.length;i+=7){const weekData=dailyData.slice(i,i+7);const total=weekData.reduce((a,b)=>a+b.total,0);const saving=Math.max(0,salary+initialSaving-total-loanAmount);const row=table.insertRow();row.insertCell(0).innerText=week++;row.insertCell(1).innerText=total;row.insertCell(2).innerText=saving;}}
-function updateMonthlyTable(){const table=document.getElementById('monthlyTable');table.innerHTML="<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";const monthMap={};dailyData.forEach(d=>{const m=new Date(d.date).getMonth()+1;if(!monthMap[m]) monthMap[m]=0;monthMap[m]+=d.total;});Object.keys(monthMap).forEach(m=>{const total=monthMap[m];const saving=Math.max(0,salary+initialSaving-total-loanAmount);const row=table.insertRow();row.insertCell(0).innerText=m;row.insertCell(1).innerText=total;row.insertCell(2).innerText=saving;});}
-function drawChart() {
-    const ctx = document.getElementById('expenseChart').getContext('2d');
-    const labels = dailyData.map((d,i)=>`Day ${i+1}`);
-    const expenseData = dailyData.map(d=>d.total);
-    const savingData = dailyData.map(d=>Math.max(0, salary + initialSaving - d.total - loanAmount));
-
-    if(window.expenseChartInstance) window.expenseChartInstance.destroy();
-
-    window.expenseChartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [
-                {label:'Expense', data: expenseData, backgroundColor:'rgba(255,99,132,0.6)'},
-                {label:'Saving', data: savingData, backgroundColor:'rgba(54,162,235,0.6)'}
-            ]
-        },
-        options: {
-            responsive:true,
-            plugins: {
-                legend:{position:'top'},
-                title:{display:true,text:'Daily Expense vs Saving'}
-            },
-            scales:{
-                y:{beginAtZero:true}
-            }
-        }
-    });
+function updateMonthlyTable(){const table=document.getElementById('monthlyTable');table.innerHTML="<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";const monthMap={};dailyData.forEach(d=>{const m=new Date(d.date).getMonth()+1;if(!monthMap[m]) monthMap[m]=0;monthMap[m]+=d.total;});Object.keys(monthMap).forEach(m=>{const total=monthMap[m];const saving=Math.max(0,salary+initialSaving-total-loanAmount);const row=table.insertRow();row.insertCell(0).innerText=m;
+row.insertCell(1).innerText=total;
+row.insertCell(2).innerText=saving;
+});
 }
 
-function updateSettings() {
-    const sal = Number(document.getElementById('salaryInput').value) || 0;
-    const loan = Number(document.getElementById('loanInput').value) || 0;
-    const saving = Number(document.getElementById('savingInput').value) || 0;
-    salary = sal;
-    loanAmount = loan;
-    initialSaving = saving;
-    localStorage.setItem('salary', salary);
-    localStorage.setItem('loan', loanAmount);
-    localStorage.setItem('saving', initialSaving);
-    alert('Settings saved!');
-    updateDashboard();
+function drawChart(){
+const ctx=document.getElementById('expenseChart').getContext('2d');
+const labels=dailyData.map((d,i)=>`Day ${i+1}`);
+const expenseData=dailyData.map(d=>d.total);
+const savingData=dailyData.map((d,i)=>Math.max(0,salary+initialSaving-dailyData.slice(0,i+1).reduce((a,b)=>a+b.total,0)-loanAmount));
+
+if(window.expChart) window.expChart.destroy();
+window.expChart=new Chart(ctx,{
+type:'line',
+data:{
+labels:labels,
+datasets:[
+{label:'Daily Expense',data:expenseData,borderColor:'red',backgroundColor:'rgba(255,0,0,0.2)',fill:true,tension:0.3},
+{label:'Cumulative Saving',data:savingData,borderColor:'green',backgroundColor:'rgba(0,255,0,0.2)',fill:true,tension:0.3}
+]
+},
+options:{
+responsive:true,
+plugins:{legend:{position:'top'}},
+scales:{y:{beginAtZero:true}}
+}
+});
 }
 
-// Initialize
-if(username){
-    showPage('dashboard');
-}else{
-    showPage('welcome');
-}
+function updateSettings(){
+const s=Number(document.getElementById('salaryInput').value)||0;
+const l=Number(document.getElementById('loanInput').value)||0;
+const save=Number(document.getElementById('savingInput').value)||0;
+salary=s;
+loanAmount=l;
+initialSaving=save;
+localStorage.setItem('salary',salary);
+localStorage.setItem('loan',loanAmount);
+localStorage.setItem('saving',initialSaving);
+alert('Settings updated!');
 updateDashboard();
-updateDailyTable();
 updateWeeklyTable();
 updateMonthlyTable();
 drawChart();
+}
 </script>
-
-</div> <!-- container close -->
+</div>
 </body>
 </html>
