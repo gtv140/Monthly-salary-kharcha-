@@ -2,252 +2,252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker – Smart Finance</title>
+<title>Pocket Traker</title>
 
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-<!-- Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <!-- Chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- PWA -->
+<link rel="manifest" href="data:application/json,{
+  &quot;name&quot;:&quot;Pocket Traker&quot;,
+  &quot;short_name&quot;:&quot;Pocket&quot;,
+  &quot;start_url&quot;:&quot;.&quot;,
+  &quot;display&quot;:&quot;standalone&quot;,
+  &quot;background_color&quot;:&quot;#020617&quot;,
+  &quot;theme_color&quot;:&quot;#38bdf8&quot;
+}">
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins}
-body{background:#0f172a;color:#fff}
-
-/* NAVBAR */
-nav{
-position:sticky;top:0;z-index:100;
-display:flex;justify-content:space-between;align-items:center;
-padding:15px 25px;
-background:rgba(15,23,42,0.9);
-backdrop-filter:blur(10px)
+body{
+  background:linear-gradient(135deg,#020617,#0f172a);
+  color:#fff;min-height:100vh
 }
-nav h1{color:#38bdf8}
-nav a{color:#fff;margin-left:15px;text-decoration:none;font-weight:500}
-nav a:hover{color:#38bdf8}
-
-/* HERO */
+header{
+  position:sticky;top:0;z-index:9;
+  padding:14px 20px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(14px);
+  display:flex;justify-content:space-between;align-items:center
+}
+.logo{font-size:22px;font-weight:700}
+.container{padding:20px;max-width:1100px;margin:auto}
 .hero{
-height:90vh;
-background:url("https://images.unsplash.com/photo-1559526324-593bc073d938") center/cover no-repeat;
-display:flex;align-items:center;justify-content:center;
-text-align:center;padding:20px
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:20px;align-items:center
 }
-.hero div{
-background:rgba(0,0,0,.55);
-padding:40px;border-radius:20px
+.hero img{
+  width:100%;border-radius:22px;
+  box-shadow:0 20px 40px rgba(0,0,0,.4)
 }
-.hero h2{font-size:40px}
-.hero p{margin:15px 0}
-.hero button{
-padding:12px 25px;border:none;border-radius:30px;
-background:#38bdf8;color:#000;font-weight:700;cursor:pointer
-}
+h1{font-size:32px}
+p{opacity:.8}
 
-/* SECTION */
-section{padding:60px 20px;max-width:1200px;margin:auto}
-section h3{text-align:center;font-size:32px;margin-bottom:30px}
-
-/* CARDS */
 .cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px
+  margin-top:24px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:14px
 }
 .card{
-background:linear-gradient(135deg,#1e293b,#020617);
-padding:25px;border-radius:20px;
-box-shadow:0 15px 40px rgba(0,0,0,.5);
-transition:.3s
+  background:rgba(255,255,255,.09);
+  border-radius:18px;
+  padding:16px;
+  transition:.3s;
 }
-.card:hover{transform:translateY(-8px)}
-.card i{font-size:35px;color:#38bdf8;margin-bottom:10px}
+.card:hover{transform:translateY(-6px)}
+.card i{font-size:22px;color:#38bdf8}
+.card h3{font-size:13px;opacity:.7;margin-top:6px}
+.card p{font-size:22px;font-weight:700}
 
-/* DASHBOARD */
-.dashboard input{
-width:100%;padding:10px;border-radius:10px;border:none;margin-top:8px
-}
-
-/* TABLE */
-table{width:100%;border-collapse:collapse;margin-top:20px;background:#fff;color:#000;border-radius:15px;overflow:hidden}
-th,td{padding:12px;text-align:center}
-th{background:#38bdf8}
-tr:nth-child(even){background:#e0f2fe}
-
-/* TIPS */
-.tips{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px
-}
-.tip{
-background:#020617;padding:20px;border-radius:15px;
-border:1px solid #1e293b
+.section{
+  margin-top:24px;
+  background:rgba(255,255,255,.08);
+  border-radius:20px;
+  padding:16px
 }
 
-/* FOOTER */
-footer{
-background:#020617;
-text-align:center;
-padding:20px;
-margin-top:50px
+.form,.expense{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;margin-top:14px
+}
+input,select,button{
+  padding:12px;border-radius:14px;border:none;
+  background:#020617;color:#fff
+}
+button{
+  background:#38bdf8;color:#000;
+  font-weight:600;cursor:pointer
+}
+.list li{
+  display:flex;justify-content:space-between;
+  padding:6px 0;
+  border-bottom:1px solid rgba(255,255,255,.1)
+}
+.progress{
+  height:10px;border-radius:20px;
+  background:#020617;margin-top:12px;overflow:hidden
+}
+.progress div{
+  height:100%;
+  background:linear-gradient(90deg,#38bdf8,#22c55e);
+  width:0%;transition:.5s
 }
 
-/* MOBILE */
-@media(max-width:600px){
-.hero h2{font-size:28px}
+/* Bottom Nav */
+.nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(2,6,23,.9);
+  display:flex;justify-content:space-around;
+  padding:10px 0
+}
+.nav i{font-size:20px;color:#94a3b8}
+.nav i.active{color:#38bdf8}
+
+@media(max-width:768px){
+  .hero{grid-template-columns:1fr}
+  h1{font-size:26px}
 }
 </style>
 </head>
 
 <body>
 
-<nav>
-<h1>💰 Pocket Tracker</h1>
-<div>
-<a href="#dashboard">Dashboard</a>
-<a href="#expenses">Expenses</a>
-<a href="#summary">Summary</a>
-<a href="#tips">Tips</a>
-</div>
-</nav>
+<header>
+  <div class="logo">💰 Pocket Traker</div>
+  <button onclick="resetAll()">Reset</button>
+</header>
 
-<div class="hero">
-<div>
-<h2>Smart Money, Smart Life</h2>
-<p>Track expenses • Save more • Stress less</p>
-<button onclick="document.getElementById('dashboard').scrollIntoView()">Get Started</button>
-</div>
+<div class="container">
+
+  <section class="hero">
+    <div>
+      <h1>Smart Money, Modern Life</h1>
+      <p>Track salary, expenses & savings like premium finance apps.</p>
+    </div>
+    <img src="https://images.unsplash.com/photo-1554224154-22dec7ec8818?q=80&w=1200">
+  </section>
+
+  <section class="cards">
+    <div class="card"><i class="fa-solid fa-user"></i><h3>User</h3><p id="u">—</p></div>
+    <div class="card"><i class="fa-solid fa-wallet"></i><h3>Salary</h3><p id="sal">0</p></div>
+    <div class="card"><i class="fa-solid fa-hand-holding-dollar"></i><h3>Loan</h3><p id="loan">0</p></div>
+    <div class="card"><i class="fa-solid fa-piggy-bank"></i><h3>Savings</h3><p id="save">0</p></div>
+    <div class="card"><i class="fa-solid fa-coins"></i><h3>Balance</h3><p id="bal">0</p></div>
+  </section>
+
+  <section class="section">
+    <h3>Profile Setup</h3>
+    <div class="form">
+      <input id="name" placeholder="Username">
+      <input id="salary" type="number" placeholder="Salary">
+      <input id="loanIn" type="number" placeholder="Loan">
+      <input id="saveIn" type="number" placeholder="Saving Goal">
+      <button onclick="saveMain()">Save</button>
+    </div>
+    <div class="progress"><div id="bar"></div></div>
+  </section>
+
+  <section class="section">
+    <h3>Add Expense</h3>
+    <div class="expense">
+      <input id="expText" placeholder="Note">
+      <input id="expAmt" type="number" placeholder="Amount">
+      <select id="cat">
+        <option>Food</option><option>Travel</option>
+        <option>Bills</option><option>Fun</option><option>Other</option>
+      </select>
+      <button onclick="addExpense()">Add</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <h3>Expenses</h3>
+    <ul id="expList" class="list"></ul>
+  </section>
+
+  <section class="section">
+    <h3>Analytics</h3>
+    <canvas id="chart"></canvas>
+  </section>
+
 </div>
 
-<!-- DASHBOARD -->
-<section id="dashboard">
-<h3>Dashboard</h3>
-<div class="cards dashboard">
-<div class="card">
-<i class="fa-solid fa-user"></i>
-<p>Username</p>
-<input id="user" value="User">
+<div class="nav">
+  <i class="fa-solid fa-house active"></i>
+  <i class="fa-solid fa-chart-pie"></i>
+  <i class="fa-solid fa-plus"></i>
+  <i class="fa-solid fa-user"></i>
 </div>
-<div class="card">
-<i class="fa-solid fa-wallet"></i>
-<p>Salary</p>
-<input type="number" id="salary" value="50000">
-</div>
-<div class="card">
-<i class="fa-solid fa-credit-card"></i>
-<p>Loan</p>
-<input type="number" id="loan" value="10000">
-</div>
-<div class="card">
-<i class="fa-solid fa-piggy-bank"></i>
-<p>Saving Goal</p>
-<input type="number" id="goal" value="10000">
-</div>
-</div>
-</section>
-
-<!-- EXPENSES -->
-<section id="expenses">
-<h3>Daily Expenses</h3>
-<div class="cards">
-<div class="card" onclick="addExpense('Food')"><i class="fa-solid fa-burger"></i>Food</div>
-<div class="card" onclick="addExpense('Fuel')"><i class="fa-solid fa-gas-pump"></i>Fuel</div>
-<div class="card" onclick="addExpense('Bills')"><i class="fa-solid fa-file-invoice"></i>Bills</div>
-<div class="card" onclick="addExpense('Fun')"><i class="fa-solid fa-face-laugh"></i>Fun</div>
-</div>
-
-<table id="table">
-<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Bills</th><th>Fun</th><th>Total</th></tr>
-</table>
-
-<canvas id="chart" height="120"></canvas>
-</section>
-
-<!-- SUMMARY -->
-<section id="summary">
-<h3>Monthly Summary</h3>
-<div class="cards">
-<div class="card"><i class="fa-solid fa-scale-balanced"></i>Remaining Balance: <span id="balance">0</span></div>
-<div class="card"><i class="fa-solid fa-piggy-bank"></i>Total Saving: <span id="saving">0</span></div>
-</div>
-</section>
-
-<!-- TIPS -->
-<section id="tips">
-<h3>Smart Tips</h3>
-<div class="tips">
-<div class="tip">🍱 Home food = more savings</div>
-<div class="tip">💧 Stay hydrated in night shift</div>
-<div class="tip">📊 Review expenses weekly</div>
-<div class="tip">😴 Proper sleep improves control</div>
-</div>
-</section>
-
-<footer>
-<p>© 2026 Pocket Tracker • Designed with ❤️ Sweetie</p>
-</footer>
 
 <script>
-let data=[]
-let day=0
+let data=JSON.parse(localStorage.getItem("pocket"))||{
+  name:"",salary:0,loan:0,save:0,balance:0,expenses:[]
+};
+let chart;
 
-function addExpense(type){
-let amount=+prompt("Enter "+type+" expense")
-if(!amount) return
-if(!data[day]) data[day]={Food:0,Fuel:0,Bills:0,Fun:0}
-data[day][type]+=amount
-render()
+function saveMain(){
+  data.name=name.value;
+  data.salary=+salary.value;
+  data.loan=+loanIn.value;
+  data.save=+saveIn.value;
+  data.balance=data.salary-data.loan-data.save;
+  store();
 }
-
+function addExpense(){
+  if(!expAmt.value)return;
+  data.expenses.push({t:expText.value,a:+expAmt.value,c:cat.value});
+  data.balance-=+expAmt.value;
+  expText.value=expAmt.value="";
+  store();
+}
+function store(){
+  localStorage.setItem("pocket",JSON.stringify(data));
+  render();
+}
+function resetAll(){
+  localStorage.removeItem("pocket");
+  location.reload();
+}
 function render(){
-let table=document.getElementById("table")
-table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Bills</th><th>Fun</th><th>Total</th></tr>"
-let total=0
-data.forEach((d,i)=>{
-let sum=d.Food+d.Fuel+d.Bills+d.Fun
-total+=sum
-table.innerHTML+=`<tr><td>${i+1}</td><td>${d.Food}</td><td>${d.Fuel}</td><td>${d.Bills}</td><td>${d.Fun}</td><td>${sum}</td></tr>`
-})
-let salary=+salaryInput.value
-let loan=+loanInput.value
-document.getElementById("balance").innerText=salary-total-loan
-document.getElementById("saving").innerText=Math.max(0,salary-total-loan)
-updateChart()
-localStorage.setItem("pocketData",JSON.stringify(data))
+  u.textContent=data.name||"Guest";
+  sal.textContent=data.salary;
+  loan.textContent=data.loan;
+  save.textContent=data.save;
+  bal.textContent=data.balance;
+  expList.innerHTML="";
+  data.expenses.forEach(e=>{
+    expList.innerHTML+=`<li><span>${e.t} (${e.c})</span><b>- ${e.a}</b></li>`;
+  });
+  let p=data.save?Math.min(((data.salary-data.balance)/data.save)*100,100):0;
+  bar.style.width=p+"%";
+  drawChart();
 }
-
-let salaryInput=document.getElementById("salary")
-let loanInput=document.getElementById("loan")
-salaryInput.onchange=loanInput.onchange=render
-
-let ctx=document.getElementById("chart")
-let chart
-function updateChart(){
-if(chart) chart.destroy()
-chart=new Chart(ctx,{
-type:"line",
-data:{
-labels:data.map((_,i)=>"Day "+(i+1)),
-datasets:[{
-label:"Expenses",
-data:data.map(d=>d.Food+d.Fuel+d.Bills+d.Fun),
-borderColor:"#38bdf8",
-tension:.4
-}]
+function drawChart(){
+  let sums={};
+  data.expenses.forEach(e=>sums[e.c]=(sums[e.c]||0)+e.a);
+  let labels=Object.keys(sums),vals=Object.values(sums);
+  if(chart)chart.destroy();
+  chart=new Chart(chart,{
+    type:"doughnut",
+    data:{labels,datasets:[{data:vals}]},
+    options:{plugins:{legend:{labels:{color:"#fff"}}}}
+  });
 }
-})
-}
+render();
 
-window.onload=()=>{
-let saved=localStorage.getItem("pocketData")
-if(saved) data=JSON.parse(saved)
-render()
+/* Service Worker (offline) */
+if("serviceWorker"in navigator){
+  const code=`self.addEventListener('fetch',e=>{})`;
+  navigator.serviceWorker.register(
+    URL.createObjectURL(new Blob([code],{type:"text/javascript"}))
+  );
 }
 </script>
-
 </body>
 </html>
