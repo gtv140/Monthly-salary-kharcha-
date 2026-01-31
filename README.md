@@ -139,12 +139,13 @@ canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15)
 
 <section id="tips" class="page">
 <h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Tips & Advice</h2>
-<div class="card-grid">
+<div class="card-grid" id="tipsGrid">
   <div class="card" onclick="alert('Track daily to save efficiently!')"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"/><p>Track daily to save efficiently.</p></div>
   <div class="card" onclick="alert('Set monthly saving goals!')"><img src="https://cdn-icons-png.flaticon.com/512/833/833314.png"/><p>Set monthly saving goals.</p></div>
   <div class="card" onclick="alert('Review weekly expenses!')"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"/><p>Review weekly expenses regularly.</p></div>
   <div class="card" onclick="alert('Use anywhere on mobile!')"><img src="https://cdn-icons-png.flaticon.com/512/2910/2910769.png"/><p>Accessible on mobile devices.</p></div>
   <div class="card" onclick="alert('Visual charts for all expenses!')"><img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png"/><p>Visual charts for better understanding.</p></div>
+  <div class="card" onclick="alert('Weekend tips: Cook at home & save money!')"><img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png"/><p>Weekend tips included.</p></div>
 </div>
 </section>
 
@@ -154,7 +155,7 @@ canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15)
 </footer>
 
 <script>
-// All logic with LocalStorage, Dashboard, Charts, Daily/Weekly/Monthly updates
+// LocalStorage & App Logic
 let username = localStorage.getItem('username') || '';
 let salary = Number(localStorage.getItem('salary')) || 0;
 let loanAmount = Number(localStorage.getItem('loan')) || 0;
@@ -173,19 +174,24 @@ function updateSettings(){salary=Number(document.getElementById('salaryInput').v
 
 function updateDashboard(){if(!username) return;let totalExpense=dailyData.reduce((a,b)=>a+b.total,0);let remaining=salary+initialSaving-totalExpense-loanAmount;let currentSaving=Math.max(0,remaining);document.getElementById('infoUser').innerText=username;document.getElementById('totalExpense').innerText=totalExpense;document.getElementById('remaining').innerText=remaining;document.getElementById('currentSaving').innerText=currentSaving;}
 
-function addDailyEntryForm(){const food=Number(document.getElementById('foodInput').value)||0;const fuel=Number(document.getElementById('fuelInput').value)||0;const snacks=Number(document.getElementById('snacksInput').value)||0;const bills=Number(document.getElementById('billsInput').value)||0;const entertainment=Number(document.getElementById('entertainmentInput').value)||0;const total=food+fuel+snacks+bills+entertainment;const date=new Date().toLocaleDateString();dailyData.push({food,fuel,snacks,bills,entertainment,total,date});localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();}
+function addDailyEntryForm(){const food=Number(document.getElementById('foodInput').value)||0;const fuel=Number(document.getElementById('fuelInput').value)||0;const snacks=Number(document.getElementById('snacksInput').value)||0;const bills=Number(document.getElementById('billsInput').value)||0;const entertainment=Number(document.getElementById('entertainmentInput').value)||0;const total=food+fuel+snacks+bills+entertainment;const date=new Date().toLocaleDateString();dailyData.push({food,fuel,snacks,bills,entertainment,total,date});localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();notifyDaily(total);}
+
+function notifyDaily(total){if(total>0) alert(`Sweetie! Today's total expense: ${total} PKR`);}
 
 function updateDailyTable(){const table=document.getElementById('dailyTable');table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th><th>Date</th><th>Action</th></tr>";dailyData.forEach((d,i)=>{const row=table.insertRow();row.insertCell(0).innerText=i+1;row.insertCell(1).innerText=d.food;row.insertCell(2).innerText=d.fuel;row.insertCell(3).innerText=d.snacks;row.insertCell(4).innerText=d.bills;row.insertCell(5).innerText=d.entertainment;row.insertCell(6).innerText=d.total;row.insertCell(7).innerText=d.date;const delCell=row.insertCell(8);const delBtn=document.createElement('button');delBtn.className='btn';delBtn.innerText='Delete';delBtn.onclick=()=>{dailyData.splice(i,1);localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();};delCell.appendChild(delBtn);});}
 
 function resetDailyData(){if(confirm("Reset all daily data?")){dailyData=[];localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();}}
+
 function resetAll(){if(confirm("Reset everything?")){dailyData=[];username='';salary=0;loanAmount=0;initialSaving=0;localStorage.clear();showPage('welcome');}}
+
 function updateWeeklyTable(){const table=document.getElementById('weeklyTable');table.innerHTML="<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";let week=1;for(let i=0;i<dailyData.length;i+=7){const weekData=dailyData.slice(i,i+7);const total=weekData.reduce((a,b)=>a+b.total,0);const saving=Math.max(0,(salary+initialSaving-total-loanAmount));const row=table.insertRow();row.insertCell(0).innerText=week;row.insertCell(1).innerText=total;row.insertCell(2).innerText=saving;week++;}}
 
-function updateMonthlyTable(){const table=document.getElementById('monthlyTable');table.innerHTML="<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";let months={};dailyData.forEach(d=>{const m=new Date(d.date).toLocaleString('default',{month:'long',year:'numeric'});if(!months[m]) months[m]={total:0};months[m].total+=d.total;});Object.keys(months).forEach(m=>{const total=months[m].total;const saving=Math.max(0,(salary+initialSaving-total-loanAmount));const row=table.insertRow();row.insertCell(0).innerText=m;row.insertCell(1).innerText=total;row.insertCell(2).innerText=saving;});}
+// Monthly table
+function updateMonthlyTable(){const table=document.getElementById('monthlyTable');table.innerHTML="<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";let monthData={};dailyData.forEach(d=>{let m=new Date(d.date).toLocaleString('default',{month:'long',year:'numeric'});if(!monthData[m]) monthData[m]={total:0};monthData[m].total+=d.total;});for(let m in monthData){let total=monthData[m].total;let saving=Math.max(0,(salary+initialSaving-total-loanAmount));const row=table.insertRow();row.insertCell(0).innerText=m;row.insertCell(1).innerText=total;row.insertCell(2).innerText=saving;}}
 
-function drawChart(){const ctx=document.getElementById('expenseChart').getContext('2d');const labels=dailyData.map((d,i)=>`Day ${i+1}`);const expenseData=dailyData.map(d=>d.total);const savingData=dailyData.map(d=>Math.max(0,salary+initialSaving-d.total-loanAmount));if(window.myChart) window.myChart.destroy();window.myChart=new Chart(ctx,{type:'line',data:{labels:labels,datasets:[{label:'Daily Expense',data:expenseData,borderColor:'red',fill:false},{label:'Daily Saving',data:savingData,borderColor:'green',fill:false}]},options:{responsive:true,plugins:{legend:{position:'top'}}}});}
+// Chart
+function drawChart(){const ctx=document.getElementById('expenseChart').getContext('2d');let labels=dailyData.map((d,i)=>`Day ${i+1}`);let data=dailyData.map(d=>d.total);if(window.myChart) window.myChart.destroy();window.myChart=new Chart(ctx,{type:'line',data:{labels, datasets:[{label:'Daily Expense',data,color:'#ff0000',borderColor:'red',backgroundColor:'rgba(255,0,0,0.1)',fill:true}]},options:{responsive:true,plugins:{legend:{display:true}}}});}
 </script>
 
-</div>
 </body>
 </html>
