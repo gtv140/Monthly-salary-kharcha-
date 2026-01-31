@@ -1,4 +1,3 @@
-<pocket>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,220 +6,272 @@
 <style>
 body{
     font-family:'Roboto',sans-serif;
-    margin:0;padding:0;
-    background: linear-gradient(135deg,#00c6ff,#0072ff);
+    margin:0;
+    padding:0;
+    background:linear-gradient(135deg,#1e3c72,#2a5298);
     color:#fff;
 }
 header{
     text-align:center;
-    font-size:32px;
-    font-weight:700;
     padding:20px;
-    background:linear-gradient(90deg,#ff512f,#dd2476);
+    font-size:32px;
+    font-weight:bold;
+    color:#ffeb3b;
     text-shadow:2px 2px 5px rgba(0,0,0,0.3);
 }
-#datetime{text-align:center;margin:10px;font-weight:bold;}
-.container{max-width:1000px;margin:auto;padding:10px;}
-.boxes{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:space-around;
-    margin-bottom:20px;
-}
-.box{
-    flex:1;
-    min-width:180px;
-    margin:10px;
-    background:rgba(255,255,255,0.1);
-    padding:20px;
-    border-radius:15px;
+#datetime{
     text-align:center;
+    margin-bottom:15px;
+    font-size:18px;
+    color:#ffeb3b;
+}
+input,button{
+    padding:8px 12px;
+    border-radius:8px;
+    border:none;
+    outline:none;
+    margin:5px;
+}
+button{
     font-weight:bold;
-    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    cursor:pointer;
     transition:0.3s;
 }
-.box:hover{transform:scale(1.05);}
-input{padding:8px;border-radius:10px;border:none;width:100px;margin-top:5px;text-align:center;}
-button{padding:8px 12px;border:none;border-radius:8px;font-weight:bold;margin-top:10px;cursor:pointer;transition:0.3s;}
-button:hover{opacity:0.8;}
-table{
-    width:100%;border-collapse:collapse;margin-top:20px;background:rgba(255,255,255,0.95);color:#333;border-radius:10px;overflow:hidden;
+button:hover{
+    opacity:0.85;
 }
-th,td{padding:10px;text-align:center;border:1px solid #ddd;}
-th{background:#0072ff;color:#fff;}
-tr:nth-child(even){background:rgba(0,0,0,0.05);}
-tr:hover{background:rgba(0,0,0,0.1);}
-#themeToggle{position:fixed;top:20px;right:20px;padding:10px;background:#ff512f;color:#fff;font-weight:bold;border-radius:10px;cursor:pointer;}
+
+/* ===== Dashboard Boxes ===== */
+.container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin:20px;
+}
+.box{
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(8px);
+    padding:20px;
+    margin:10px;
+    border-radius:15px;
+    width:180px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    transition:0.4s;
+}
+.box:hover{
+    transform:scale(1.05);
+}
+
+/* ===== Progress Bars ===== */
+.progress-container{
+    background:rgba(255,255,255,0.1);
+    border-radius:10px;
+    margin-top:5px;
+    width:100%;
+    height:15px;
+    overflow:hidden;
+}
+.progress-bar{
+    height:100%;
+    background:#ffeb3b;
+    width:0%;
+    transition:0.5s;
+}
+
+/* ===== Expense Cards ===== */
+.cards{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin:20px 0;
+}
+.card{
+    background:linear-gradient(145deg,#00acc1,#29b6f6);
+    padding:20px;
+    margin:10px;
+    border-radius:15px;
+    text-align:center;
+    width:130px;
+    cursor:pointer;
+    transition:0.4s;
+}
+.card:hover{
+    transform:scale(1.08);
+}
+
+/* ===== Table ===== */
+table{
+    width:90%;
+    margin:20px auto;
+    border-collapse: collapse;
+    background:rgba(255,255,255,0.9);
+    color:#333;
+    border-radius:10px;
+    overflow:hidden;
+}
+th,td{
+    padding:10px;
+    border:1px solid #e0e0e0;
+    text-align:center;
+}
+th{
+    background:#0288d1;
+    color:#fff;
+}
+tr:nth-child(even){background:rgba(0,172,193,0.1);}
+tr:hover{background:rgba(0,172,193,0.2);}
 </style>
 </head>
 <body>
+
 <header>Pocket Traker</header>
 <div id="datetime"></div>
-<button id="themeToggle" onclick="toggleTheme()">Toggle Theme</button>
 
-<div class="container" id="loginScreen">
-    <h2>Login / Register</h2>
-    Username: <input type="text" id="loginUser"><br>
-    Password: <input type="password" id="loginPass"><br>
-    <button onclick="login()">Login</button>
-    <button onclick="register()">Register</button>
-    <p id="loginMsg" style="color:#ffeb3b;"></p>
+<!-- Username Input -->
+<div style="text-align:center;margin-bottom:20px;">
+    Username: <input type="text" id="usernameInput" placeholder="Your Name">
+    <button onclick="setUsername()">Enter</button>
 </div>
 
-<div class="container" id="dashboard" style="display:none;">
-    <div style="text-align:right;"><span id="welcomeUser"></span> <button onclick="logout()">Logout</button></div>
-    <div class="boxes">
-        <div class="box">Username<br><span id="infoUser">-</span></div>
-        <div class="box">Salary<br><input type="number" id="salaryInput" value="0" onchange="updateSalary()"></div>
-        <div class="box">Goal Saving<br><input type="number" id="goalInput" value="10000" onchange="updateGoal()"></div>
-        <div class="box">Loan Amount<br><input type="number" id="loanInput" value="0" onchange="updateLoan()"></div>
+<!-- Dashboard -->
+<div id="dashboard" style="display:none;">
+    <div class="container">
+        <div class="box">Username<br><span id="userDisplay">-</span></div>
+        <div class="box">Salary (PKR)<br><input type="number" id="salaryInput" value="0" onchange="updateData()"></div>
+        <div class="box">Loan (PKR)<br><input type="number" id="loanInput" value="0" onchange="updateData()"></div>
+        <div class="box">Goal Saving (PKR)<br><input type="number" id="goalInput" value="10000" onchange="updateData()"></div>
     </div>
 
-    <div class="boxes">
-        <div class="box">Total Expense<br><span id="totalExpense">0</span></div>
-        <div class="box">Remaining Balance<br><span id="remaining">0</span></div>
-        <div class="box">Current Saving<br><span id="currentSaving">0</span></div>
-        <div class="box">Goal Achieved<br><span id="goalStatus">0%</span></div>
+    <div class="container">
+        <div class="box">Current Balance<br><span id="balance">0</span></div>
+        <div class="box">Current Saving<br><span id="saving">0</span></div>
+        <div class="box">Goal Progress<br>
+            <div class="progress-container">
+                <div class="progress-bar" id="goalBar"></div>
+            </div>
+        </div>
     </div>
 
-    <h2>Daily Expenses</h2>
-    <div class="boxes">
-        <div class="box" onclick="addDaily('food')">🍔 Food</div>
-        <div class="box" onclick="addDaily('fuel')">⛽ Fuel</div>
-        <div class="box" onclick="addDaily('snacks')">🍿 Snacks</div>
-        <div class="box" onclick="addDaily('bills')">💡 Bills</div>
-        <div class="box" onclick="addDaily('fun')">🎮 Fun</div>
-        <div class="box" onclick="clearAll()">🗑️ Clear All</div>
+    <h2 style="text-align:center;">Add Daily Expense</h2>
+    <div class="cards">
+        <div class="card" onclick="addExpense('Food')">🍔 Food</div>
+        <div class="card" onclick="addExpense('Fuel')">⛽ Fuel</div>
+        <div class="card" onclick="addExpense('Snacks')">🍿 Snacks</div>
+        <div class="card" onclick="addExpense('Bills')">💡 Bills</div>
+        <div class="card" onclick="addExpense('Fun')">🎮 Fun</div>
+        <div class="card" onclick="clearData()">🗑️ Clear</div>
     </div>
 
-    <table id="dailyTable">
+    <h2 style="text-align:center;">Daily Expenses Table</h2>
+    <table id="expenseTable">
         <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Date</th></tr>
     </table>
 </div>
 
 <script>
-let darkTheme=true;
+// Timer
 function updateDateTime(){
     const now=new Date();
-    document.getElementById('datetime').innerText=now.toLocaleDateString()+' | '+now.toLocaleTimeString();
+    document.getElementById('datetime').innerText=now.toLocaleDateString() + " | " + now.toLocaleTimeString();
 }
 setInterval(updateDateTime,1000);
-updateDateTime();
 
-function toggleTheme(){
-    if(darkTheme){
-        document.body.style.background="#fff";
-        document.body.style.color="#333";
-        darkTheme=false;
-    } else{
-        document.body.style.background="linear-gradient(135deg,#00c6ff,#0072ff)";
-        document.body.style.color="#fff";
-        darkTheme=true;
-    }
-}
+// Local Storage Variables
+let username="", salary=0, loan=0, goal=10000;
+let expenses=[];
 
-let currentUser=null;
-let users=JSON.parse(localStorage.getItem('users')||"{}");
-let dailyData=[],salary=0,goal=10000,loan=0;
-
-window.onload=function(){
-    const savedUser=localStorage.getItem('currentUser');
-    if(savedUser && users[savedUser]){
-        currentUser=savedUser;
-        loadUserData();
-    }
-}
-
-function login(){
-    const user=document.getElementById('loginUser').value.trim();
-    const pass=document.getElementById('loginPass').value;
-    if(users[user] && users[user].pass===pass){
-        currentUser=user;
-        localStorage.setItem('currentUser',currentUser);
-        loadUserData();
-    } else {document.getElementById('loginMsg').innerText='Invalid login!';}
-}
-
-function register(){
-    const user=document.getElementById('loginUser').value.trim();
-    const pass=document.getElementById('loginPass').value;
-    if(user && pass){
-        if(users[user]){document.getElementById('loginMsg').innerText='User exists!'; return;}
-        users[user]={pass:pass,dailyData:[],salary:0,goal:10000,loan:0};
-        localStorage.setItem('users',JSON.stringify(users));
-        document.getElementById('loginMsg').innerText='Registered! Now login.';
-    }
-}
-
-function loadUserData(){
-    document.getElementById('loginScreen').style.display='none';
+// Set Username & Show Dashboard
+function setUsername(){
+    username=document.getElementById('usernameInput').value.trim();
+    if(username=="") return alert("Enter a username");
+    localStorage.setItem('username',username);
+    document.getElementById('userDisplay').innerText=username;
     document.getElementById('dashboard').style.display='block';
-    document.getElementById('welcomeUser').innerText=`Welcome, ${currentUser}`;
-    const u=users[currentUser];
-    dailyData=u.dailyData||[];
-    salary=u.salary||0;
-    goal=u.goal||10000;
-    loan=u.loan||0;
+    loadData();
+}
+
+// Load Data from Local Storage
+function loadData(){
+    salary=Number(localStorage.getItem('salary')||0);
+    loan=Number(localStorage.getItem('loan')||0);
+    goal=Number(localStorage.getItem('goal')||10000);
+    expenses=JSON.parse(localStorage.getItem('expenses')||"[]");
     document.getElementById('salaryInput').value=salary;
-    document.getElementById('goalInput').value=goal;
     document.getElementById('loanInput').value=loan;
-    document.getElementById('infoUser').innerText=currentUser;
+    document.getElementById('goalInput').value=goal;
+    updateData();
+}
+
+// Update Dashboard
+function updateData(){
+    salary=Number(document.getElementById('salaryInput').value)||0;
+    loan=Number(document.getElementById('loanInput').value)||0;
+    goal=Number(document.getElementById('goalInput').value)||10000;
+    localStorage.setItem('salary',salary);
+    localStorage.setItem('loan',loan);
+    localStorage.setItem('goal',goal);
     calculate();
 }
 
-function logout(){
-    localStorage.removeItem('currentUser');
-    currentUser=null;
-    document.getElementById('dashboard').style.display='none';
-    document.getElementById('loginScreen').style.display='block';
-}
-
-function addDaily(type){
-    const value=parseInt(prompt(`Enter ${type} expense:`,"0"))||0;
-    const today={food:0,fuel:0,snacks:0,bills:0,fun:0,total:0,date:new Date().toLocaleDateString()};
-    if(dailyData.length>0 && dailyData[dailyData.length-1].date===today.date){
-        let last=dailyData[dailyData.length-1];
-        last[type]+=value;
-        last.total=last.food+last.fuel+last.snacks+last.bills+last.fun;
+// Add Expense
+function addExpense(type){
+    let value=Number(prompt(`Enter ${type} amount in PKR:`)||0);
+    const today=new Date().toLocaleDateString();
+    let dayData={Food:0,Fuel:0,Snacks:0,Bills:0,Fun:0,Total:0,Date:today};
+    if(expenses.length>0 && expenses[expenses.length-1].Date===today){
+        expenses[expenses.length-1][type]+=value;
     } else {
-        today[type]=value;
-        today.total=today.food+today.fuel+today.snacks+today.bills+today.fun;
-        dailyData.push(today);
+        dayData[type]=value;
+        expenses.push(dayData);
     }
-    saveUserData();
+    saveExpenses();
     calculate();
 }
 
-function updateSalary(){salary=parseInt(document.getElementById('salaryInput').value)||0;saveUserData();calculate();}
-function updateGoal(){goal=parseInt(document.getElementById('goalInput').value)||10000;saveUserData();calculate();}
-function updateLoan(){loan=parseInt(document.getElementById('loanInput').value)||0;saveUserData();calculate();}
-function saveUserData(){users[currentUser].dailyData=dailyData;users[currentUser].salary=salary;users[currentUser].goal=goal;users[currentUser].loan=loan;localStorage.setItem('users',JSON.stringify(users));}
-function clearAll(){if(confirm("Delete all data?")){dailyData=[];saveUserData();calculate();}}
-
-function calculate(){
-    const table=document.getElementById('dailyTable');
-    table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Date</th></tr>";
-    let totalExpense=loan;
-    dailyData.forEach((day,index)=>{
-        const row=table.insertRow();
-        row.insertCell(0).innerText=index+1;
-        row.insertCell(1).innerText=day.food;
-        row.insertCell(2).innerText=day.fuel;
-        row.insertCell(3).innerText=day.snacks;
-        row.insertCell(4).innerText=day.bills;
-        row.insertCell(5).innerText=day.fun;
-        row.insertCell(6).innerText=day.total;
-        row.insertCell(7).innerText=day.date;
-        totalExpense+=day.total;
+// Save Expenses
+function saveExpenses(){
+    expenses.forEach(e=>{
+        e.Total=e.Food+e.Fuel+e.Snacks+e.Bills+e.Fun;
     });
-    const remaining=salary-totalExpense;
-    const currentSaving=Math.max(0,remaining);
-    document.getElementById('totalExpense').innerText=totalExpense;
-    document.getElementById('remaining').innerText=remaining;
-    document.getElementById('currentSaving').innerText=currentSaving;
-    const goalPercent=Math.min(Math.round((currentSaving/goal)*100),100);
-    document.getElementById('goalStatus').innerText=goalPercent+'%';
+    localStorage.setItem('expenses',JSON.stringify(expenses));
+}
+
+// Clear Data
+function clearData(){
+    if(confirm("Delete all data?")){
+        expenses=[];
+        localStorage.setItem('expenses',JSON.stringify(expenses));
+        calculate();
+    }
+}
+
+// Calculate & Update Dashboard
+function calculate(){
+    let totalExpense=expenses.reduce((a,b)=>a+b.Total,0)+loan;
+    let balance=salary-totalExpense;
+    let saving=Math.max(0,balance);
+    let goalPercent=Math.min(Math.round((saving/goal)*100),100);
+    document.getElementById('balance').innerText=balance;
+    document.getElementById('saving').innerText=saving;
+    document.getElementById('goalBar').style.width=goalPercent+"%";
+
+    // Table
+    const table=document.getElementById('expenseTable');
+    table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Date</th></tr>";
+    expenses.forEach((day,index)=>{
+        let row=table.insertRow();
+        row.insertCell(0).innerText=index+1;
+        row.insertCell(1).innerText=day.Food;
+        row.insertCell(2).innerText=day.Fuel;
+        row.insertCell(3).innerText=day.Snacks;
+        row.insertCell(4).innerText=day.Bills;
+        row.insertCell(5).innerText=day.Fun;
+        row.insertCell(6).innerText=day.Total;
+        row.insertCell(7).innerText=day.Date;
+    });
 }
 </script>
+
 </body>
 </html>
