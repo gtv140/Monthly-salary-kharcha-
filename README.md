@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker - WebHub Modern</title>
+<title>Pocket Tracker - Ultimate Modern</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -38,6 +38,10 @@ nav button:hover{transform:translateY(-3px);opacity:0.85;}
 .box h3{font-size:16px;color:#2a5298;}
 .box span{font-size:18px;font-weight:700;}
 
+/* Forms */
+.form-group{display:flex;justify-content:space-between;margin-bottom:10px;}
+.form-group input{width:45%;padding:8px;border-radius:6px;border:1px solid #ccc;}
+
 /* Tables */
 table{width:100%;border-collapse:collapse;margin-bottom:20px;background:rgba(255,255,255,0.85);border-radius:12px;overflow:hidden;box-shadow:0 6px 15px rgba(0,0,0,0.15);}
 th,td{padding:10px;text-align:center;border-bottom:1px solid #eee;font-size:13px;}
@@ -50,6 +54,10 @@ tr:hover{background:rgba(42,82,152,0.1);}
 .card i{font-size:24px;color:#2a5298;margin-bottom:8px;}
 .card:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.2);}
 .card p{font-size:14px;color:#555;}
+
+/* Buttons */
+.btn{padding:8px 15px;border-radius:8px;background:#ffd700;color:#2a5298;border:none;cursor:pointer;transition:0.3s;margin-top:5px;}
+.btn:hover{opacity:0.9;transform:translateY(-2px);}
 
 /* Charts */
 canvas{background:rgba(255,255,255,0.85);border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15);padding:10px;margin-bottom:20px;}
@@ -98,10 +106,15 @@ footer p{margin:5px;font-size:14px;}
 <!-- Daily -->
 <section id="daily" class="page">
   <h2 style="text-align:center;color:#2a5298;margin-bottom:15px;">Daily Expenses</h2>
+  <div id="dailyForm">
+    <div class="form-group"><input type="number" placeholder="Food" id="foodInput"><input type="number" placeholder="Fuel" id="fuelInput"></div>
+    <div class="form-group"><input type="number" placeholder="Snacks" id="snacksInput"><input type="number" placeholder="Bills" id="billsInput"></div>
+    <div class="form-group"><input type="number" placeholder="Entertainment" id="entertainmentInput"></div>
+    <button class="btn" onclick="addDailyEntryForm()">Add Entry</button>
+  </div>
   <table id="dailyTable">
-    <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Daily Total</th><th>Date</th></tr>
+    <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Daily Total</th><th>Date</th><th>Action</th></tr>
   </table>
-  <button onclick="addDailyEntry()">Add Daily Entry</button>
 </section>
 
 <!-- Weekly -->
@@ -123,7 +136,7 @@ footer p{margin:5px;font-size:14px;}
   <h2 style="text-align:center;color:#2a5298;margin-bottom:15px;">Settings</h2>
   <p>Salary: <input type="number" id="salaryInput" value="50000"></p>
   <p>Loan Amount: <input type="number" id="loanInput" value="10000"></p>
-  <button onclick="updateSettings()">Save Settings</button>
+  <button class="btn" onclick="updateSettings()">Save Settings</button>
 </section>
 
 <!-- Tips -->
@@ -183,10 +196,10 @@ function updateDashboard(){
   document.getElementById('currentSaving').innerText=currentSaving;
 }
 
-// ===== Daily =====
+// ===== Daily Table =====
 function updateDailyTable(){
   const table = document.getElementById('dailyTable');
-  table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Daily Total</th><th>Date</th></tr>";
+  table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Daily Total</th><th>Date</th><th>Action</th></tr>";
   dailyData.forEach((d,i)=>{
     const row = table.insertRow();
     row.insertCell(0).innerText=i+1;
@@ -197,7 +210,25 @@ function updateDailyTable(){
     row.insertCell(5).innerText=d.entertainment;
     row.insertCell(6).innerText=d.total;
     row.insertCell(7).innerText=d.date;
+    const actionCell = row.insertCell(8);
+    const delBtn = document.createElement('button');
+    delBtn.className='btn';
+    delBtn.innerText='Delete';
+    delBtn.onclick = ()=>{deleteEntry(i);};
+    actionCell.appendChild(delBtn);
   });
+}
+
+// ===== Delete Entry =====
+function deleteEntry(index){
+  if(confirm("Are you sure to delete this entry?")){
+    dailyData.splice(index,1);
+    localStorage.setItem('dailyData', JSON.stringify(dailyData));
+    updateDashboard();
+    updateDailyTable();
+    updateWeeklyTable();
+    drawChart();
+  }
 }
 
 // ===== Weekly =====
@@ -208,7 +239,7 @@ function updateWeeklyTable(){
   for(let i=0;i<dailyData.length;i+=7){
     const weekData = dailyData.slice(i,i+7);
     const total = weekData.reduce((a,b)=>a+b.total,0);
-    const saving = Math.max(0,salary-total-loanAmount);
+    const saving = Math.max(0,salary-total-loanAmount-total);
     const row = table.insertRow();
     row.insertCell(0).innerText=week++;
     row.insertCell(1).innerText=total;
@@ -228,17 +259,22 @@ function updateSettings(){
   drawChart();
 }
 
-// ===== Add Daily Entry =====
-function addDailyEntry(){
-  const food = Number(prompt("Food expense:","0"));
-  const fuel = Number(prompt("Fuel expense:","0"));
-  const snacks = Number(prompt("Snacks expense:","0"));
-  const bills = Number(prompt("Bills expense:","0"));
-  const entertainment = Number(prompt("Entertainment:","0"));
+// ===== Add Daily Entry Form =====
+function addDailyEntryForm(){
+  const food = Number(document.getElementById('foodInput').value) || 0;
+  const fuel = Number(document.getElementById('fuelInput').value) || 0;
+  const snacks = Number(document.getElementById('snacksInput').value) || 0;
+  const bills = Number(document.getElementById('billsInput').value) || 0;
+  const entertainment = Number(document.getElementById('entertainmentInput').value) || 0;
   const total = food+fuel+snacks+bills+entertainment;
   const date = new Date().toLocaleDateString();
   dailyData.push({food,fuel,snacks,bills,entertainment,total,date});
   localStorage.setItem('dailyData', JSON.stringify(dailyData));
+  document.getElementById('foodInput').value='';
+  document.getElementById('fuelInput').value='';
+  document.getElementById('snacksInput').value='';
+  document.getElementById('billsInput').value='';
+  document.getElementById('entertainmentInput').value='';
   updateDashboard();
   updateDailyTable();
   updateWeeklyTable();
