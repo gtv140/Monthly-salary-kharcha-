@@ -6,212 +6,269 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
+/* ===== Base Styles ===== */
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg,#1e3c72,#2a5298);
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
     color: #fff;
 }
 header {
-    background: linear-gradient(135deg,#29b6f6,#00acc1);
     text-align: center;
     padding: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffeb3b;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    background: linear-gradient(135deg, #29b6f6, #00acc1);
 }
 .container {
-    max-width: 900px;
+    max-width: 1200px;
     margin: 20px auto;
     padding: 10px;
 }
-.boxes {
+.info-boxes {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     margin-bottom: 20px;
 }
-.box {
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(8px);
-    padding: 20px;
+.info-box {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(6px);
+    flex: 1;
+    min-width: 180px;
     margin: 10px;
+    padding: 20px;
     border-radius: 15px;
-    flex: 1 1 200px;
     text-align: center;
     font-weight: bold;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: 0.3s;
+}
+.info-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 input {
     padding: 8px;
     border-radius: 10px;
-    border: none;
-    text-align: center;
-    width: 100px;
+    border: 2px solid #03a9f4;
+    outline: none;
+    width: 120px;
+    margin-top: 5px;
 }
 button {
-    padding: 8px 12px;
+    padding: 8px 15px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
+    background: #ffeb3b;
+    color: #000;
     font-weight: bold;
     cursor: pointer;
     margin-top: 5px;
-    background-color: #03a9f4;
-    color: #fff;
 }
 button:hover {
     opacity: 0.85;
+}
+.dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(5px);
+    width: 130px;
+    height: 130px;
+    margin: 10px;
+    border-radius: 15px;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.card:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+.card img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px;
 }
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background: rgba(255,255,255,0.95);
+    background: rgba(255,255,255,0.9);
     color: #333;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
 }
 th, td {
     padding: 10px;
     text-align: center;
-    border-bottom: 1px solid #ccc;
+    border: 1px solid #e0e0e0;
 }
 th {
     background: #0288d1;
     color: #fff;
 }
-@media(max-width:600px){
-    .boxes {
-        flex-direction: column;
-        align-items: center;
-    }
+tr:nth-child(even) {
+    background: rgba(0,172,193,0.1);
+}
+tr:hover {
+    background: rgba(0,172,193,0.2);
+}
+#datetime {
+    text-align: center;
+    margin: 15px 0;
+    font-weight: bold;
+    font-size: 18px;
+    color: #ffeb3b;
 }
 </style>
 </head>
 <body>
 
-<header>💼 Pocket Tracker 💼</header>
+<header>Pocket Tracker</header>
+<div id="datetime"></div>
 
 <div class="container">
-    <div class="boxes">
-        <div class="box">Username<br><span id="username">User</span></div>
-        <div class="box">Salary<br><input type="number" id="salary" value="0" onchange="updateBalance()"></div>
-        <div class="box">Loan<br><input type="number" id="loan" value="0" onchange="updateBalance()"></div>
-        <div class="box">Goal Saving<br><input type="number" id="goal" value="10000" onchange="updateBalance()"></div>
-        <div class="box">Current Balance<br><span id="balance">0</span></div>
-        <div class="box">Current Saving<br><span id="saving">0</span></div>
+    <div class="info-boxes">
+        <div class="info-box">Username<br><span id="usernameDisplay">User</span></div>
+        <div class="info-box">Salary<br>PKR <input type="number" id="salary" value="0" onchange="calculate()"></div>
+        <div class="info-box">Goal Saving<br>PKR <input type="number" id="goal" value="10000" onchange="calculate()"></div>
+        <div class="info-box">Loan<br>PKR <input type="number" id="loan" value="0" onchange="calculate()"></div>
     </div>
 
-    <h3>Daily Expenses</h3>
-    <div class="boxes">
-        <div class="box" onclick="addExpense('Food')">🍔 Food</div>
-        <div class="box" onclick="addExpense('Fuel')">⛽ Fuel</div>
-        <div class="box" onclick="addExpense('Snacks')">🍿 Snacks</div>
-        <div class="box" onclick="addExpense('Bills')">💡 Bills</div>
-        <div class="box" onclick="addExpense('Entertainment')">🎮 Fun</div>
+    <div class="dashboard">
+        <div class="card" onclick="addExpense('food')"><img src="https://img.icons8.com/emoji/48/000000/hamburger-emoji.png"/>Food</div>
+        <div class="card" onclick="addExpense('fuel')"><img src="https://img.icons8.com/emoji/48/000000/fuel-pump.png"/>Fuel</div>
+        <div class="card" onclick="addExpense('snacks')"><img src="https://img.icons8.com/emoji/48/000000/popcorn.png"/>Snacks</div>
+        <div class="card" onclick="addExpense('bills')"><img src="https://img.icons8.com/emoji/48/000000/light-bulb.png"/>Bills</div>
+        <div class="card" onclick="addExpense('fun')"><img src="https://img.icons8.com/emoji/48/000000/video-game.png"/>Fun</div>
+        <div class="card" onclick="clearAll()"><img src="https://img.icons8.com/emoji/48/000000/wastebasket-emoji.png"/>Clear</div>
     </div>
 
-    <h3>Daily Expenses Table</h3>
+    <h2>Daily Expenses Table</h2>
     <table id="expenseTable">
-        <tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Date</th></tr>
+        <tr>
+            <th>Day</th>
+            <th>Food</th>
+            <th>Fuel</th>
+            <th>Snacks</th>
+            <th>Bills</th>
+            <th>Fun</th>
+            <th>Total</th>
+            <th>Date</th>
+        </tr>
     </table>
 
-    <h3>Visual Overview</h3>
-    <canvas id="chart" width="400" height="200"></canvas>
+    <h2>Overview</h2>
+    <div class="info-boxes">
+        <div class="info-box">Total Expense<br>PKR <span id="totalExpense">0</span></div>
+        <div class="info-box">Remaining Balance<br>PKR <span id="remainingBalance">0</span></div>
+        <div class="info-box">Current Saving<br>PKR <span id="currentSaving">0</span></div>
+        <div class="info-box">Goal Achieved<br><span id="goalPercent">0%</span></div>
+    </div>
 </div>
 
 <script>
-let username = 'User';
-let salary = 0;
-let loan = 0;
-let goal = 10000;
-let expenses = [];
-let balance = 0;
-let saving = 0;
-
-// Load saved data
-if(localStorage.getItem('pocketData')){
-    let data = JSON.parse(localStorage.getItem('pocketData'));
-    username = data.username;
-    salary = data.salary;
-    loan = data.loan;
-    goal = data.goal;
-    expenses = data.expenses || [];
+// Timer
+function updateDateTime(){
+    const now=new Date();
+    document.getElementById('datetime').innerText=now.toLocaleDateString() + ' | ' + now.toLocaleTimeString();
 }
-document.getElementById('username').innerText = username;
+setInterval(updateDateTime,1000);
+updateDateTime();
+
+// Data
+let dailyExpenses = JSON.parse(localStorage.getItem('dailyExpenses')||'[]');
+let salary = parseInt(localStorage.getItem('salary'))||0;
+let goal = parseInt(localStorage.getItem('goal'))||10000;
+let loan = parseInt(localStorage.getItem('loan'))||0;
+
+// Display salary, goal, loan
 document.getElementById('salary').value = salary;
-document.getElementById('loan').value = loan;
 document.getElementById('goal').value = goal;
+document.getElementById('loan').value = loan;
 
-function updateBalance(){
-    salary = parseInt(document.getElementById('salary').value) || 0;
-    loan = parseInt(document.getElementById('loan').value) || 0;
-    goal = parseInt(document.getElementById('goal').value) || 10000;
-    calculate();
-    saveData();
-}
-
+// Add Expense
 function addExpense(type){
-    let value = parseInt(prompt(`Enter ${type} amount:`)) || 0;
-    let today = new Date().toLocaleDateString();
-    let day = expenses.length+1;
-    let entry = {day, Food:0,Fuel:0,Snacks:0,Bills:0,Entertainment:0,Date:today};
-    entry[type] = value;
-    expenses.push(entry);
-    calculate();
+    const value = parseInt(prompt('Enter '+type+' expense PKR:','0'))||0;
+    const today = new Date().toLocaleDateString();
+    let lastEntry = dailyExpenses.length>0? dailyExpenses[dailyExpenses.length-1]: null;
+    if(lastEntry && lastEntry.date===today){
+        lastEntry[type] += value;
+        lastEntry.total = lastEntry.food+lastEntry.fuel+lastEntry.snacks+lastEntry.bills+lastEntry.fun;
+    } else {
+        const entry = {food:0,fuel:0,snacks:0,bills:0,fun:0,total:0,date:today};
+        entry[type]=value;
+        entry.total = entry.food+entry.fuel+entry.snacks+entry.bills+entry.fun;
+        dailyExpenses.push(entry);
+    }
     saveData();
+    calculate();
 }
 
-function calculate(){
-    balance = salary - loan;
-    saving = 0;
-    let table = document.getElementById('expenseTable');
-    table.innerHTML = "<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Date</th></tr>";
-    expenses.forEach(e=>{
-        let total = e.Food+e.Fuel+e.Snacks+e.Bills+e.Entertainment;
-        saving += total;
-        balance -= total;
-        let row = table.insertRow();
-        row.insertCell(0).innerText=e.day;
-        row.insertCell(1).innerText=e.Food;
-        row.insertCell(2).innerText=e.Fuel;
-        row.insertCell(3).innerText=e.Snacks;
-        row.insertCell(4).innerText=e.Bills;
-        row.insertCell(5).innerText=e.Entertainment;
-        row.insertCell(6).innerText=total;
-        row.insertCell(7).innerText=e.Date;
-    });
-    document.getElementById('balance').innerText=balance;
-    document.getElementById('saving').innerText=saving;
-    drawChart();
-}
-
+// Save Data
 function saveData(){
-    let data = {username,salary,loan,goal,expenses};
-    localStorage.setItem('pocketData', JSON.stringify(data));
+    localStorage.setItem('dailyExpenses', JSON.stringify(dailyExpenses));
+    localStorage.setItem('salary', salary);
+    localStorage.setItem('goal', goal);
+    localStorage.setItem('loan', loan);
 }
 
-function drawChart(){
-    let ctx = document.getElementById('chart').getContext('2d');
-    if(window.barChart) window.barChart.destroy();
-    window.barChart = new Chart(ctx,{
-        type:'bar',
-        data:{
-            labels:['Salary','Loan','Total Expenses','Balance'],
-            datasets:[{
-                label:'PKR',
-                data:[salary,loan,saving,balance],
-                backgroundColor:['#00acc1','#f44336','#ffeb3b','#4caf50']
-            }]
-        },
-        options:{responsive:true,maintainAspectRatio:false}
+// Clear All
+function clearAll(){
+    if(confirm('Delete all data?')){
+        dailyExpenses=[];
+        saveData();
+        calculate();
+    }
+}
+
+// Calculate Dashboard
+function calculate(){
+    salary = parseInt(document.getElementById('salary').value)||0;
+    goal = parseInt(document.getElementById('goal').value)||10000;
+    loan = parseInt(document.getElementById('loan').value)||0;
+    localStorage.setItem('salary', salary);
+    localStorage.setItem('goal', goal);
+    localStorage.setItem('loan', loan);
+
+    const table = document.getElementById('expenseTable');
+    table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Date</th></tr>";
+
+    let totalExpense = loan;
+    dailyExpenses.forEach((d,i)=>{
+        const row = table.insertRow();
+        row.insertCell(0).innerText = i+1;
+        row.insertCell(1).innerText = d.food;
+        row.insertCell(2).innerText = d.fuel;
+        row.insertCell(3).innerText = d.snacks;
+        row.insertCell(4).innerText = d.bills;
+        row.insertCell(5).innerText = d.fun;
+        row.insertCell(6).innerText = d.total + Math.round(loan/dailyExpenses.length||0);
+        row.insertCell(7).innerText = d.date;
+        totalExpense += d.total;
     });
+
+    const remaining = salary-totalExpense;
+    const currentSaving = Math.max(0, remaining);
+    const goalPercent = Math.min(Math.round((currentSaving/goal)*100),100);
+
+    document.getElementById('totalExpense').innerText = totalExpense;
+    document.getElementById('remainingBalance').innerText = remaining;
+    document.getElementById('currentSaving').innerText = currentSaving;
+    document.getElementById('goalPercent').innerText = goalPercent+'%';
 }
 
-// Initialize
+// Initial calculation
 calculate();
 </script>
 
