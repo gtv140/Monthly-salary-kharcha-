@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker - WebHub Modern</title>
+<title>Pocket Tracker - Modern</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -20,13 +20,13 @@ header .logo{font-size:28px;font-weight:700;}
 nav{margin-top:10px;display:flex;flex-wrap:wrap;justify-content:center;}
 nav button{margin:5px;cursor:pointer;padding:10px 18px;border:none;border-radius:8px;font-weight:600;background:var(--accent-color);color:var(--main-color);transition:0.3s;box-shadow:0 4px 8px rgba(0,0,0,0.2);}
 nav button:hover{transform:translateY(-3px);opacity:0.85;}
-.hero{background:var(--main-color) url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png') center/120px no-repeat;color:#fff;padding:70px 20px;border-radius:12px;margin:20px 0;text-align:center;box-shadow:0 6px 15px rgba(0,0,0,0.2);}
-.hero h1{font-size:30px;margin-bottom:10px;}
+.hero{background:var(--main-color) url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png') center/120px no-repeat;color:#fff;padding:60px 20px;border-radius:12px;margin:20px 0;text-align:center;box-shadow:0 6px 15px rgba(0,0,0,0.2);}
+.hero h1{font-size:28px;margin-bottom:10px;}
 .hero p{font-size:16px;margin-bottom:15px;}
-.hero input{padding:12px;border-radius:8px;border:none;margin-bottom:10px;width:70%;max-width:300px;}
+.hero input{padding:10px;border-radius:8px;border:none;margin-bottom:10px;width:70%;max-width:300px;}
 .hero button{padding:12px 25px;border-radius:8px;background:var(--accent-color);color:var(--main-color);border:none;font-weight:700;cursor:pointer;transition:0.3s;}
 .hero button:hover{opacity:0.9;transform:translateY(-2px);}
-.container{width:95%;max-width:700px;margin:0 auto;padding-bottom:50px;}
+.container{width:95%;max-width:650px;margin:0 auto;padding-bottom:50px;}
 .page{display:none;}
 .page.active{display:block;animation:fadeIn 0.5s;}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
@@ -53,57 +53,161 @@ footer p{margin:5px;font-size:14px;}
 .form-group input{width:45%;padding:8px;border-radius:6px;border:1px solid #ccc;}
 canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15);padding:10px;margin-bottom:20px;}
 .toggle-mode{position:fixed;top:10px;right:10px;padding:10px 15px;background:var(--accent-color);color:var(--main-color);border:none;border-radius:8px;cursor:pointer;z-index:1000;}
-.date-time{font-size:12px;color:#555;text-align:right;margin-bottom:5px;}
 </style>
 </head>
 <body>
 <button class="toggle-mode" onclick="toggleMode()">Toggle Light/Dark</button>
 <div class="container">
-
 <header>
-<div class="logo">Pocket Tracker</div>
-<nav>
-<button onclick="showPage('dashboard')">Dashboard</button>
-<button onclick="showPage('daily')">Daily</button>
-<button onclick="showPage('weekly')">Weekly</button>
-<button onclick="showPage('monthly')">Monthly</button>
-<button onclick="showPage('charts')">Charts</button>
-<button onclick="showPage('settings')">Settings</button>
-<button onclick="showPage('tips')">Tips</button>
-</nav>
+  <div class="logo">Pocket Tracker</div>
+  <nav>
+    <button onclick="showPage('dashboard')">Dashboard</button>
+    <button onclick="showPage('daily')">Daily</button>
+    <button onclick="showPage('weekly')">Weekly</button>
+    <button onclick="showPage('monthly')">Monthly</button>
+    <button onclick="showPage('charts')">Charts</button>
+    <button onclick="showPage('settings')">Settings</button>
+    <button onclick="showPage('tips')">Tips</button>
+  </nav>
 </header>
 
 <section class="hero page active" id="welcome">
-<h1>Welcome to Pocket Tracker!</h1>
-<p>Track your expenses and savings smartly.</p>
-<input type="text" id="usernameInput" placeholder="Enter your name"><br>
-<button class="btn" onclick="enterUsername()">Get Started</button>
+  <h1>Track & Save Smartly!</h1>
+  <p>Keep your expenses, savings and financial goals on track.</p>
+  <input type="text" id="usernameInput" placeholder="Enter your name"><br>
+  <button class="btn" onclick="enterUsername()">Get Started</button>
 </section>
 
 <section id="dashboard" class="page">
-<div class="date-time" id="currentDateTime"></div>
 <h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Your Dashboard</h2>
 <div class="dashboard">
-<div class="box" onclick="showPage('daily')"><h3><i class="fas fa-user"></i>Username</h3><span id="infoUser">User</span></div>
-<div class="box" onclick="showPage('daily')"><h3><i class="fas fa-wallet"></i>Current Balance</h3><span id="remaining">0</span> PKR</div>
-<div class="box" onclick="showPage('daily')"><h3><i class="fas fa-piggy-bank"></i>Current Saving</h3><span id="currentSaving">0</span> PKR</div>
-<div class="box" onclick="showPage('daily')"><h3><i class="fas fa-money-bill-wave"></i>Total Expense</h3><span id="totalExpense">0</span> PKR</div>
+  <div class="box" onclick="showPage('daily')"><h3><i class="fas fa-user"></i>Username</h3><span id="infoUser">User</span></div>
+  <div class="box" onclick="showPage('daily')"><h3><i class="fas fa-wallet"></i>Current Balance</h3><span id="remaining">0</span> PKR</div>
+  <div class="box" onclick="showPage('daily')"><h3><i class="fas fa-piggy-bank"></i>Current Saving</h3><span id="currentSaving">0</span> PKR</div>
+  <div class="box" onclick="showPage('daily')"><h3><i class="fas fa-money-bill-wave"></i>Total Expense</h3><span id="totalExpense">0</span> PKR</div>
+  <div class="box"><h3><i class="fas fa-calendar"></i>Date/Time</h3><span id="dateTime">--</span></div>
 </div>
 </section>
 
 <section id="daily" class="page">
 <h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Daily Expenses</h2>
 <div id="dailyForm">
-<div class="form-group"><input type="number" placeholder="Food" id="foodInput"><input type="number" placeholder="Fuel" id="fuelInput"></div>
-<div class="form-group"><input type="number" placeholder="Snacks" id="snacksInput"><input type="number" placeholder="Bills" id="billsInput"></div>
-<div class="form-group"><input type="number" placeholder="Entertainment" id="entertainmentInput"></div>
-<button class="btn" onclick="addDailyEntryForm()">Add Entry</button>
-<button class="btn" onclick="resetDailyData()">Reset All</button>
+  <div class="form-group"><input type="number" placeholder="Food" id="foodInput"><input type="number" placeholder="Fuel" id="fuelInput"></div>
+  <div class="form-group"><input type="number" placeholder="Snacks" id="snacksInput"><input type="number" placeholder="Bills" id="billsInput"></div>
+  <div class="form-group"><input type="number" placeholder="Entertainment" id="entertainmentInput"></div>
+  <button class="btn" onclick="addDailyEntryForm()">Add Entry</button>
+  <button class="btn" onclick="resetDailyData()">Reset All</button>
 </div>
 <table id="dailyTable"><tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th><th>Date</th><th>Action</th></tr></table>
 </section>
 
-<section id="weekly" class="page">
+<script>
+// ===== LocalStorage Init =====
+let username = localStorage.getItem('username')||'';
+let salary = Number(localStorage.getItem('salary'))||0;
+let loanAmount = Number(localStorage.getItem('loan'))||0;
+let dailyData = JSON.parse(localStorage.getItem('dailyData'))||[];
+let darkMode = localStorage.getItem('darkMode')==='true';
+if(darkMode) document.body.classList.add('dark');
+
+// ===== Toggle Dark/Light Mode =====
+function toggleMode(){
+document.body.classList.toggle('dark');
+darkMode = document.body.classList.contains('dark');
+localStorage.setItem('darkMode', darkMode);
+}
+
+// ===== Show Page Function =====
+function showPage(pageId){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(pageId).classList.add('active');
+if(pageId==='dashboard') updateDashboard();
+if(pageId==='daily') updateDailyTable();
+}
+
+// ===== Enter Username for New Users =====
+function enterUsername(){
+const val=document.getElementById('usernameInput').value.trim();
+if(!val){alert('Enter your username!'); return;}
+username=val;
+localStorage.setItem('username', username);
+showPage('dashboard');
+updateDashboard();
+}
+
+// ===== Dashboard Update =====
+function updateDashboard(){
+document.getElementById('infoUser').innerText=username;
+let totalExpense=dailyData.reduce((a,b)=>a+b.total,0);
+let remaining=Math.max(0,salary-totalExpense-loanAmount);
+document.getElementById('totalExpense').innerText=totalExpense;
+document.getElementById('remaining').innerText=remaining;
+document.getElementById('currentSaving').innerText=Math.max(0,remaining);
+document.getElementById('dateTime').innerText=new Date().toLocaleString();
+}
+
+// ===== Update Daily Table =====
+function updateDailyTable(){
+const table=document.getElementById('dailyTable');
+table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th><th>Date</th><th>Action</th></tr>";
+dailyData.forEach((d,i)=>{
+const row=table.insertRow();
+row.insertCell(0).innerText=i+1;
+row.insertCell(1).innerText=d.food;
+row.insertCell(2).innerText=d.fuel;
+row.insertCell(3).innerText=d.snacks;
+row.insertCell(4).innerText=d.bills;
+row.insertCell(5).innerText=d.entertainment;
+row.insertCell(6).innerText=d.total;
+row.insertCell(7).innerText=d.date;
+const actionCell=row.insertCell(8);
+const delBtn=document.createElement('button');
+delBtn.className='btn';
+delBtn.innerText='Delete';
+delBtn.onclick=()=>{deleteEntry(i);}
+actionCell.appendChild(delBtn);
+});
+localStorage.setItem('dailyData', JSON.stringify(dailyData));
+}
+
+// ===== Delete Entry =====
+function deleteEntry(index){
+if(confirm("Delete this entry?")){
+dailyData.splice(index,1);
+updateDailyTable();
+updateDashboard();
+localStorage.setItem('dailyData', JSON.stringify(dailyData));
+}
+}
+
+// ===== Reset Daily Data =====
+function resetDailyData(){
+if(confirm("Reset all daily data?")){
+dailyData=[]; updateDailyTable(); updateDashboard();
+localStorage.setItem('dailyData', JSON.stringify(dailyData));
+}
+}
+
+// ===== Add Daily Entry =====
+function addDailyEntryForm(){
+const food=Number(document.getElementById('foodInput').value)||0;
+const fuel=Number(document.getElementById('fuelInput').value)||0;
+const snacks=Number(document.getElementById('snacksInput').value)||0;
+const bills=Number(document.getElementById('billsInput').value)||0;
+const entertainment=Number(document.getElementById('entertainmentInput').value)||0;
+const total=food+fuel+snacks+bills+entertainment;
+const entry={food,fuel,snacks,bills,entertainment,total,date:new Date().toLocaleString()};
+dailyData.push(entry);
+localStorage.setItem('dailyData', JSON.stringify(dailyData));
+updateDailyTable();
+updateDashboard();
+document.getElementById('foodInput').value='';
+document.getElementById('fuelInput').value='';
+document.getElementById('snacksInput').value='';
+document.getElementById('billsInput').value='';
+document.getElementById('entertainmentInput').value='';
+}
+</script><section id="weekly" class="page">
 <h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Weekly Summary</h2>
 <table id="weeklyTable"><tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr></table>
 </section>
@@ -111,15 +215,18 @@ canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15)
 <section id="monthly" class="page">
 <h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Monthly Summary</h2>
 <table id="monthlyTable"><tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr></table>
-</section><section id="charts" class="page">
+</section>
+
+<section id="charts" class="page">
 <h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Expense & Saving Charts</h2>
 <canvas id="expenseChart"></canvas>
 </section>
 
 <section id="settings" class="page">
 <h2 style="text-align:center;color:var(--main-color);margin-bottom:15px;">Settings</h2>
-<p>Salary: <input type="number" id="salaryInput" placeholder="Enter your salary"></p>
-<p>Loan Amount: <input type="number" id="loanInput" placeholder="Enter your loan"></p>
+<p>Set your Salary: <input type="number" id="salaryInput" placeholder="Enter Salary"></p>
+<p>Set your Loan: <input type="number" id="loanInput" placeholder="Enter Loan"></p>
+<p>Set Initial Saving: <input type="number" id="savingInput" placeholder="Enter Saving"></p>
 <button class="btn" onclick="updateSettings()">Save Settings</button>
 <button class="btn" onclick="resetAll()">Reset All Data</button>
 </section>
@@ -141,118 +248,15 @@ canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15)
 </footer>
 
 <script>
-let username = localStorage.getItem('username') || '';
-let salary = Number(localStorage.getItem('salary')) || 0;
-let loanAmount = Number(localStorage.getItem('loan')) || 0;
-let dailyData = JSON.parse(localStorage.getItem('dailyData')) || [];
-let darkMode = localStorage.getItem('darkMode')==='true';
-if(darkMode) document.body.classList.add('dark');
-
-function toggleMode(){
-document.body.classList.toggle('dark');
-darkMode = document.body.classList.contains('dark');
-localStorage.setItem('darkMode', darkMode);
-}
-
-function showPage(pageId){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(pageId).classList.add('active');
-if(pageId==='dashboard') updateDashboard();
-if(pageId==='daily') updateDailyTable();
-if(pageId==='weekly') updateWeeklyTable();
-if(pageId==='monthly') updateMonthlyTable();
-if(pageId==='charts') drawChart();
-}
-
-function enterUsername(){
-const val=document.getElementById('usernameInput').value.trim();
-if(!val){alert('Enter a username!');return;}
-username=val;
-localStorage.setItem('username',username);
-updateDashboard();
-showPage('dashboard');
-}
-
-function updateDashboard(){
-document.getElementById('currentDateTime').innerText=new Date().toLocaleString();
-document.getElementById('infoUser').innerText=username || 'User';
-let totalExpense=dailyData.reduce((a,b)=>a.total+a,0);
-let remaining = salary - loanAmount - totalExpense;
-let currentSaving = Math.max(0, remaining);
-document.getElementById('totalExpense').innerText = totalExpense;
-document.getElementById('remaining').innerText = remaining;
-document.getElementById('currentSaving').innerText = currentSaving;
-}
-
-function addDailyEntryForm(){
-const food=Number(document.getElementById('foodInput').value)||0;
-const fuel=Number(document.getElementById('fuelInput').value)||0;
-const snacks=Number(document.getElementById('snacksInput').value)||0;
-const bills=Number(document.getElementById('billsInput').value)||0;
-const entertainment=Number(document.getElementById('entertainmentInput').value)||0;
-const total=food+fuel+snacks+bills+entertainment;
-const date=new Date().toLocaleDateString();
-dailyData.push({food,fuel,snacks,bills,entertainment,total,date});
-localStorage.setItem('dailyData',JSON.stringify(dailyData));
-updateDashboard();updateDailyTable();updateWeeklyTable();updateMonthlyTable();drawChart();
-document.getElementById('foodInput').value='';document.getElementById('fuelInput').value='';
-document.getElementById('snacksInput').value='';document.getElementById('billsInput').value='';
-document.getElementById('entertainmentInput').value='';
-}
-
-function updateDailyTable(){
-const table=document.getElementById('dailyTable');
-table.innerHTML="<tr><th>Day</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Entertainment</th><th>Total</th><th>Date</th><th>Action</th></tr>";
-dailyData.forEach((d,i)=>{
-const row=table.insertRow();
-row.insertCell(0).innerText=i+1;
-row.insertCell(1).innerText=d.food;
-row.insertCell(2).innerText=d.fuel;
-row.insertCell(3).innerText=d.snacks;
-row.insertCell(4).innerText=d.bills;
-row.insertCell(5).innerText=d.entertainment;
-row.insertCell(6).innerText=d.total;
-row.insertCell(7).innerText=d.date;
-const actionCell=row.insertCell(8);
-const delBtn=document.createElement('button');
-delBtn.className='btn';
-delBtn.innerText='Delete';
-delBtn.onclick=()=>{deleteEntry(i);};
-actionCell.appendChild(delBtn);
-});
-}
-
-function deleteEntry(index){
-if(confirm("Are you sure to delete this entry?")){
-dailyData.splice(index,1);
-localStorage.setItem('dailyData',JSON.stringify(dailyData));
-updateDashboard();updateDailyTable();updateWeeklyTable();updateMonthlyTable();drawChart();
-}
-}
-
-function resetDailyData(){
-if(confirm("Reset all daily data?")){
-dailyData=[];localStorage.setItem('dailyData',JSON.stringify(dailyData));
-updateDashboard();updateDailyTable();updateWeeklyTable();updateMonthlyTable();drawChart();
-}
-}
-
-function resetAll(){
-if(confirm("Reset all data?")){
-dailyData=[];username='';salary=0;loanAmount=0;
-localStorage.clear();
-showPage('welcome');
-}
-}
-
+// ===== Update Weekly Table =====
 function updateWeeklyTable(){
 const table=document.getElementById('weeklyTable');
 table.innerHTML="<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";
 let week=1;
 for(let i=0;i<dailyData.length;i+=7){
 const weekData=dailyData.slice(i,i+7);
-const total=weekData.reduce((a,b)=>a.total+a,0);
-const saving=Math.max(0,salary-total-loanAmount-total);
+const total=weekData.reduce((a,b)=>a+b.total,0);
+const saving=Math.max(0,(salary-loanAmount)-total);
 const row=table.insertRow();
 row.insertCell(0).innerText=week++;
 row.insertCell(1).innerText=total;
@@ -260,6 +264,7 @@ row.insertCell(2).innerText=saving;
 }
 }
 
+// ===== Update Monthly Table =====
 function updateMonthlyTable(){
 const table=document.getElementById('monthlyTable');
 table.innerHTML="<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";
@@ -271,7 +276,7 @@ monthMap[m]+=d.total;
 });
 Object.keys(monthMap).forEach(m=>{
 const total=monthMap[m];
-const saving=Math.max(0,salary-total-loanAmount-total);
+const saving=Math.max(0,(salary-loanAmount)-total);
 const row=table.insertRow();
 row.insertCell(0).innerText=m;
 row.insertCell(1).innerText=total;
@@ -279,24 +284,54 @@ row.insertCell(2).innerText=saving;
 });
 }
 
+// ===== Draw Charts =====
+function drawChart(){
+const ctx=document.getElementById('expenseChart').getContext('2d');
+const labels=dailyData.map(d=>d.date);
+const expenseData=dailyData.map(d=>d.total);
+const savingData=dailyData.map(d=>Math.max(0,(salary-loanAmount)-d.total));
+if(window.expenseChartInstance) window.expenseChartInstance.destroy();
+window.expenseChartInstance=new Chart(ctx,{
+type:'line',
+data:{
+labels:labels,
+datasets:[
+{label:'Daily Expense',data:expenseData,borderColor:'red',backgroundColor:'rgba(255,0,0,0.2)',fill:true},
+{label:'Daily Saving',data:savingData,borderColor:'green',backgroundColor:'rgba(0,255,0,0.2)',fill:true}
+]
+},
+options:{responsive:true,plugins:{legend:{position:'top'}}}
+});
+}
+
+// ===== Update Settings =====
 function updateSettings(){
 salary=Number(document.getElementById('salaryInput').value)||0;
 loanAmount=Number(document.getElementById('loanInput').value)||0;
+let initialSaving=Number(document.getElementById('savingInput').value)||0;
 localStorage.setItem('salary',salary);
 localStorage.setItem('loan',loanAmount);
-alert('Settings updated!');
-updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();
+localStorage.setItem('initialSaving',initialSaving);
+alert('Settings saved!');
+updateDashboard();
+updateWeeklyTable();
+updateMonthlyTable();
+drawChart();
 }
 
-function drawChart(){
-const ctx=document.getElementById('expenseChart').getContext('2d');
-const labels=dailyData.map((d,i)=>`Day ${i+1}`);
-const expenses=dailyData.map(d=>d.total);
-if(window.myChart) window.myChart.destroy();
-window.myChart=new Chart(ctx,{type:'bar',data:{labels, datasets:[{label:'Daily Expense', data:expenses, backgroundColor:'#ffd700'}]},options:{responsive:true}});
+// ===== Reset All Data =====
+function resetAll(){
+if(confirm("Reset all data?")){
+localStorage.clear();
+dailyData=[]; username=''; salary=0; loanAmount=0;
+showPage('welcome');
+}
 }
 
-setInterval(()=>{if(document.getElementById('currentDateTime')) document.getElementById('currentDateTime').innerText=new Date().toLocaleString();},1000);
+// ===== Initial Load Updates =====
+window.onload=function(){
+if(username){ showPage('dashboard'); updateDashboard(); updateDailyTable(); updateWeeklyTable(); updateMonthlyTable(); drawChart();}
+}
 </script>
 </body>
 </html>
