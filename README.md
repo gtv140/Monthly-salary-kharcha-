@@ -155,7 +155,7 @@ canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15)
 </footer>
 
 <script>
-// LocalStorage & App Logic
+// ===== LocalStorage & Variables =====
 let username = localStorage.getItem('username') || '';
 let salary = Number(localStorage.getItem('salary')) || 0;
 let loanAmount = Number(localStorage.getItem('loan')) || 0;
@@ -164,12 +164,14 @@ let dailyData = JSON.parse(localStorage.getItem('dailyData')) || [];
 let darkMode = localStorage.getItem('darkMode')==='true';
 if(darkMode) document.body.classList.add('dark');
 
+// ===== Toggle Light/Dark =====
 function toggleMode(){
     document.body.classList.toggle('dark');
     darkMode = document.body.classList.contains('dark');
     localStorage.setItem('darkMode', darkMode);
 }
 
+// ===== Show Page =====
 function showPage(pageId){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
@@ -180,19 +182,25 @@ function showPage(pageId){
     if(pageId==='charts') drawChart();
 }
 
+// ===== Current Date/Time =====
 function updateDateTime(){
     document.getElementById('currentDateTime').innerText=new Date().toLocaleString();
 }
 setInterval(updateDateTime,1000);
 
+// ===== Enter Username =====
 function enterUsername(){
     const val=document.getElementById('usernameInput').value.trim();
-    if(!val){alert('Enter username!');return;}
-    username=val;localStorage.setItem('username',username);showPage('dashboard');
-    if(!salary) showPage('settings');
+    if(!val){alert('Enter username!'); return;}
+    username=val;
+    localStorage.setItem('username',username);
+    document.getElementById('infoUser').innerText=username;
+    showPage('dashboard');
+    if(!salary) setTimeout(()=>showPage('settings'),100);
     updateDashboard();
 }
 
+// ===== Settings =====
 function updateSettings(){
     salary=Number(document.getElementById('salaryInput').value)||0;
     loanAmount=Number(document.getElementById('loanInput').value)||0;
@@ -204,6 +212,7 @@ function updateSettings(){
     alert("Settings saved!");
 }
 
+// ===== Dashboard =====
 function updateDashboard(){
     if(!username) return;
     let totalExpense=dailyData.reduce((a,b)=>a+b.total,0);
@@ -215,7 +224,7 @@ function updateDashboard(){
     document.getElementById('currentSaving').innerText=currentSaving;
 }
 
-// Daily Entry
+// ===== Daily Entry =====
 function addDailyEntryForm(){
     const food=Number(document.getElementById('foodInput').value)||0;
     const fuel=Number(document.getElementById('fuelInput').value)||0;
@@ -254,75 +263,77 @@ function updateDailyTable(){
 function resetDailyData(){if(confirm("Reset all daily data?")){dailyData=[];localStorage.setItem('dailyData',JSON.stringify(dailyData));updateDailyTable();updateDashboard();updateWeeklyTable();updateMonthlyTable();drawChart();}}
 function resetAll(){if(confirm("Reset everything?")){dailyData=[];username='';salary=0;loanAmount=0;initialSaving=0;localStorage.clear();showPage('welcome');}}
 
-// Weekly Table
+// ===== Weekly =====
 function updateWeeklyTable(){
-    const table=document.getElementById('weeklyTable');
-    table.innerHTML="<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";
-    for(let i=0;i<dailyData.length;i+=7){
-        const week// Weekly Table (continued)
-for(let i=0;i<dailyData.length;i+=7){
-    const weekData=dailyData.slice(i,i+7);
-    const weekExpense=weekData.reduce((a,b)=>a+b.total,0);
-    const weekSaving=Math.max(0,(salary/4)-weekExpense); // approx weekly saving
-    const row=table.insertRow();
-    row.insertCell(0).innerText=`Week ${Math.floor(i/7)+1}`;
-    row.insertCell(1).innerText=weekExpense;
-    row.insertCell(2).innerText=weekSaving;
+    const table = document.getElementById('weeklyTable');
+    table.innerHTML = "<tr><th>Week</th><th>Total Expense</th><th>Saving</th></tr>";
+    if(dailyData.length===0) return;
+    let weekTotals = [];
+    let week = 1;
+    for(let i=0; i<dailyData.length; i+=7){
+        const weekData = dailyData.slice(i,i+7);
+        const totalExpense = weekData.reduce((a,b)=>a+b.total,0);
+        const saving = (salary/4 || 0) - totalExpense;
+        weekTotals.push({week,totalExpense,saving});
+        const row = table.insertRow();
+        row.insertCell(0).innerText = week;
+        row.insertCell(1).innerText = totalExpense;
+        row.insertCell(2).innerText = saving;
+        week++;
+    }
 }
 
-// Monthly Table
+// ===== Monthly =====
 function updateMonthlyTable(){
-    const table=document.getElementById('monthlyTable');
-    table.innerHTML="<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";
-    const months={};
+    const table = document.getElementById('monthlyTable');
+    table.innerHTML = "<tr><th>Month</th><th>Total Expense</th><th>Saving</th></tr>";
+    if(dailyData.length===0) return;
+    let monthMap = {};
     dailyData.forEach(d=>{
-        const m=new Date(d.date).getMonth()+1;
-        if(!months[m]) months[m]=[];
-        months[m].push(d.total);
+        const m = new Date(d.date).getMonth()+1; // 1-12
+        if(!monthMap[m]) monthMap[m] = {total:0};
+        monthMap[m].total += d.total;
     });
-    Object.keys(months).forEach(m=>{
-        const expense=months[m].reduce((a,b)=>a+b,0);
-        const saving=Math.max(0,(salary/12)-expense);
-        const row=table.insertRow();
-        row.insertCell(0).innerText=`Month ${m}`;
-        row.insertCell(1).innerText=expense;
-        row.insertCell(2).innerText=saving;
+    Object.keys(monthMap).forEach(m=>{
+        const totalExpense = monthMap[m].total;
+        const saving = (salary/12 || 0) - totalExpense;
+        const row = table.insertRow();
+        row.insertCell(0).innerText = m;
+        row.insertCell(1).innerText = totalExpense;
+        row.insertCell(2).innerText = saving;
     });
 }
 
-// Charts
+// ===== Charts =====
 function drawChart(){
-    const ctx=document.getElementById('expenseChart').getContext('2d');
-    const labels=dailyData.map((d,i)=>`Day ${i+1}`);
-    const expenseData=dailyData.map(d=>d.total);
-    const savingData=dailyData.map(d=>Math.max(0,(salary+initialSaving-d.total-loanAmount)));
+    const ctx = document.getElementById('expenseChart').getContext('2d');
+    const labels = dailyData.map((d,i)=>`Day ${i+1}`);
+    const expenses = dailyData.map(d=>d.total);
+    const savings = dailyData.map(d=>Math.max(0,salary/30 - d.total));
     if(window.myChart) window.myChart.destroy();
-    window.myChart=new Chart(ctx,{
-        type:'line',
+    window.myChart = new Chart(ctx,{
+        type:'bar',
         data:{
             labels:labels,
             datasets:[
-                {label:'Expense',data:expenseData,borderColor:'red',backgroundColor:'rgba(255,0,0,0.2)',fill:true,tension:0.3},
-                {label:'Balance/Remaining',data:savingData,borderColor:'green',backgroundColor:'rgba(0,255,0,0.2)',fill:true,tension:0.3}
+                {label:'Daily Expense',data:expenses,backgroundColor:'rgba(42,82,152,0.8)'},
+                {label:'Estimated Saving',data:savings,backgroundColor:'rgba(255,215,0,0.8)'}
             ]
         },
         options:{
             responsive:true,
-            plugins:{
-                legend:{position:'top'},
-                title:{display:true,text:'Daily Expense vs Remaining Balance'}
-            }
+            plugins:{legend:{position:'top'}},
+            scales:{y:{beginAtZero:true}}
         }
     });
 }
 
-// Initial Setup
-if(username) showPage('dashboard');
-updateDashboard();
-updateDailyTable();
-updateWeeklyTable();
-updateMonthlyTable();
-drawChart();
-</script>
-</body>
-</html>
+// ===== Initialize =====
+document.addEventListener('DOMContentLoaded',()=>{
+    if(username){
+        document.getElementById('infoUser').innerText=username;
+        showPage('dashboard');
+    }else{
+        showPage('welcome');
+    }
+});
