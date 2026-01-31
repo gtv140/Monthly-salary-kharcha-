@@ -151,7 +151,7 @@ canvas{background:#fff;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.15)
 
 <footer>
 <p>&copy; 2026 Pocket Tracker</p>
-<p>Contact: support@pockettracker.com</p>
+<p>Contact: webhub262@gmail.com</p>
 </footer>
 
 <script>
