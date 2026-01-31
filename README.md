@@ -2,57 +2,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Traker - Modern Dashboard</title>
+<title>Pocket Traker - Ultimate Modern Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ===== Base Styles ===== */
 body{
     font-family:'Roboto',sans-serif;
     margin:0;padding:0;
-    background: linear-gradient(135deg,#1e3c72,#2a5298);
+    background:linear-gradient(135deg,#1e3c72,#2a5298);
     color:#fff;
-    overflow-x:hidden;
     transition:0.5s;
 }
-h1,h2{text-align:center;margin:10px;font-weight:700;}
-button{cursor:pointer;transition:0.3s;font-weight:700;border:none;border-radius:8px;padding:10px 15px;}
-button:hover{opacity:0.85;}
-input{padding:8px;border-radius:10px;border:2px solid #03a9f4;outline:none;margin:3px;width:120px;}
-input:focus{border-color:#0288d1;box-shadow:0 0 8px #0288d1;}
-
-/* ===== Header ===== */
 header{
     background:linear-gradient(135deg,#29b6f6,#00acc1);
     padding:20px;
     text-align:center;
-    font-size:28px;
+    font-size:30px;
     font-weight:bold;
     color:#fff;
     text-shadow:2px 2px 5px rgba(0,0,0,0.3);
-    box-shadow:0 4px 10px rgba(0,0,0,0.3);
-    border-bottom-left-radius:15px;
-    border-bottom-right-radius:15px;
 }
-
-/* ===== Dashboard Cards ===== */
-.dashboard{display:flex;flex-wrap:wrap;justify-content:center;margin:20px 0;}
-.card{
-    background:linear-gradient(145deg,#00acc1,#29b6f6);
-    box-shadow:0 8px 20px rgba(0,0,0,0.35);
-    border-radius:15px;
-    margin:10px;
-    padding:20px;
-    text-align:center;
-    width:160px;
-    cursor:pointer;
-    transition:0.4s;
-    font-weight:bold;
-    color:#fff;
-}
-.card:hover{transform:scale(1.08);box-shadow:0 10px 30px rgba(0,0,0,0.45);}
-
-/* ===== Info Boxes ===== */
 .infoBox{
     display:flex;
     flex-wrap:wrap;
@@ -75,26 +44,48 @@ header{
     font-weight:bold;
 }
 .infoBox div:hover{transform:scale(1.05);}
-
-/* ===== Buttons ===== */
+.dashboard{
+    display:flex;flex-wrap:wrap;justify-content:center;margin:20px 0;
+}
+.card{
+    background:linear-gradient(145deg,#00acc1,#29b6f6);
+    box-shadow:0 8px 20px rgba(0,0,0,0.35);
+    border-radius:15px;
+    margin:10px;
+    padding:20px;
+    text-align:center;
+    width:160px;
+    cursor:pointer;
+    transition:0.4s;
+    font-weight:bold;
+    color:#fff;
+}
+.card:hover{transform:scale(1.08);box-shadow:0 10px 30px rgba(0,0,0,0.45);}
+button{cursor:pointer;border:none;border-radius:8px;padding:8px 12px;font-weight:bold;}
 button.primary{background:#ffeb3b;color:#1e3c72;}
 button.secondary{background:#4caf50;color:#fff;}
-
-/* ===== Floating Lights ===== */
+table{
+    border-collapse: collapse;
+    width:95%;
+    margin:20px auto;
+    background:rgba(255,255,255,0.95);
+    color:#333;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 6px 15px rgba(0,0,0,0.2);
+}
+th,td{border:1px solid #e0e0e0;padding:10px;text-align:center;}
+th{background:#0288d1;color:#fff;}
+tr:nth-child(even){background:rgba(0,172,193,0.1);}
+tr:hover{background:rgba(0,172,193,0.2);}
 .floating{
-    position:absolute;
-    border-radius:50%;
-    opacity:0.3;
-    animation:float 10s infinite;
-    z-index:0;
+    position:absolute;border-radius:50%;opacity:0.3;animation:float 10s infinite;z-index:0;
 }
 @keyframes float{
     0%{transform:translateY(0) rotate(0deg);}
     50%{transform:translateY(-50px) rotate(180deg);}
     100%{transform:translateY(0) rotate(360deg);}
 }
-
-/* ===== Responsive ===== */
 @media(max-width:768px){
     .infoBox{flex-direction:column;align-items:center;}
     .dashboard{flex-direction:column;align-items:center;}
@@ -120,7 +111,12 @@ button.secondary{background:#4caf50;color:#fff;}
     <div class="card" onclick="addExpense('Bills')">💡 Bills</div>
     <div class="card" onclick="addExpense('Entertainment')">🎮 Fun</div>
     <div class="card" onclick="clearAll()">🗑️ Clear All</div>
-</div><h2 style="text-align:center;">📊 Expenses Table</h2>
+    <div class="card" onclick="exportCSV()">📊 Export CSV</div>
+    <div class="card" onclick="backupJSON()">💾 Backup</div>
+    <div class="card" onclick="restoreJSON()">📂 Restore</div>
+</div>
+
+<h2 style="text-align:center;">📊 Expenses Table</h2>
 <table id="expenseTable">
 <tr><th>Date</th><th>Food</th><th>Fuel</th><th>Snacks</th><th>Bills</th><th>Fun</th><th>Total</th><th>Action</th></tr>
 </table>
@@ -128,7 +124,6 @@ button.secondary{background:#4caf50;color:#fff;}
 <h2 style="text-align:center;">📈 Expenses Chart</h2>
 <canvas id="chart" width="400" height="200" style="max-width:95%; margin:auto; display:block;"></canvas>
 
-<!-- Floating Icons -->
 <div class="floating" style="width:15px;height:15px;background:#ffeb3b;top:50px;left:30px;"></div>
 <div class="floating" style="width:12px;height:12px;background:#03a9f4;top:150px;left:120px;"></div>
 <div class="floating" style="width:18px;height:18px;background:#4caf50;top:300px;left:200px;"></div>
@@ -145,12 +140,13 @@ let loan = parseInt(document.getElementById('loan').value) || 10000;
 function calculateBalance(){
 salary = parseInt(document.getElementById('salary').value) || 0;
 loan = parseInt(document.getElementById('loan').value) || 0;
-let totalExp = expenses.reduce((a,b)=>a+b.total,0);
+let totalExp = expenses.reduce((a,b)=>a.total + a.Food + a.Fuel + a.Snacks + a.Bills + a.Entertainment,0);
 let balance = salary - loan - totalExp;
 document.getElementById('currentBalance').innerText = balance;
 document.getElementById('saving').innerText = balance;
 updateTable();
 updateChart();
+if(balance < 5000){alert("⚠️ Low balance!")}
 }
 
 // ===== Add Expense =====
@@ -172,6 +168,44 @@ expenses=[];
 localStorage.setItem('expenses',JSON.stringify(expenses));
 calculateBalance();
 }
+}
+
+// ===== Export CSV =====
+function exportCSV(){
+let csv = "Date,Food,Fuel,Snacks,Bills,Fun,Total\n";
+expenses.forEach(e=>{
+csv += `${e.date},${e.Food},${e.Fuel},${e.Snacks},${e.Bills},${e.Entertainment},${e.total}\n`;
+});
+let blob = new Blob([csv],{type:'text/csv'});
+let link = document.createElement('a');
+link.href = URL.createObjectURL(blob);
+link.download = 'PocketTraker.csv';
+link.click();
+}
+
+// ===== Backup / Restore =====
+function backupJSON(){
+const blob=new Blob([JSON.stringify(expenses)],{type:'application/json'});
+const link=document.createElement('a');
+link.href=URL.createObjectURL(blob);
+link.download='PocketTrakerBackup.json';
+link.click();
+}
+function restoreJSON(){
+const fileInput=document.createElement('input');
+fileInput.type='file';fileInput.accept='.json';
+fileInput.onchange=e=>{
+const file=e.target.files[0];
+const reader=new FileReader();
+reader.onload=ev=>{
+expenses=JSON.parse(ev.target.result);
+localStorage.setItem('expenses',JSON.stringify(expenses));
+alert('Backup restored! Refresh page.');
+calculateBalance();
+};
+reader.readAsText(file);
+};
+fileInput.click();
 }
 
 // ===== Update Table =====
@@ -202,22 +236,18 @@ calculateBalance();
 let ctx = document.getElementById('chart').getContext('2d');
 let barChart;
 function updateChart(){
-let totalFood = expenses.reduce((a,b)=>a+b.Food,0);
-let totalFuel = expenses.reduce((a,b)=>a+b.Fuel,0);
-let totalSnacks = expenses.reduce((a,b)=>a+b.Snacks,0);
-let totalBills = expenses.reduce((a,b)=>a+b.Bills,0);
-let totalFun = expenses.reduce((a,b)=>a+b.Entertainment,0);
+let totalFood = expenses.reduce((a,b)=>a.Food,0);
+let totalFuel = expenses.reduce((a,b)=>a.Fuel,0);
+let totalSnacks = expenses.reduce((a,b)=>a.Snacks,0);
+let totalBills = expenses.reduce((a,b)=>a.Bills,0);
+let totalFun = expenses.reduce((a,b)=>a.Entertainment,0);
 
 if(barChart) barChart.destroy();
 barChart = new Chart(ctx,{
 type:'bar',
 data:{
 labels:['Food','Fuel','Snacks','Bills','Fun'],
-datasets:[{
-label:'Expenses PKR',
-data:[totalFood,totalFuel,totalSnacks,totalBills,totalFun],
-backgroundColor:['#ffeb3b','#03a9f4','#4caf50','#ff5722','#9c27b0']
-}]
+datasets:[{label:'Expenses PKR',data:[totalFood,totalFuel,totalSnacks,totalBills,totalFun],backgroundColor:['#ffeb3b','#03a9f4','#4caf50','#ff5722','#9c27b0']}]
 },
 options:{responsive:true,plugins:{legend:{display:false}}}
 });
