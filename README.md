@@ -2,45 +2,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker Mobile Friendly</title>
+<title>Pocket Tracker Modern</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-/* ===== Body & Dark Mode ===== */
-body{font-family:'Roboto',sans-serif;margin:0;padding:0;background:#f7f9fc;color:#333;transition:0.3s;}
-body.dark{background:#1c1c2b;color:#eee;}
-header{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;box-shadow:0 5px 10px rgba(0,0,0,0.2);}
-header h1{font-size:1.5em;margin:0;}
-.user-balance{font-size:1em;}
-.darkmode-btn{background:transparent;color:white;border:none;font-size:1.5em;cursor:pointer;}
+/* ===== Global ===== */
+body{margin:0;font-family:'Roboto',sans-serif;background:#f4f6f9;color:#333;transition:0.3s;}
+body.dark{background:#121212;color:#eee;}
+.container{max-width:900px;margin:0 auto;padding:10px;}
+h1,h2,h3{margin:0;}
+button{cursor:pointer;transition:0.3s;}
 
-/* ===== Container ===== */
-.container{max-width:1000px;margin:15px auto;padding:0 10px;}
-.banner{background:#764ba2;color:white;text-align:center;padding:12px;border-radius:12px;margin-bottom:15px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+/* ===== Header ===== */
+header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-bottom-left-radius:15px;border-bottom-right-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+header h1{font-size:1.5em;}
+header .user-balance{font-size:0.9em;}
+header .darkmode-btn{background:transparent;border:none;color:white;font-size:1.5em;}
+
+/* ===== Banner ===== */
+.banner{background:#764ba2;color:white;padding:12px;border-radius:12px;margin:12px 0;text-align:center;font-weight:500;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
 body.dark .banner{background:#2b2b3f;color:#eee;}
 
 /* ===== Category Grid ===== */
-.category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:8px;margin-bottom:12px;}
-.category-grid button{padding:10px;border-radius:12px;border:none;cursor:pointer;font-size:1em;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;transition:0.3s;}
+.category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:10px;margin-bottom:12px;}
+.category-grid button{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;border:none;border-radius:12px;color:white;font-weight:500;font-size:0.9em;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
 .category-grid button:hover{opacity:0.85;transform:scale(1.05);}
-.food{background:#ff9800;} .fuel{background:#795548;} .entertainment{background:#ff5722;} .personal{background:#f44336;} .gambling{background:#9c27b0;} .saving{background:#2196f3;} .income{background:#4caf50;}
+.income{background:#4caf50;} .saving{background:#2196f3;} .food{background:#ff9800;} .fuel{background:#795548;} .entertainment{background:#ff5722;} .personal{background:#f44336;} .gambling{background:#9c27b0;} 
 .bills{background:#00bcd4;} .loans{background:#607d8b;} .transport{background:#9c27b0;} .shopping{background:#e91e63;} .rent{background:#3f51b5;} .education{background:#ffeb3b;} .medical{background:#009688;} .other{background:#795548;}
 .more-btn{background:#333;color:white;}
 
 /* ===== Form ===== */
-form{display:flex;flex-direction:column;gap:8px;background:white;padding:12px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.1);margin-bottom:10px;}
+form{display:flex;flex-direction:column;gap:8px;background:white;padding:12px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.1);margin-bottom:12px;}
 form input, form select, form button{padding:10px;border-radius:10px;border:1px solid #ccc;font-size:1em;width:100%;}
-form button{background:#764ba2;color:white;border:none;cursor:pointer;transition:0.3s;}
+form button{background:#764ba2;color:white;border:none;}
 form button:hover{background:#667eea;}
 body.dark form{background:#2b2b3f;border-color:#555;color:#eee;}
-body.dark form input, body.dark form select{background:#2b2b3f;border-color:#555;color:#eee;}
+body.dark form input,body.dark form select{background:#2b2b3f;border-color:#555;color:#eee;}
 
-/* ===== Entry Card ===== */
+/* ===== Entry Cards ===== */
 .entry-card{background:white;padding:10px;margin-bottom:8px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,0.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;transition:0.3s;}
 .entry-card:hover{transform:translateY(-2px);}
 .entry-card span{flex:1;text-align:center;font-size:0.9em;}
-.delete-btn{background:#ff4d4f;color:white;padding:5px 8px;border:none;border-radius:8px;cursor:pointer;transition:0.3s;}
+.delete-btn{background:#ff4d4f;color:white;padding:5px 8px;border:none;border-radius:8px;cursor:pointer;}
 .delete-btn:hover{background:#d9363e;}
 body.dark .entry-card{background:#2b2b3f;color:#eee;}
 
@@ -49,15 +53,15 @@ body.dark .entry-card{background:#2b2b3f;color:#eee;}
 
 /* ===== Charts ===== */
 .chart-container{background:white;padding:12px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.1);margin-bottom:15px;}
-body.dark .chart-container{background:#2b2b3f;}
+body.dark .chart-container{background:#2b2b3f;color:#eee;}
 
 /* ===== Export Buttons ===== */
-button.export-btn{padding:6px 12px;background:#4caf50;color:white;border:none;border-radius:10px;cursor:pointer;margin-right:5px;font-size:0.9em;}
+button.export-btn{padding:6px 12px;background:#4caf50;color:white;border:none;border-radius:10px;margin-right:5px;font-size:0.9em;}
 button.export-btn:hover{background:#388e3c;}
 
 /* ===== Bottom Navigation ===== */
 .bottom-nav{position:fixed;bottom:0;width:100%;display:flex;justify-content:space-around;background:#764ba2;padding:10px 0;border-top-left-radius:15px;border-top-right-radius:15px;box-shadow:0 -5px 15px rgba(0,0,0,0.2);}
-.bottom-nav button{background:transparent;border:none;color:white;font-size:1.5em;cursor:pointer;}
+.bottom-nav button{background:transparent;border:none;color:white;font-size:1.5em;}
 
 /* ===== Media Queries ===== */
 @media(max-width:500px){.category-grid{grid-template-columns:repeat(3,1fr);} .entry-card span{font-size:0.8em;}}
@@ -72,7 +76,7 @@ button.export-btn:hover{background:#388e3c;}
 </header>
 
 <div class="container">
-<div class="banner">💡 Save Smart, Live Better! Track your daily financial life.</div>
+<div class="banner">💡 ہر روز اپنے مالیات کا حساب رکھیں اور سمجھداری سے بچت کریں!</div>
 
 <h2>Categories</h2>
 <div class="category-grid" id="categoryGrid">
@@ -138,13 +142,14 @@ button.export-btn:hover{background:#388e3c;}
 <button onclick="exportCSV()">📄</button>
 <button onclick="toggleDarkMode()">🌓</button>
 </div>
+
 </div>
 
 <script>
 let entries=JSON.parse(localStorage.getItem('entries'))||[];
 let username="Khan";
 
-function toggleDarkMode(){ document.body.classList.toggle('dark'); }
+function toggleDarkMode(){document.body.classList.toggle('dark');}
 function selectCategory(cat){document.getElementById('type').value=cat;}
 function saveData(){localStorage.setItem('entries',JSON.stringify(entries));}
 
@@ -179,7 +184,7 @@ const entry={date:document.getElementById('date').value,type:document.getElement
 entries.push(entry);saveData();this.reset();updateEntriesList();
 });
 
-// ===== Charts =====
+// Charts
 const ctx=document.getElementById('summaryChart').getContext('2d');
 const ctxPie=document.getElementById('pieChart').getContext('2d');
 let summaryChart,pieChart;
@@ -193,19 +198,19 @@ if(pieChart) pieChart.destroy();
 pieChart=new Chart(ctxPie,{type:'pie',data:{labels:['Income','Saving','Food','Entertainment','Fuel','Personal','Gambling','Bills','Loans','Transport','Shopping','Rent','Education','Medical','Other'],datasets:[{data:[totals.Income,totals.Saving,totals.Food,totals.Entertainment,totals.Fuel,totals.Personal,totals.Gambling,totals.Bills,totals.Loans,totals.Transport,totals.Shopping,totals.Rent,totals.Education,totals.Medical,totals.Other],backgroundColor:['#4caf50','#2196f3','#ff9800','#ff5722','#795548','#f44336','#9c27b0','#00bcd4','#607d8b','#9c27b0','#e91e63','#3f51b5','#ffeb3b','#009688','#795548']}]},options:{responsive:true}});
 }
 
-// ===== Export CSV/PDF =====
+// Export
 function exportCSV(){let csv='Date,Type,Amount,Note\n';entries.forEach(e=>{csv+=`${e.date},${e.type},${e.amount},${e.note}\n`;});const blob=new Blob([csv],{type:'text/csv'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='pocket_tracker.csv';link.click();}
-function exportPDF(){const { jsPDF } = window.jspdf;const doc=new jsPDF();let y=10;doc.setFontSize(12);doc.text('Pocket Tracker Daily Life',105,10,{align:'center'});entries.forEach(e=>{y+=10;doc.text(`${e.date} | ${e.type} | ${e.amount} | ${e.note}`,10,y);});doc.save('pocket_tracker.pdf');}
+function exportPDF(){const { jsPDF }=window.jspdf;const doc=new jsPDF();let y=10;doc.setFontSize(12);doc.text('Pocket Tracker Daily Life',105,10,{align:'center'});entries.forEach(e=>{y+=10;doc.text(`${e.date} | ${e.type} | ${e.amount} | ${e.note}`,10,y);});doc.save('pocket_tracker.pdf');}
 
-// ===== Navigation Scroll =====
+// Scroll Nav
 function scrollToDashboard(){window.scrollTo({top:0,behavior:'smooth'});}
 function scrollToForm(){document.getElementById('trackerForm').scrollIntoView({behavior:'smooth'});}
 function scrollToCharts(){document.querySelector('.chart-container').scrollIntoView({behavior:'smooth'});}
 
-// ===== More Modal (Placeholder) =====
+// More Placeholder
 function openMoreModal(){alert("More categories can be added here!");}
 
-// ===== Initial Load =====
+// Initial load
 updateEntriesList();
 </script>
 </body>
