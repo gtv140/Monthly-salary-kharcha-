@@ -7,82 +7,66 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-body {
-    font-family: 'Roboto', sans-serif;
-    margin:0; padding:0;
-    background:#f0f4f8; color:#333;
-}
-header {
-    background: linear-gradient(135deg,#667eea,#764ba2);
-    color:white; text-align:center;
-    padding:60px 20px;
-    border-bottom-left-radius:20px;
-    border-bottom-right-radius:20px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
-}
-header h1{ font-size:2.8em; margin:0;}
-header p{ font-size:1.2em; margin-top:8px; opacity:0.9;}
+/* ====== Body & Header ====== */
+body{ font-family:'Roboto',sans-serif; margin:0; padding:0; background:#f0f4f8; color:#333; transition:0.3s;}
+body.dark{background:#1e1e2f; color:#eee;}
+header{background: linear-gradient(135deg,#667eea,#764ba2); color:white; text-align:center; padding:60px 20px; border-bottom-left-radius:20px; border-bottom-right-radius:20px; box-shadow:0 5px 15px rgba(0,0,0,0.2);}
+header h1{font-size:2.8em;margin:0;}
+header p{font-size:1.2em;margin-top:8px; opacity:0.9;}
 
-.container{ max-width:1000px; margin:-40px auto 50px; padding:0 20px; }
+/* ====== Container & Headings ====== */
+.container{ max-width:1000px; margin:-40px auto 50px; padding:0 20px;}
+h2{text-align:center;color:#764ba2;margin-bottom:20px;}
 
-h2{text-align:center; color:#764ba2; margin-bottom:20px;}
+/* ====== Form ====== */
+form{display:flex; flex-wrap:wrap; gap:15px; background:white; padding:20px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.1); margin-bottom:20px;}
+form input, form select, form button{padding:12px; border-radius:10px; border:1px solid #ccc; font-size:1em;}
+form button{background:#764ba2; color:white; border:none; cursor:pointer; flex:1; transition:0.3s;}
+form button:hover{background:#667eea;}
+body.dark form{background:#2b2b3f; border-color:#555; color:#eee;}
+body.dark form input, body.dark form select{background:#2b2b3f; border-color:#555; color:#eee;}
 
-form{
-    display:flex; flex-wrap:wrap; gap:15px;
-    background:white; padding:20px; border-radius:15px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.1); margin-bottom:20px;
-}
-form input, form select, form button{
-    padding:12px; border-radius:10px; border:1px solid #ccc; font-size:1em;
-}
-form button{
-    background:#764ba2; color:white; border:none; cursor:pointer; flex:1; transition:0.3s;
-}
-form button:hover{ background:#667eea; }
+/* ====== Search ====== */
+#searchBar{width:100%; padding:12px; margin-bottom:20px; border-radius:10px; border:1px solid #ccc; font-size:1em;}
+body.dark #searchBar{background:#2b2b3f; border-color:#555; color:#eee;}
 
-#searchBar{
-    width:100%; padding:12px; margin-bottom:20px; border-radius:10px; border:1px solid #ccc;
-    font-size:1em;
-}
+/* ====== Table ====== */
+table{width:100%; border-collapse: collapse; border-radius:15px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,0.1); background:white;}
+th, td{padding:15px; text-align:center;}
+th{background:#764ba2;color:white;font-weight:700;}
+tr:nth-child(even){background:#f9f9f9;}
+tr:hover{background:#e0e0ff; transition:0.3s;}
+button.delete-btn{background:#ff4d4f; color:white; padding:6px 12px; border:none; border-radius:8px; cursor:pointer; transition:0.3s;}
+button.delete-btn:hover{background:#d9363e;}
+body.dark table{background:#2b2b3f; color:#eee;}
+body.dark th{background:#764ba2;}
+body.dark tr:nth-child(even){background:#33334d;}
+body.dark tr:hover{background:#55557a;}
 
-table{
-    width:100%; border-collapse: collapse;
-    border-radius:15px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,0.1);
-    background:white;
-}
-th, td{ padding:15px; text-align:center;}
-th{ background:#764ba2; color:white; font-weight:700;}
-tr:nth-child(even){ background:#f9f9f9;}
-tr:hover{ background:#e0e0ff; transition:0.3s;}
-button.delete-btn{
-    background:#ff4d4f; color:white; padding:6px 12px; border:none; border-radius:8px;
-    cursor:pointer; transition:0.3s;
-}
-button.delete-btn:hover{ background:#d9363e; }
-
+/* ====== Totals ====== */
 .totals{ margin-top:20px; text-align:right; font-weight:bold; font-size:1.1em; }
 
-.chart-container{
-    margin-top:40px; background:white; padding:20px; border-radius:15px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.1); margin-bottom:30px;
-}
+/* ====== Charts ====== */
+.chart-container{margin-top:40px; background:white; padding:20px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.1); margin-bottom:30px;}
+body.dark .chart-container{background:#2b2b3f;}
 
-button.export-btn{
-    margin-top:20px; padding:10px 20px; background:#4caf50; color:white;
-    border:none; border-radius:10px; cursor:pointer; transition:0.3s;
-}
-button.export-btn:hover{ background:#388e3c; }
+/* ====== Export & Dark Mode ====== */
+button.export-btn, button.darkmode-btn{margin-top:20px; padding:10px 20px; border:none; border-radius:10px; cursor:pointer; transition:0.3s;}
+button.export-btn{background:#4caf50;color:white;}
+button.export-btn:hover{background:#388e3c;}
+button.darkmode-btn{background:#33334d;color:white;margin-left:10px;}
+button.darkmode-btn:hover{background:#55557a;}
 
-@media(max-width:600px){
-    form{ flex-direction:column; }
-}
+/* ====== Responsive ====== */
+@media(max-width:600px){form{flex-direction:column;}}
 </style>
 </head>
 <body>
 
 <header>
 <h1>Pocket Tracker Ultimate</h1>
-<p>Apni monthly aur lifetime income/expenses track karein</p>
+<p>Apni daily, weekly, monthly aur lifetime income/expenses track karein</p>
+<button class="darkmode-btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 </header>
 
 <div class="container">
@@ -103,19 +87,17 @@ button.export-btn:hover{ background:#388e3c; }
 <button type="submit">Add Entry</button>
 </form>
 
-<input type="text" id="searchBar" placeholder="Search by date, type or note...">
+<input type="text" id="searchBar" placeholder="Search by date, type, note...">
 
 <h2>All Entries</h2>
 <table id="entriesTable">
 <thead>
-<tr>
-<th>Date</th><th>Type</th><th>Amount</th><th>Note</th><th>Action</th>
-</tr>
+<tr><th>Date</th><th>Type</th><th>Amount</th><th>Note</th><th>Action</th></tr>
 </thead>
 <tbody></tbody>
 </table>
 
-<div class="totals" id="totals">Total Income:0 | Total Expense:0 | Total Saving:0 | Personal:0 | Gambling:0</div>
+<div class="totals" id="totals"></div>
 
 <div class="chart-container">
 <h2>Summary Charts</h2>
@@ -124,14 +106,18 @@ button.export-btn:hover{ background:#388e3c; }
 </div>
 
 <button class="export-btn" onclick="exportCSV()">Export CSV</button>
-
 </div>
 
 <script>
-let entries = JSON.parse(localStorage.getItem('entries')) || [];
+let entries=JSON.parse(localStorage.getItem('entries'))||[];
 
-function saveData(){ localStorage.setItem('entries', JSON.stringify(entries)); }
+// ===== Dark Mode Toggle =====
+function toggleDarkMode(){ document.body.classList.toggle('dark'); }
 
+// ===== Save Data =====
+function saveData(){ localStorage.setItem('entries',JSON.stringify(entries)); }
+
+// ===== Update Table =====
 function updateTable(filteredEntries=null){
 const data=filteredEntries||entries;
 const tbody=document.querySelector('#entriesTable tbody');
@@ -150,8 +136,10 @@ updateCharts();
 checkAlerts();
 }
 
+// ===== Delete Entry =====
 function deleteEntry(index){ if(confirm("Are you sure?")){ entries.splice(index,1); saveData(); updateTable(); } }
 
+// ===== Add Entry =====
 document.getElementById('trackerForm').addEventListener('submit',function(e){
 e.preventDefault();
 const entry={
@@ -163,14 +151,14 @@ note:document.getElementById('note').value
 entries.push(entry); saveData(); this.reset(); updateTable();
 });
 
-// Search
+// ===== Search =====
 document.getElementById('searchBar').addEventListener('input',function(){
 const q=this.value.toLowerCase();
 const filtered=entries.filter(e=>e.date.includes(q)||e.type.toLowerCase().includes(q)||e.note.toLowerCase().includes(q));
 updateTable(filtered);
 });
 
-// Charts
+// ===== Charts =====
 const ctx=document.getElementById('summaryChart').getContext('2d');
 const ctxPie=document.getElementById('pieChart').getContext('2d');
 let summaryChart, pieChart;
@@ -179,28 +167,20 @@ function updateCharts(){
 let totals={Income:0, Expense:0, Saving:0, Personal:0, Gambling:0};
 entries.forEach(e=>{ if(totals[e.type]!==undefined) totals[e.type]+=Number(e.amount); });
 if(summaryChart) summaryChart.destroy();
-summaryChart=new Chart(ctx,{
-type:'bar',
-data:{ labels:['Income','Expense','Saving','Personal','Gambling'], datasets:[{ label:'Total Amount', data:[totals.Income,totals.Expense,totals.Saving,totals.Personal,totals.Gambling], backgroundColor:['#4caf50','#f44336','#2196f3','#ff9800','#9c27b0'] }]},
-options:{ responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
-});
+summaryChart=new Chart(ctx,{type:'bar',data:{labels:['Income','Expense','Saving','Personal','Gambling'],datasets:[{label:'Total Amount',data:[totals.Income,totals.Expense,totals.Saving,totals.Personal,totals.Gambling],backgroundColor:['#4caf50','#f44336','#2196f3','#ff9800','#9c27b0']}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
 if(pieChart) pieChart.destroy();
-pieChart=new Chart(ctxPie,{
-type:'pie',
-data:{ labels:['Income','Expense','Saving','Personal','Gambling'], datasets:[{ data:[totals.Income,totals.Expense,totals.Saving,totals.Personal,totals.Gambling], backgroundColor:['#4caf50','#f44336','#2196f3','#ff9800','#9c27b0'] }]},
-options:{ responsive:true }
-});
+pieChart=new Chart(ctxPie,{type:'pie',data:{labels:['Income','Expense','Saving','Personal','Gambling'],datasets:[{data:[totals.Income,totals.Expense,totals.Saving,totals.Personal,totals.Gambling],backgroundColor:['#4caf50','#f44336','#2196f3','#ff9800','#9c27b0']}]},options:{responsive:true}});
 }
 
-// Alerts
+// ===== Alerts =====
 function checkAlerts(){
-const totals={Personal:0,Gambling:0};
+let totals={Personal:0,Gambling:0};
 entries.forEach(e=>{ if(e.type==='Personal') totals.Personal+=Number(e.amount); if(e.type==='Gambling') totals.Gambling+=Number(e.amount); });
 if(totals.Personal>10000) alert("Warning: Personal spending limit exceeded!");
 if(totals.Gambling>5000) alert("Warning: Gambling spending limit exceeded!");
 }
 
-// Export CSV
+// ===== Export CSV =====
 function exportCSV(){
 let csv='Date,Type,Amount,Note\n';
 entries.forEach(e=>{ csv+=`${e.date},${e.type},${e.amount},${e.note}\n`; });
@@ -211,9 +191,8 @@ link.download='pocket_tracker.csv';
 link.click();
 }
 
-// Initial load
+// ===== Initial Load =====
 updateTable();
 </script>
-
 </body>
 </html>
