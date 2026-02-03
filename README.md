@@ -2,46 +2,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker Modern App</title>
+<title>Pocket Tracker Mobile Friendly</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 body{font-family:'Roboto',sans-serif;margin:0;padding:0;background:#f7f9fc;color:#333;transition:0.3s;}
 body.dark{background:#1c1c2b;color:#eee;}
-header{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:20px;border-bottom-left-radius:20px;border-bottom-right-radius:20px;box-shadow:0 5px 15px rgba(0,0,0,0.2);}
-header h1{font-size:1.8em;margin:0;}
-.user-balance{font-size:1.1em;}
+header{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;box-shadow:0 5px 10px rgba(0,0,0,0.2);}
+header h1{font-size:1.5em;margin:0;}
+.user-balance{font-size:1em;}
 .darkmode-btn{background:transparent;color:white;border:none;font-size:1.5em;cursor:pointer;}
-.container{max-width:1000px;margin:20px auto;padding:0 15px;}
-.banner{background:#764ba2;color:white;text-align:center;padding:15px;border-radius:15px;margin-bottom:20px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+.container{max-width:1000px;margin:15px auto;padding:0 10px;}
+.banner{background:#764ba2;color:white;text-align:center;padding:12px;border-radius:12px;margin-bottom:15px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
 body.dark .banner{background:#2b2b3f;color:#eee;}
-.category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:10px;margin-bottom:15px;}
-.category-grid button{padding:12px;border-radius:15px;border:none;cursor:pointer;font-size:1.2em;transition:0.3s;color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:8px;margin-bottom:12px;}
+.category-grid button{padding:10px;border-radius:12px;border:none;cursor:pointer;font-size:1em;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;transition:0.3s;}
 .category-grid button:hover{opacity:0.85;transform:scale(1.05);}
 .food{background:#ff9800;} .fuel{background:#795548;} .entertainment{background:#ff5722;} .personal{background:#f44336;} .gambling{background:#9c27b0;} .saving{background:#2196f3;} .income{background:#4caf50;}
 .bills{background:#00bcd4;} .loans{background:#607d8b;} .transport{background:#9c27b0;} .shopping{background:#e91e63;} .rent{background:#3f51b5;} .education{background:#ffeb3b;} .medical{background:#009688;} .other{background:#795548;}
 .more-btn{background:#333;color:white;}
-form{display:flex;flex-wrap:wrap;gap:10px;background:white;padding:15px;border-radius:15px;box-shadow:0 8px 20px rgba(0,0,0,0.1);margin-bottom:10px;}
-form input, form select, form button{padding:10px;border-radius:10px;border:1px solid #ccc;font-size:1em;}
-form button{background:#764ba2;color:white;border:none;cursor:pointer;flex:1;transition:0.3s;}
+form{display:flex;flex-direction:column;gap:8px;background:white;padding:12px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.1);margin-bottom:10px;}
+form input, form select, form button{padding:10px;border-radius:10px;border:1px solid #ccc;font-size:1em;width:100%;}
+form button{background:#764ba2;color:white;border:none;cursor:pointer;transition:0.3s;}
 form button:hover{background:#667eea;}
 body.dark form{background:#2b2b3f;border-color:#555;color:#eee;}
 body.dark form input, body.dark form select{background:#2b2b3f;border-color:#555;color:#eee;}
-.entry-card{background:white;padding:12px;margin-bottom:10px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);display:flex;justify-content:space-between;align-items:center;transition:0.3s;}
+.entry-card{background:white;padding:10px;margin-bottom:8px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,0.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;transition:0.3s;}
 .entry-card:hover{transform:translateY(-2px);}
-.entry-card span{flex:1;text-align:center;}
-.delete-btn{background:#ff4d4f;color:white;padding:5px 10px;border:none;border-radius:8px;cursor:pointer;transition:0.3s;}
+.entry-card span{flex:1;text-align:center;font-size:0.9em;}
+.delete-btn{background:#ff4d4f;color:white;padding:5px 8px;border:none;border-radius:8px;cursor:pointer;transition:0.3s;}
 .delete-btn:hover{background:#d9363e;}
 body.dark .entry-card{background:#2b2b3f;color:#eee;}
-.totals{margin:10px 0;font-weight:bold;text-align:right;}
-.chart-container{background:white;padding:15px;border-radius:15px;box-shadow:0 8px 20px rgba(0,0,0,0.1);margin-bottom:20px;}
+.totals{margin:8px 0;font-weight:bold;text-align:right;font-size:0.9em;}
+.chart-container{background:white;padding:12px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.1);margin-bottom:15px;}
 body.dark .chart-container{background:#2b2b3f;}
-button.export-btn{padding:8px 15px;background:#4caf50;color:white;border:none;border-radius:10px;cursor:pointer;margin-right:5px;}
+button.export-btn{padding:6px 12px;background:#4caf50;color:white;border:none;border-radius:10px;cursor:pointer;margin-right:5px;font-size:0.9em;}
 button.export-btn:hover{background:#388e3c;}
 .bottom-nav{position:fixed;bottom:0;width:100%;display:flex;justify-content:space-around;background:#764ba2;padding:10px 0;border-top-left-radius:15px;border-top-right-radius:15px;box-shadow:0 -5px 15px rgba(0,0,0,0.2);}
 .bottom-nav button{background:transparent;border:none;color:white;font-size:1.5em;cursor:pointer;}
-@media(max-width:600px){.entry-card{flex-direction:column;gap:5px;}}
+@media(max-width:500px){.category-grid{grid-template-columns:repeat(3,1fr);} .entry-card span{font-size:0.8em;}}
 </style>
 </head>
 <body>
@@ -53,7 +53,7 @@ button.export-btn:hover{background:#388e3c;}
 </header>
 
 <div class="container">
-<div class="banner">💡 Save Smart, Live Better! Track your financial life daily.</div>
+<div class="banner">💡 Save Smart, Live Better! Track your daily financial life.</div>
 
 <h2>Categories</h2>
 <div class="category-grid" id="categoryGrid">
@@ -105,7 +105,7 @@ button.export-btn:hover{background:#388e3c;}
 
 <div class="chart-container">
 <h2>Summary Charts</h2>
-<canvas id="summaryChart" style="margin-bottom:15px;"></canvas>
+<canvas id="summaryChart" style="margin-bottom:12px;"></canvas>
 <canvas id="pieChart"></canvas>
 </div>
 
