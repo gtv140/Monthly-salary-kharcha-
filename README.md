@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker Mobile App</title>
+<title>Pocket Tracker Ultimate Daily Life</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -13,12 +13,12 @@ header{display:flex;justify-content:space-between;align-items:center;background:
 header h1{font-size:1.8em;margin:0;}
 .darkmode-btn{background:transparent;color:white;border:none;font-size:1.5em;cursor:pointer;}
 .container{max-width:1000px;margin:20px auto;padding:0 15px;}
-h2{text-align:center;color:#764ba2;margin-bottom:10px;}
 #balance{background:#764ba2;color:white;font-size:1.3em;text-align:center;padding:15px;border-radius:15px;margin-bottom:20px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
 body.dark #balance{background:#2b2b3f;color:#eee;}
 .category-icons{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:15px;}
 .category-icons button{flex:1;min-width:60px;padding:10px;border-radius:15px;border:none;cursor:pointer;font-size:1.2em;transition:0.3s;color:white;}
 .food{background:#ff9800;} .fuel{background:#795548;} .entertainment{background:#ff5722;} .personal{background:#f44336;} .gambling{background:#9c27b0;} .saving{background:#2196f3;} .income{background:#4caf50;}
+.bills{background:#00bcd4;} .loans{background:#607d8b;} .transport{background:#9c27b0;} .shopping{background:#e91e63;} .rent{background:#3f51b5;} .education{background:#ffeb3b;} .medical{background:#009688;} .other{background:#795548;}
 .category-icons button:hover{opacity:0.8;}
 form{display:flex;flex-wrap:wrap;gap:10px;background:white;padding:15px;border-radius:15px;box-shadow:0 8px 20px rgba(0,0,0,0.1);margin-bottom:10px;}
 form input, form select, form button{padding:10px;border-radius:10px;border:1px solid #ccc;font-size:1em;}
@@ -42,7 +42,7 @@ button.export-btn:hover{background:#388e3c;}
 <body>
 
 <header>
-<h1>Pocket Tracker</h1>
+<h1>Pocket Tracker Daily Life</h1>
 <button class="darkmode-btn" onclick="toggleDarkMode()">🌓</button>
 </header>
 
@@ -58,6 +58,14 @@ button.export-btn:hover{background:#388e3c;}
 <button class="fuel" onclick="selectCategory('Fuel')">⛽</button>
 <button class="personal" onclick="selectCategory('Personal')">💸</button>
 <button class="gambling" onclick="selectCategory('Gambling')">🎲</button>
+<button class="bills" onclick="selectCategory('Bills')">💡📶</button>
+<button class="loans" onclick="selectCategory('Loans')">💳</button>
+<button class="transport" onclick="selectCategory('Transport')">🚗</button>
+<button class="shopping" onclick="selectCategory('Shopping')">🛒</button>
+<button class="rent" onclick="selectCategory('Rent')">🏠</button>
+<button class="education" onclick="selectCategory('Education')">📚</button>
+<button class="medical" onclick="selectCategory('Medical')">💊</button>
+<button class="other" onclick="selectCategory('Other')">📝</button>
 </div>
 
 <form id="trackerForm">
@@ -71,6 +79,14 @@ button.export-btn:hover{background:#388e3c;}
 <option value="Fuel">Fuel</option>
 <option value="Personal">Personal</option>
 <option value="Gambling">Gambling</option>
+<option value="Bills">Bills</option>
+<option value="Loans">Loans</option>
+<option value="Transport">Transport</option>
+<option value="Shopping">Shopping</option>
+<option value="Rent">Rent</option>
+<option value="Education">Education</option>
+<option value="Medical">Medical</option>
+<option value="Other">Other</option>
 </select>
 <input type="number" id="amount" placeholder="Amount" required>
 <input type="text" id="note" placeholder="Note">
@@ -94,17 +110,15 @@ button.export-btn:hover{background:#388e3c;}
 let entries=JSON.parse(localStorage.getItem('entries'))||[];
 
 function toggleDarkMode(){ document.body.classList.toggle('dark'); }
-
 function selectCategory(cat){document.getElementById('type').value=cat;}
-
 function saveData(){localStorage.setItem('entries',JSON.stringify(entries));}
 
 function updateBalance(){
-let totals={Income:0,Saving:0,Food:0,Entertainment:0,Fuel:0,Personal:0,Gambling:0};
+let totals={Income:0,Saving:0,Food:0,Entertainment:0,Fuel:0,Personal:0,Gambling:0,Bills:0,Loans:0,Transport:0,Shopping:0,Rent:0,Education:0,Medical:0,Other:0};
 entries.forEach(e=>{totals[e.type]?totals[e.type]+=Number(e.amount):null;});
-let balance=totals.Income+totals.Saving-(totals.Food+totals.Entertainment+totals.Fuel+totals.Personal+totals.Gambling);
+let balance=totals.Income+totals.Saving-(totals.Food+totals.Entertainment+totals.Fuel+totals.Personal+totals.Gambling+totals.Bills+totals.Loans+totals.Transport+totals.Shopping+totals.Rent+totals.Education+totals.Medical+totals.Other);
 document.getElementById('balance').innerText=`Balance: ${balance}`;
-document.getElementById('totals').innerText=`Income:${totals.Income} | Saving:${totals.Saving} | Food:${totals.Food} | Entertainment:${totals.Entertainment} | Fuel:${totals.Fuel} | Personal:${totals.Personal} | Gambling:${totals.Gambling}`;
+document.getElementById('totals').innerText=`Income:${totals.Income} | Saving:${totals.Saving} | Food:${totals.Food} | Entertainment:${totals.Entertainment} | Fuel:${totals.Fuel} | Personal:${totals.Personal} | Gambling:${totals.Gambling} | Bills:${totals.Bills} | Loans:${totals.Loans} | Transport:${totals.Transport} | Shopping:${totals.Shopping} | Rent:${totals.Rent} | Education:${totals.Education} | Medical:${totals.Medical} | Other:${totals.Other}`;
 return totals;
 }
 
@@ -130,42 +144,36 @@ const entry={date:document.getElementById('date').value,type:document.getElement
 entries.push(entry);saveData();this.reset();updateEntriesList();
 });
 
-// ===== Search =====
-document.getElementById('searchBar')?.addEventListener('input',function(){
-const q=this.value.toLowerCase();
-const filtered=entries.filter(e=>e.date.includes(q)||e.type.toLowerCase().includes(q)||e.note.toLowerCase().includes(q));
-updateEntriesList(filtered);
-});
-
 // ===== Charts =====
 const ctx=document.getElementById('summaryChart').getContext('2d');
 const ctxPie=document.getElementById('pieChart').getContext('2d');
 let summaryChart,pieChart;
 
 function updateCharts(){
-let totals={Income:0,Saving:0,Food:0,Entertainment:0,Fuel:0,Personal:0,Gambling:0};
+let totals={Income:0,Saving:0,Food:0,Entertainment:0,Fuel:0,Personal:0,Gambling:0,Bills:0,Loans:0,Transport:0,Shopping:0,Rent:0,Education:0,Medical:0,Other:0};
 entries.forEach(e=>{if(totals[e.type]!==undefined) totals[e.type]+=Number(e.amount);});
 if(summaryChart) summaryChart.destroy();
-summaryChart=new Chart(ctx,{type:'bar',data:{labels:['Income','Saving','Food','Entertainment','Fuel','Personal','Gambling'],datasets:[{label:'Amount',data:[totals.Income,totals.Saving,totals.Food,totals.Entertainment,totals.Fuel,totals.Personal,totals.Gambling],backgroundColor:['#4caf50','#2196f3','#ff9800','#ff5722','#795548','#f44336','#9c27b0']}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+summaryChart=new Chart(ctx,{type:'bar',data:{labels:['Income','Saving','Food','Entertainment','Fuel','Personal','Gambling','Bills','Loans','Transport','Shopping','Rent','Education','Medical','Other'],datasets:[{label:'Amount',data:[totals.Income,totals.Saving,totals.Food,totals.Entertainment,totals.Fuel,totals.Personal,totals.Gambling,totals.Bills,totals.Loans,totals.Transport,totals.Shopping,totals.Rent,totals.Education,totals.Medical,totals.Other],backgroundColor:['#4caf50','#2196f3','#ff9800','#ff5722','#795548','#f44336','#9c27b0','#00bcd4','#607d8b','#9c27b0','#e91e63','#3f51b5','#ffeb3b','#009688','#795548']}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
 if(pieChart) pieChart.destroy();
-pieChart=new Chart(ctxPie,{type:'pie',data:{labels:['Income','Saving','Food','Entertainment','Fuel','Personal','Gambling'],datasets:[{data:[totals.Income,totals.Saving,totals.Food,totals.Entertainment,totals.Fuel,totals.Personal,totals.Gambling],backgroundColor:['#4caf50','#2196f3','#ff9800','#ff5722','#795548','#f44336','#9c27b0']}]},options:{responsive:true}});
+pieChart=new Chart(ctxPie,{type:'pie',data:{labels:['Income','Saving','Food','Entertainment','Fuel','Personal','Gambling','Bills','Loans','Transport','Shopping','Rent','Education','Medical','Other'],datasets:[{data:[totals.Income,totals.Saving,totals.Food,totals.Entertainment,totals.Fuel,totals.Personal,totals.Gambling,totals.Bills,totals.Loans,totals.Transport,totals.Shopping,totals.Rent,totals.Education,totals.Medical,totals.Other],backgroundColor:['#4caf50','#2196f3','#ff9800','#ff5722','#795548','#f44336','#9c27b0','#00bcd4','#607d8b','#9c27b0','#e91e63','#3f51b5','#ffeb3b','#009688','#795548']}]},options:{responsive:true}});
 }
 
 // ===== Alerts =====
 function checkAlerts(){
-let totals={Personal:0,Gambling:0};
-entries.forEach(e=>{ if(e.type==='Personal') totals.Personal+=Number(e.amount); if(e.type==='Gambling') totals.Gambling+=Number(e.amount); });
+let totals={Personal:0,Gambling:0,Bills:0,Loans:0};
+entries.forEach(e=>{ if(e.type==='Personal') totals.Personal+=Number(e.amount); if(e.type==='Gambling') totals.Gambling+=Number(e.amount); if(e.type==='Bills') totals.Bills+=Number(e.amount); if(e.type==='Loans') totals.Loans+=Number(e.amount);});
 if(totals.Personal>10000) alert("Warning: Personal spending limit exceeded!");
 if(totals.Gambling>5000) alert("Warning: Gambling spending limit exceeded!");
+if(totals.Bills>20000) alert("Warning: Bills spending high!");
+if(totals.Loans>50000) alert("Warning: Loans repayment high!");
 }
 
 // ===== Export CSV/PDF =====
 function exportCSV(){let csv='Date,Type,Amount,Note\n';entries.forEach(e=>{csv+=`${e.date},${e.type},${e.amount},${e.note}\n`;});const blob=new Blob([csv],{type:'text/csv'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='pocket_tracker.csv';link.click();}
-function exportPDF(){const { jsPDF } = window.jspdf;const doc=new jsPDF();let y=10;doc.setFontSize(12);doc.text('Pocket Tracker',105,10,{align:'center'});entries.forEach(e=>{y+=10;doc.text(`${e.date} | ${e.type} | ${e.amount} | ${e.note}`,10,y);});doc.save('pocket_tracker.pdf');}
+function exportPDF(){const { jsPDF } = window.jspdf;const doc=new jsPDF();let y=10;doc.setFontSize(12);doc.text('Pocket Tracker Daily Life',105,10,{align:'center'});entries.forEach(e=>{y+=10;doc.text(`${e.date} | ${e.type} | ${e.amount} | ${e.note}`,10,y);});doc.save('pocket_tracker.pdf');}
 
 // ===== Initial Load =====
 updateEntriesList();
 </script>
-
 </body>
 </html>
