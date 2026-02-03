@@ -2,13 +2,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker Financial App</title>
+<title>Pocket Tracker Modern App</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-body{font-family:'Roboto',sans-serif;margin:0;padding:0;background:#f0f4f8;color:#333;transition:0.3s;}
-body.dark{background:#1e1e2f;color:#eee;}
+body{font-family:'Roboto',sans-serif;margin:0;padding:0;background:#f7f9fc;color:#333;transition:0.3s;}
+body.dark{background:#1c1c2b;color:#eee;}
 header{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:20px;border-bottom-left-radius:20px;border-bottom-right-radius:20px;box-shadow:0 5px 15px rgba(0,0,0,0.2);}
 header h1{font-size:1.8em;margin:0;}
 .user-balance{font-size:1.1em;}
@@ -17,8 +17,8 @@ header h1{font-size:1.8em;margin:0;}
 .banner{background:#764ba2;color:white;text-align:center;padding:15px;border-radius:15px;margin-bottom:20px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
 body.dark .banner{background:#2b2b3f;color:#eee;}
 .category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:10px;margin-bottom:15px;}
-.category-grid button{padding:10px;border-radius:15px;border:none;cursor:pointer;font-size:1.2em;transition:0.3s;color:white;}
-.category-grid button:hover{opacity:0.8;}
+.category-grid button{padding:12px;border-radius:15px;border:none;cursor:pointer;font-size:1.2em;transition:0.3s;color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.category-grid button:hover{opacity:0.85;transform:scale(1.05);}
 .food{background:#ff9800;} .fuel{background:#795548;} .entertainment{background:#ff5722;} .personal{background:#f44336;} .gambling{background:#9c27b0;} .saving{background:#2196f3;} .income{background:#4caf50;}
 .bills{background:#00bcd4;} .loans{background:#607d8b;} .transport{background:#9c27b0;} .shopping{background:#e91e63;} .rent{background:#3f51b5;} .education{background:#ffeb3b;} .medical{background:#009688;} .other{background:#795548;}
 .more-btn{background:#333;color:white;}
@@ -28,7 +28,8 @@ form button{background:#764ba2;color:white;border:none;cursor:pointer;flex:1;tra
 form button:hover{background:#667eea;}
 body.dark form{background:#2b2b3f;border-color:#555;color:#eee;}
 body.dark form input, body.dark form select{background:#2b2b3f;border-color:#555;color:#eee;}
-.entry-card{background:white;padding:12px;margin-bottom:10px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);display:flex;justify-content:space-between;align-items:center;}
+.entry-card{background:white;padding:12px;margin-bottom:10px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);display:flex;justify-content:space-between;align-items:center;transition:0.3s;}
+.entry-card:hover{transform:translateY(-2px);}
 .entry-card span{flex:1;text-align:center;}
 .delete-btn{background:#ff4d4f;color:white;padding:5px 10px;border:none;border-radius:8px;cursor:pointer;transition:0.3s;}
 .delete-btn:hover{background:#d9363e;}
@@ -56,22 +57,22 @@ button.export-btn:hover{background:#388e3c;}
 
 <h2>Categories</h2>
 <div class="category-grid" id="categoryGrid">
-<button class="income" onclick="selectCategory('Income')">💵 Income</button>
-<button class="saving" onclick="selectCategory('Saving')">💰 Saving</button>
-<button class="food" onclick="selectCategory('Food')">🍔 Food</button>
-<button class="fuel" onclick="selectCategory('Fuel')">⛽ Fuel</button>
-<button class="entertainment" onclick="selectCategory('Entertainment')">🎬 Entertainment</button>
-<button class="personal" onclick="selectCategory('Personal')">💸 Personal</button>
-<button class="gambling" onclick="selectCategory('Gambling')">🎲 Gambling</button>
-<button class="bills" onclick="selectCategory('Bills')">💡 Bills</button>
-<button class="loans" onclick="selectCategory('Loans')">💳 Loans</button>
-<button class="transport" onclick="selectCategory('Transport')">🚗 Transport</button>
-<button class="shopping" onclick="selectCategory('Shopping')">🛒 Shopping</button>
-<button class="rent" onclick="selectCategory('Rent')">🏠 Rent</button>
-<button class="education" onclick="selectCategory('Education')">📚 Education</button>
-<button class="medical" onclick="selectCategory('Medical')">💊 Medical</button>
-<button class="other" onclick="selectCategory('Other')">📝 Other</button>
-<button class="more-btn" onclick="openMoreModal()">≡ More</button>
+<button class="income" onclick="selectCategory('Income')">💵<br>Income</button>
+<button class="saving" onclick="selectCategory('Saving')">💰<br>Saving</button>
+<button class="food" onclick="selectCategory('Food')">🍔<br>Food</button>
+<button class="fuel" onclick="selectCategory('Fuel')">⛽<br>Fuel</button>
+<button class="entertainment" onclick="selectCategory('Entertainment')">🎬<br>Entertainment</button>
+<button class="personal" onclick="selectCategory('Personal')">💸<br>Personal</button>
+<button class="gambling" onclick="selectCategory('Gambling')">🎲<br>Gambling</button>
+<button class="bills" onclick="selectCategory('Bills')">💡<br>Bills</button>
+<button class="loans" onclick="selectCategory('Loans')">💳<br>Loans</button>
+<button class="transport" onclick="selectCategory('Transport')">🚗<br>Transport</button>
+<button class="shopping" onclick="selectCategory('Shopping')">🛒<br>Shopping</button>
+<button class="rent" onclick="selectCategory('Rent')">🏠<br>Rent</button>
+<button class="education" onclick="selectCategory('Education')">📚<br>Education</button>
+<button class="medical" onclick="selectCategory('Medical')">💊<br>Medical</button>
+<button class="other" onclick="selectCategory('Other')">📝<br>Other</button>
+<button class="more-btn" onclick="openMoreModal()">≡<br>More</button>
 </div>
 
 <form id="trackerForm">
