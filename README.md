@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker Modern</title>
+<title>Pocket Tracker – Modern Mobile</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -10,14 +10,14 @@
 /* ===== Global ===== */
 body{margin:0;font-family:'Roboto',sans-serif;background:#f4f6f9;color:#333;transition:0.3s;}
 body.dark{background:#121212;color:#eee;}
-.container{max-width:900px;margin:0 auto;padding:10px;}
+.container{padding:12px;}
 h1,h2,h3{margin:0;}
 button{cursor:pointer;transition:0.3s;}
 
 /* ===== Header ===== */
-header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-bottom-left-radius:15px;border-bottom-right-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.2);}
-header h1{font-size:1.5em;}
-header .user-balance{font-size:0.9em;}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-bottom-left-radius:15px;border-bottom-right-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+header h1{font-size:1.3em;}
+header .user-balance{font-size:0.85em;}
 header .darkmode-btn{background:transparent;border:none;color:white;font-size:1.5em;}
 
 /* ===== Banner ===== */
@@ -25,46 +25,46 @@ header .darkmode-btn{background:transparent;border:none;color:white;font-size:1.
 body.dark .banner{background:#2b2b3f;color:#eee;}
 
 /* ===== Category Grid ===== */
-.category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:10px;margin-bottom:12px;}
-.category-grid button{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;border:none;border-radius:12px;color:white;font-weight:500;font-size:0.9em;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+.category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:8px;margin-bottom:10px;}
+.category-grid button{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;border:none;border-radius:12px;color:white;font-weight:500;font-size:0.8em;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
 .category-grid button:hover{opacity:0.85;transform:scale(1.05);}
 .income{background:#4caf50;} .saving{background:#2196f3;} .food{background:#ff9800;} .fuel{background:#795548;} .entertainment{background:#ff5722;} .personal{background:#f44336;} .gambling{background:#9c27b0;} 
 .bills{background:#00bcd4;} .loans{background:#607d8b;} .transport{background:#9c27b0;} .shopping{background:#e91e63;} .rent{background:#3f51b5;} .education{background:#ffeb3b;} .medical{background:#009688;} .other{background:#795548;}
 .more-btn{background:#333;color:white;}
 
 /* ===== Form ===== */
-form{display:flex;flex-direction:column;gap:8px;background:white;padding:12px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.1);margin-bottom:12px;}
-form input, form select, form button{padding:10px;border-radius:10px;border:1px solid #ccc;font-size:1em;width:100%;}
+form{display:flex;flex-direction:column;gap:6px;background:white;padding:10px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.1);margin-bottom:10px;}
+form input, form select, form button{padding:10px;border-radius:10px;border:1px solid #ccc;font-size:0.9em;width:100%;}
 form button{background:#764ba2;color:white;border:none;}
 form button:hover{background:#667eea;}
 body.dark form{background:#2b2b3f;border-color:#555;color:#eee;}
 body.dark form input,body.dark form select{background:#2b2b3f;border-color:#555;color:#eee;}
 
 /* ===== Entry Cards ===== */
-.entry-card{background:white;padding:10px;margin-bottom:8px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,0.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;transition:0.3s;}
+.entry-card{background:white;padding:8px;margin-bottom:6px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,0.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;transition:0.3s;}
 .entry-card:hover{transform:translateY(-2px);}
-.entry-card span{flex:1;text-align:center;font-size:0.9em;}
+.entry-card span{flex:1;text-align:center;font-size:0.8em;}
 .delete-btn{background:#ff4d4f;color:white;padding:5px 8px;border:none;border-radius:8px;cursor:pointer;}
 .delete-btn:hover{background:#d9363e;}
 body.dark .entry-card{background:#2b2b3f;color:#eee;}
 
 /* ===== Totals ===== */
-.totals{margin:8px 0;font-weight:bold;text-align:right;font-size:0.9em;}
+.totals{margin:6px 0;font-weight:bold;text-align:right;font-size:0.85em;}
 
 /* ===== Charts ===== */
-.chart-container{background:white;padding:12px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.1);margin-bottom:15px;}
+.chart-container{background:white;padding:10px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.1);margin-bottom:12px;}
 body.dark .chart-container{background:#2b2b3f;color:#eee;}
 
 /* ===== Export Buttons ===== */
-button.export-btn{padding:6px 12px;background:#4caf50;color:white;border:none;border-radius:10px;margin-right:5px;font-size:0.9em;}
+button.export-btn{padding:6px 12px;background:#4caf50;color:white;border:none;border-radius:10px;margin-right:4px;font-size:0.85em;}
 button.export-btn:hover{background:#388e3c;}
 
 /* ===== Bottom Navigation ===== */
-.bottom-nav{position:fixed;bottom:0;width:100%;display:flex;justify-content:space-around;background:#764ba2;padding:10px 0;border-top-left-radius:15px;border-top-right-radius:15px;box-shadow:0 -5px 15px rgba(0,0,0,0.2);}
-.bottom-nav button{background:transparent;border:none;color:white;font-size:1.5em;}
+.bottom-nav{position:fixed;bottom:0;width:100%;display:flex;justify-content:space-around;background:#764ba2;padding:8px 0;border-top-left-radius:15px;border-top-right-radius:15px;box-shadow:0 -5px 15px rgba(0,0,0,0.2);}
+.bottom-nav button{background:transparent;border:none;color:white;font-size:1.4em;}
 
 /* ===== Media Queries ===== */
-@media(max-width:500px){.category-grid{grid-template-columns:repeat(3,1fr);} .entry-card span{font-size:0.8em;}}
+@media(max-width:500px){.category-grid{grid-template-columns:repeat(3,1fr);} .entry-card span{font-size:0.75em;}}
 </style>
 </head>
 <body>
@@ -128,7 +128,7 @@ button.export-btn:hover{background:#388e3c;}
 
 <div class="chart-container">
 <h2>Summary Charts</h2>
-<canvas id="summaryChart" style="margin-bottom:12px;"></canvas>
+<canvas id="summaryChart" style="margin-bottom:10px;"></canvas>
 <canvas id="pieChart"></canvas>
 </div>
 
