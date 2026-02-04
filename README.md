@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker – Salary Auto</title>
+<title>Pocket Tracker – Smart History</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -10,66 +10,33 @@
 *{box-sizing:border-box;font-family:Poppins;margin:0;padding:0;}
 body{background:#f2f4f8;color:#333;transition:.3s;}
 body.dark{background:#121212;color:#eee;}
-
 .app{max-width:480px;margin:auto;padding-bottom:100px}
-
-/* Header */
-.header{
-background:linear-gradient(135deg,#6c5ce7,#00cec9);
-color:white;padding:20px;border-radius:0 0 25px 25px;text-align:center;
-}
+.header{background:linear-gradient(135deg,#6c5ce7,#00cec9);color:white;padding:20px;border-radius:0 0 25px 25px;text-align:center;}
 .header h1{font-size:22px;font-weight:600;}
 .header .balance{font-size:28px;margin-top:8px;font-weight:600;}
 .header .small{font-size:14px;opacity:.85;}
-
-/* Cards */
-.card{
-background:rgba(255,255,255,0.85);
-backdrop-filter:blur(10px);
-border-radius:18px;
-padding:15px;margin:12px;
-}
-.dark .card{background:#1a1d24;color:#eee}
-
-/* Inputs */
+.card{background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);border-radius:18px;padding:15px;margin:12px;}
+.dark .card{background:#1a1d24;color:#eee;}
 input,select,button{width:100%;padding:12px;border-radius:12px;border:none;margin-top:6px;font-size:14px;}
 button{background:#6c5ce7;color:white;font-weight:600;cursor:pointer;transition:.2s;}
 button:hover{transform:scale(1.03);}
-
-/* Category Grid */
-.grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;text-align:center;margin-top:10px;
-word-wrap:break-word; 
-}
-.cat{
-padding:12px;border-radius:14px;background:#eef;font-size:12px;cursor:pointer;transition:.2s;
-word-break:break-word; line-height:1.2;
-}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center;margin-top:10px;word-wrap:break-word;}
+.cat{padding:12px;border-radius:14px;background:#eef;font-size:12px;cursor:pointer;transition:.2s;word-break:break-word;line-height:1.2;}
 .cat:hover{transform:scale(1.05);}
 .dark .cat{background:#2b2b3f}
-
-/* Entry List */
 .entry{display:flex;justify-content:space-between;padding:8px;background:#fff;border-radius:12px;margin-bottom:6px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
 .dark .entry{background:#2b2b3f;color:#eee;}
 .entry span{font-size:12px;flex:1;text-align:center;}
 .entry button{background:#ff4d4f;color:white;border:none;padding:5px 8px;border-radius:8px;cursor:pointer;}
 .entry button:hover{background:#d9363e}
-
-/* Budget Progress */
 .progress{width:100%;background:#ddd;border-radius:12px;height:12px;margin-top:8px;overflow:hidden;}
 .progress-bar{height:100%;background:#6c5ce7;width:0%;transition:.3s;}
 .dark .progress{background:#2b2b3f}
-
-/* Bottom Nav */
-.nav{
-position:fixed;bottom:0;width:100%;max-width:480px;
-display:flex;justify-content:space-around;background:linear-gradient(135deg,#6c5ce7,#00cec9);
-padding:10px;border-radius:12px 12px 0 0;color:white;
-}
+.nav{position:fixed;bottom:0;width:100%;max-width:480px;display:flex;justify-content:space-around;background:linear-gradient(135deg,#6c5ce7,#00cec9);padding:10px;border-radius:12px 12px 0 0;color:white;}
 .nav button{background:none;border:none;color:white;font-size:18px;cursor:pointer;transition:.2s;}
 .nav button:hover{transform:scale(1.1);}
+.search-filter{display:flex;gap:8px;margin-top:6px;}
+.search-filter input, .search-filter select{flex:1;padding:8px;}
 </style>
 </head>
 
@@ -78,9 +45,9 @@ padding:10px;border-radius:12px 12px 0 0;color:white;
 
 <!-- Header -->
 <div class="header">
-<h1>Pocket Tracker – Salary Auto</h1>
+<h1>Pocket Tracker – Smart History</h1>
 <div class="balance">Balance: Rs <span id="balance">0</span></div>
-<div class="small" id="budget-msg">Track smart, live better 💡</div>
+<div class="small" id="budget-msg">Track smart, save better 💡</div>
 <button onclick="toggleDark()">🌓 Toggle Dark</button>
 </div>
 
@@ -91,7 +58,7 @@ padding:10px;border-radius:12px 12px 0 0;color:white;
 <button onclick="setSalary()">Set Salary</button>
 </div>
 
-<!-- Add Entry -->
+<!-- Add Transaction -->
 <div class="card">
 <h4>Add Transaction</h4>
 <select id="type">
@@ -114,6 +81,17 @@ padding:10px;border-radius:12px 12px 0 0;color:white;
 <div class="card">
 <h4>Quick Categories</h4>
 <div class="grid" id="cats"></div>
+</div>
+
+<!-- Search / Filter -->
+<div class="card">
+<h4>Search / Filter History</h4>
+<div class="search-filter">
+<input type="text" id="search-note" placeholder="Search note/tag" oninput="render()">
+<select id="search-cat" onchange="render()">
+<option value="">All Categories</option>
+</select>
+</div>
 </div>
 
 <!-- Entries History -->
@@ -150,7 +128,7 @@ padding:10px;border-radius:12px 12px 0 0;color:white;
 
 <script>
 // Data storage
-let data = JSON.parse(localStorage.getItem('pocketSalary')) || {
+let data = JSON.parse(localStorage.getItem('pocketSmart')) || {
 balance:0,
 salary:0,
 categories:["Income","Saving","Food","Fuel","Entertainment","Personal","Gambling","Bills","Loans","Transport","Shopping","Rent","Education","Medical","Other"],
@@ -158,7 +136,7 @@ entries:[]
 };
 
 // Save data
-function save(){localStorage.setItem('pocketSalary',JSON.stringify(data))}
+function save(){localStorage.setItem('pocketSmart',JSON.stringify(data))}
 
 // Set Salary
 function setSalary(){
@@ -174,10 +152,12 @@ document.getElementById('salary').value="";
 function loadCategories(){
 let catSel=document.getElementById('category');
 let grid=document.getElementById('cats');
-catSel.innerHTML=""; grid.innerHTML="";
+let filterCat=document.getElementById('search-cat');
+catSel.innerHTML=""; grid.innerHTML=""; filterCat.innerHTML="<option value=''>All Categories</option>";
 data.categories.forEach(c=>{
 catSel.innerHTML+=`<option>${c}</option>`;
 grid.innerHTML+=`<div class="cat" onclick="quickAdd('${c}')">${c}</div>`;
+filterCat.innerHTML+=`<option value="${c}">${c}</option>`;
 })
 }
 
@@ -206,29 +186,24 @@ document.getElementById('amount').value="";
 document.getElementById('note').value="";
 }
 
-// Apply recurring transactions
-function applyRecurring(){
-data.entries.forEach(e=>{
-if(e.repeat=='daily'){data.balance += (e.type=="in"?e.amt:-e.amt);}
-if(e.repeat=='weekly'){data.balance += (e.type=="in"?e.amt:-e.amt);}
-if(e.repeat=='monthly'){data.balance += (e.type=="in"?e.amt:-e.amt);}
-})
-save();
-}
-
-// Render entries, balance, progress bar
+// Render entries, balance, progress
 function render(){
-applyRecurring();
+let searchNote=document.getElementById('search-note').value.toLowerCase();
+let searchCat=document.getElementById('search-cat').value;
+
 document.getElementById('balance').innerText=data.balance;
+
 let list=document.getElementById('entries');
 list.innerHTML="";
 let totals={};
 data.entries.forEach((e,i)=>{
+if((searchNote && !e.note.toLowerCase().includes(searchNote)) || (searchCat && e.cat!=searchCat)) return;
 list.innerHTML+=`<div class="entry">
 <span>${e.cat}</span>
 <span>${e.amt}</span>
 <span>${e.note}</span>
 <button onclick="deleteEntry(${i})">❌</button>
+<button onclick="editEntry(${i})">✏️</button>
 </div>`;
 totals[e.cat]=(totals[e.cat]||0)+e.amt;
 });
@@ -236,14 +211,14 @@ totals[e.cat]=(totals[e.cat]||0)+e.amt;
 // Draw chart
 drawChart(totals);
 
-// Update budget progress
-let budget=data.salary || 1;
+// Budget progress
+let budget=data.salary||1;
 let prog=Math.min(100,Math.round((budget-data.balance)/budget*100));
 document.getElementById('progress-bar').style.width=prog+"%";
 document.getElementById('budget-msg').innerText=`Salary Used: ${prog}%`;
 }
 
-// Delete entry
+// Delete / Edit Entry
 function deleteEntry(i){
 let e=data.entries[i];
 if(e.type=='out') data.balance += e.amt;
@@ -252,7 +227,18 @@ data.entries.splice(i,1);
 save();render();
 }
 
-// Draw Pie Chart
+function editEntry(i){
+let e=data.entries[i];
+let newAmt=prompt("Enter new amount", e.amt);
+let newNote=prompt("Enter new note/tag", e.note);
+if(!newAmt) return;
+data.balance += (e.type=="out"?e.amt:-e.amt); // reverse old
+e.amt=+newAmt; e.note=newNote;
+data.balance -= (e.type=="out"?e.amt:-e.amt); // apply new
+save();render();
+}
+
+// Chart
 let ch;
 function drawChart(totals){
 if(ch) ch.destroy();
@@ -268,17 +254,17 @@ options:{responsive:true}
 });
 }
 
-// Dark mode toggle
+// Dark mode
 function toggleDark(){document.body.classList.toggle('dark');}
 
 // Scroll top
 function scrollTop(){window.scrollTo({top:0,behavior:'smooth'});}
 
-// Export / Import JSON
+// Export / Import
 function exportJSON(){
 let a=document.createElement('a');
 a.href=URL.createObjectURL(new Blob([JSON.stringify(data)]));
-a.download="pocketSalary.json";
+a.download="pocketSmart.json";
 a.click();
 }
 function importJSON(){
