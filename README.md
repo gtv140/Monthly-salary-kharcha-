@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker Pro</title>
+<title>Pocket Tracker Ultimate</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -11,7 +11,7 @@
 body{background:#f2f4f8;color:#333;transition:.3s;}
 body.dark{background:#121212;color:#eee;}
 
-.app{max-width:480px;margin:auto;padding-bottom:80px}
+.app{max-width:480px;margin:auto;padding-bottom:100px}
 
 /* Header */
 .header{
@@ -41,9 +41,11 @@ button:hover{transform:scale(1.03);}
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:10px;text-align:center;margin-top:10px;
+word-wrap:break-word; 
 }
 .cat{
 padding:12px;border-radius:14px;background:#eef;font-size:12px;cursor:pointer;transition:.2s;
+word-break:break-word; line-height:1.2;
 }
 .cat:hover{transform:scale(1.05);}
 .dark .cat{background:#2b2b3f}
@@ -54,6 +56,11 @@ padding:12px;border-radius:14px;background:#eef;font-size:12px;cursor:pointer;tr
 .entry span{font-size:12px;flex:1;text-align:center;}
 .entry button{background:#ff4d4f;color:white;border:none;padding:5px 8px;border-radius:8px;cursor:pointer;}
 .entry button:hover{background:#d9363e}
+
+/* Budget Progress */
+.progress{width:100%;background:#ddd;border-radius:12px;height:12px;margin-top:8px;overflow:hidden;}
+.progress-bar{height:100%;background:#6c5ce7;width:0%;transition:.3s;}
+.dark .progress{background:#2b2b3f}
 
 /* Bottom Nav */
 .nav{
@@ -71,9 +78,9 @@ padding:10px;border-radius:12px 12px 0 0;color:white;
 
 <!-- Header -->
 <div class="header">
-<h1>Pocket Tracker Pro</h1>
+<h1>Pocket Tracker Ultimate</h1>
 <div class="balance">Balance: Rs <span id="balance">0</span></div>
-<div class="small">Track smart, live better 💡</div>
+<div class="small" id="budget-msg">Track smart, live better 💡</div>
 <button onclick="toggleDark()">🌓 Toggle Dark</button>
 </div>
 
@@ -87,6 +94,12 @@ padding:10px;border-radius:12px 12px 0 0;color:white;
 <input type="number" id="amount" placeholder="Amount">
 <select id="category"></select>
 <input id="note" placeholder="Note / Tag">
+<select id="repeat">
+<option value="none">One time</option>
+<option value="daily">Daily</option>
+<option value="weekly">Weekly</option>
+<option value="monthly">Monthly</option>
+</select>
 <button onclick="addEntry()">Add Entry</button>
 </div>
 
@@ -107,6 +120,18 @@ padding:10px;border-radius:12px 12px 0 0;color:white;
 <canvas id="chart"></canvas>
 </div>
 
+<!-- Monthly Budget -->
+<div class="card">
+<h4>Monthly Budget Progress</h4>
+<div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
+</div>
+
+<!-- Export / Import -->
+<div class="card">
+<button onclick="exportJSON()">⬇ Export JSON</button>
+<button onclick="importJSON()">⬆ Import JSON</button>
+</div>
+
 </div>
 
 <!-- Bottom Nav -->
@@ -118,14 +143,15 @@ padding:10px;border-radius:12px 12px 0 0;color:white;
 
 <script>
 // Data storage
-let data = JSON.parse(localStorage.getItem('pocketPro')) || {
+let data = JSON.parse(localStorage.getItem('pocketUltimate')) || {
 balance:0,
 categories:["Income","Saving","Food","Fuel","Entertainment","Personal","Gambling","Bills","Loans","Transport","Shopping","Rent","Education","Medical","Other"],
-entries:[]
+entries:[],
+monthlyBudget:25000 // example default budget
 };
 
 // Save data
-function save(){localStorage.setItem('pocketPro',JSON.stringify(data))}
+function save(){localStorage.setItem('pocketUltimate',JSON.stringify(data))}
 
 // Load categories
 function loadCategories(){
@@ -134,8 +160,17 @@ let grid=document.getElementById('cats');
 catSel.innerHTML=""; grid.innerHTML="";
 data.categories.forEach(c=>{
 catSel.innerHTML+=`<option>${c}</option>`;
-grid.innerHTML+=`<div class="cat">${c}</div>`;
+grid.innerHTML+=`<div class="cat" onclick="quickAdd('${c}')">${c}</div>`;
 })
+}
+
+// Quick add
+function quickAdd(cat){
+let amt=prompt("Enter amount for "+cat);
+if(!amt) return;
+data.entries.unshift({type:'out',cat:cat,amt:+amt,note:'Quick',repeat:'none'});
+data.balance-=+amt;
+save();render();
 }
 
 // Add entry
@@ -145,15 +180,29 @@ if(!amt)return;
 let t=document.getElementById('type').value;
 let cat=document.getElementById('category').value;
 let note=document.getElementById('note').value;
-data.entries.unshift({type:t,cat:cat,amt:amt,note:note});
+let repeat=document.getElementById('repeat').value;
+let entry={type:t,cat:cat,amt:amt,note:note,repeat:repeat};
+data.entries.unshift(entry);
 data.balance += (t=="in"?amt:-amt);
 save();render();
 document.getElementById('amount').value="";
 document.getElementById('note').value="";
 }
 
-// Render entries and balance
+// Apply recurring transactions
+function applyRecurring(){
+let today=new Date().toISOString().slice(0,10);
+data.entries.forEach(e=>{
+if(e.repeat=='daily'){data.balance += (e.type=="in"?e.amt:-e.amt);}
+if(e.repeat=='weekly'){data.balance += (e.type=="in"?e.amt:-e.amt);}
+if(e.repeat=='monthly'){data.balance += (e.type=="in"?e.amt:-e.amt);}
+})
+save();
+}
+
+// Render entries, balance, progress bar
 function render(){
+applyRecurring();
 document.getElementById('balance').innerText=data.balance;
 let list=document.getElementById('entries');
 list.innerHTML="";
@@ -167,7 +216,14 @@ list.innerHTML+=`<div class="entry">
 </div>`;
 totals[e.cat]=(totals[e.cat]||0)+e.amt;
 });
+
+// Draw chart
 drawChart(totals);
+
+// Update budget progress
+let prog=Math.min(100,Math.round(data.balance/data.monthlyBudget*100));
+document.getElementById('progress-bar').style.width=prog+"%";
+document.getElementById('budget-msg').innerText=`Monthly Budget Progress: ${prog}%`;
 }
 
 // Delete entry
@@ -197,6 +253,27 @@ function toggleDark(){document.body.classList.toggle('dark');}
 
 // Scroll top
 function scrollTop(){window.scrollTo({top:0,behavior:'smooth'});}
+
+// Export / Import JSON
+function exportJSON(){
+let a=document.createElement('a');
+a.href=URL.createObjectURL(new Blob([JSON.stringify(data)]));
+a.download="pocketUltimate.json";
+a.click();
+}
+function importJSON(){
+let f=document.createElement('input');
+f.type='file';
+f.onchange=e=>{
+let reader=new FileReader();
+reader.onload=ev=>{
+data=JSON.parse(ev.target.result);
+save();loadCategories();render();
+}
+reader.readAsText(f.target.files[0]);
+}
+f.click();
+}
 
 loadCategories();render();
 </script>
