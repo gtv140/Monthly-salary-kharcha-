@@ -1,163 +1,166 @@
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pocket Tracker – Unlimited</title>
+<title>Pocket Tracker Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-body{margin:0;font-family:sans-serif;background:#f4f6f9}
-.dark{background:#111;color:#eee}
-.app{max-width:480px;margin:auto;padding:10px}
-.card{background:#fff;border-radius:14px;padding:10px;margin-bottom:10px}
-.dark .card{background:#1e1e1e}
-input,select,button{width:100%;padding:10px;border-radius:10px;border:1px solid #ccc}
-button{background:#6c5ce7;color:#fff;border:none}
-.row{display:flex;gap:6px}
-.small{font-size:12px;color:#777}
+*{box-sizing:border-box;font-family:Poppins}
+body{margin:0;background:#f2f4f8}
+.dark{background:#0f1115;color:#fff}
+
+.app{max-width:420px;margin:auto;padding-bottom:80px}
+
+/* Header */
+.header{
+background:linear-gradient(135deg,#6c5ce7,#00cec9);
+color:#fff;padding:20px;border-radius:0 0 25px 25px;
+}
+.balance{font-size:26px;font-weight:600}
+
+/* Cards */
+.card{
+background:rgba(255,255,255,0.85);
+backdrop-filter:blur(10px);
+border-radius:18px;
+padding:15px;margin:12px;
+}
+.dark .card{background:#1a1d24}
+
+/* Inputs */
+input,select,button{
+width:100%;padding:12px;border-radius:12px;border:none;margin-top:6px
+}
+button{background:#6c5ce7;color:#fff;font-weight:600}
+
+/* Categories */
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;text-align:center
+}
+.cat{
+padding:10px;border-radius:14px;background:#eef;
+font-size:12px
+}
+
+/* Bottom Nav */
+.nav{
+position:fixed;bottom:0;left:0;right:0;
+background:#fff;display:flex;
+justify-content:space-around;padding:10px 0
+}
+.dark .nav{background:#14161c}
+.nav div{text-align:center;font-size:12px}
+.nav span{font-size:20px;display:block}
+
+.small{font-size:12px;color:#666}
+.dark .small{color:#aaa}
 </style>
 </head>
 
 <body>
 <div class="app">
 
-<div class="card">
-<h3>💰 Balance: <span id="balance">0</span></h3>
-<button onclick="toggleDark()">🌙 Dark Mode</button>
+<div class="header">
+<div>Hello 👋</div>
+<div class="balance">Rs <span id="balance">0</span></div>
+<div class="small">Track smart, live better</div>
 </div>
 
 <div class="card">
-<h4>Add Category (Unlimited)</h4>
-<div class="row">
-<input id="newCat" placeholder="Category name">
-<button onclick="addCategory()">Add</button>
-</div>
-</div>
-
-<div class="card">
-<h4>Add Entry</h4>
-<input type="date" id="date">
-<select id="category"></select>
-<input type="number" id="amount" placeholder="Amount">
+<h4>Add Transaction</h4>
 <select id="type">
 <option value="in">Income</option>
 <option value="out">Expense</option>
 </select>
-<input id="tags" placeholder="Tags (comma)">
-<select id="repeat">
-<option value="none">One time</option>
-<option value="daily">Daily</option>
-<option value="monthly">Monthly</option>
-</select>
-<button onclick="addEntry()">Save</button>
+<input id="amount" type="number" placeholder="Amount">
+<select id="category"></select>
+<input id="note" placeholder="Note (food, fuel...)">
+<button onclick="add()">Save</button>
 </div>
 
 <div class="card">
-<h4>Search / Filter</h4>
-<input id="search" placeholder="Search note / tag" oninput="render()">
+<h4>Quick Categories</h4>
+<div class="grid" id="cats"></div>
 </div>
 
 <div class="card">
-<h4>Entries</h4>
+<h4>History</h4>
 <div id="list"></div>
 </div>
 
 <div class="card">
-<button onclick="exportCSV()">⬇ Export CSV</button>
-<button onclick="importData()">⬆ Import JSON</button>
+<canvas id="chart"></canvas>
 </div>
 
-<canvas id="chart"></canvas>
+</div>
 
+<div class="nav">
+<div onclick="toggleDark()"><span>🌙</span>Mode</div>
+<div onclick="resetAll()"><span>♻</span>Reset</div>
 </div>
 
 <script>
-let data = JSON.parse(localStorage.getItem("data")) || {
- categories:["Income","Food"],
- entries:[]
-};
-
-function save(){localStorage.setItem("data",JSON.stringify(data))}
-function toggleDark(){document.body.classList.toggle("dark")}
-
-function addCategory(){
- let c=document.getElementById("newCat").value;
- if(c){data.categories.push(c);save();loadCats()}
+let data=JSON.parse(localStorage.getItem("pocket"))||{
+balance:0,
+categories:["Food","Fuel","Bills","Loan","Fun","Shopping","Health","Other"],
+entries:[]
 }
+
+function save(){localStorage.setItem("pocket",JSON.stringify(data))}
 
 function loadCats(){
- let s=document.getElementById("category");
- s.innerHTML="";
- data.categories.forEach(c=>{
-  s.innerHTML+=`<option>${c}</option>`;
- });
+category.innerHTML="";
+cats.innerHTML="";
+data.categories.forEach(c=>{
+category.innerHTML+=`<option>${c}</option>`;
+cats.innerHTML+=`<div class="cat">${c}</div>`;
+})
 }
 
-function addEntry(){
- data.entries.push({
-  date:date.value,
-  cat:category.value,
-  amt:+amount.value,
-  type:type.value,
-  tags:tags.value,
-  repeat:repeat.value
- });
- save();render();
+function add(){
+let amt=+amount.value;
+if(!amt)return;
+let t=type.value;
+data.balance+=t=="in"?amt:-amt;
+data.entries.unshift({
+cat:category.value,amt,t,note:note.value
+})
+save();render();
 }
 
 function render(){
- let q=search.value.toLowerCase();
- let list=document.getElementById("list");
- list.innerHTML="";
- let bal=0;
- data.entries.filter(e=>
-  e.cat.toLowerCase().includes(q)||
-  e.tags.toLowerCase().includes(q)
- ).forEach((e,i)=>{
-  bal+= e.type=="in"?e.amt:-e.amt;
-  list.innerHTML+=`
-   <div class="small">
-   ${e.date} | ${e.cat} | ${e.amt} | ${e.tags}
-   </div>`;
- });
- balance.innerText=bal;
- drawChart();
+balance.innerText=data.balance;
+list.innerHTML="";
+let sum={};
+data.entries.forEach(e=>{
+list.innerHTML+=`
+<div class="small">${e.cat} | ${e.amt} | ${e.note}</div>`;
+sum[e.cat]=(sum[e.cat]||0)+e.amt;
+})
+draw(sum);
 }
 
-function drawChart(){
- let totals={};
- data.entries.forEach(e=>{
-  totals[e.cat]=(totals[e.cat]||0)+e.amt;
- });
- new Chart(chart,{
-  type:"pie",
-  data:{labels:Object.keys(totals),
-  datasets:[{data:Object.values(totals)}]}
- });
+let ch;
+function draw(sum){
+if(ch)ch.destroy();
+ch=new Chart(chart,{
+type:"pie",
+data:{labels:Object.keys(sum),
+datasets:[{data:Object.values(sum)}]}
+})
 }
 
-function exportCSV(){
- let csv="date,cat,amount,type,tags\n";
- data.entries.forEach(e=>{
-  csv+=`${e.date},${e.cat},${e.amt},${e.type},${e.tags}\n`;
- });
- let a=document.createElement("a");
- a.href=URL.createObjectURL(new Blob([csv]));
- a.download="pocket.csv";a.click();
+function toggleDark(){document.body.classList.toggle("dark")}
+function resetAll(){
+if(confirm("Reset all data?")){
+localStorage.removeItem("pocket");
+location.reload();
 }
-
-function importData(){
- let f=document.createElement("input");
- f.type="file";
- f.onchange=()=>{
-  let r=new FileReader();
-  r.onload=e=>{
-   data=JSON.parse(e.target.result);
-   save();loadCats();render();
-  }
-  r.readAsText(f.files[0]);
- }
- f.click();
 }
 
 loadCats();render();
