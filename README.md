@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pocket Tracker Ultimate</title>
+<title>Pocket Tracker – Salary Auto</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -78,10 +78,17 @@ padding:10px;border-radius:12px 12px 0 0;color:white;
 
 <!-- Header -->
 <div class="header">
-<h1>Pocket Tracker Ultimate</h1>
+<h1>Pocket Tracker – Salary Auto</h1>
 <div class="balance">Balance: Rs <span id="balance">0</span></div>
 <div class="small" id="budget-msg">Track smart, live better 💡</div>
 <button onclick="toggleDark()">🌓 Toggle Dark</button>
+</div>
+
+<!-- Set Monthly Salary -->
+<div class="card">
+<h4>Set Monthly Salary</h4>
+<input type="number" id="salary" placeholder="Enter your salary">
+<button onclick="setSalary()">Set Salary</button>
 </div>
 
 <!-- Add Entry -->
@@ -143,15 +150,25 @@ padding:10px;border-radius:12px 12px 0 0;color:white;
 
 <script>
 // Data storage
-let data = JSON.parse(localStorage.getItem('pocketUltimate')) || {
+let data = JSON.parse(localStorage.getItem('pocketSalary')) || {
 balance:0,
+salary:0,
 categories:["Income","Saving","Food","Fuel","Entertainment","Personal","Gambling","Bills","Loans","Transport","Shopping","Rent","Education","Medical","Other"],
-entries:[],
-monthlyBudget:25000 // example default budget
+entries:[]
 };
 
 // Save data
-function save(){localStorage.setItem('pocketUltimate',JSON.stringify(data))}
+function save(){localStorage.setItem('pocketSalary',JSON.stringify(data))}
+
+// Set Salary
+function setSalary(){
+let s=+document.getElementById('salary').value;
+if(!s) return;
+data.salary=s;
+data.balance=s;
+save();render();
+document.getElementById('salary').value="";
+}
 
 // Load categories
 function loadCategories(){
@@ -191,7 +208,6 @@ document.getElementById('note').value="";
 
 // Apply recurring transactions
 function applyRecurring(){
-let today=new Date().toISOString().slice(0,10);
 data.entries.forEach(e=>{
 if(e.repeat=='daily'){data.balance += (e.type=="in"?e.amt:-e.amt);}
 if(e.repeat=='weekly'){data.balance += (e.type=="in"?e.amt:-e.amt);}
@@ -221,13 +237,17 @@ totals[e.cat]=(totals[e.cat]||0)+e.amt;
 drawChart(totals);
 
 // Update budget progress
-let prog=Math.min(100,Math.round(data.balance/data.monthlyBudget*100));
+let budget=data.salary || 1;
+let prog=Math.min(100,Math.round((budget-data.balance)/budget*100));
 document.getElementById('progress-bar').style.width=prog+"%";
-document.getElementById('budget-msg').innerText=`Monthly Budget Progress: ${prog}%`;
+document.getElementById('budget-msg').innerText=`Salary Used: ${prog}%`;
 }
 
 // Delete entry
 function deleteEntry(i){
+let e=data.entries[i];
+if(e.type=='out') data.balance += e.amt;
+if(e.type=='in') data.balance -= e.amt;
 data.entries.splice(i,1);
 save();render();
 }
@@ -258,7 +278,7 @@ function scrollTop(){window.scrollTo({top:0,behavior:'smooth'});}
 function exportJSON(){
 let a=document.createElement('a');
 a.href=URL.createObjectURL(new Blob([JSON.stringify(data)]));
-a.download="pocketUltimate.json";
+a.download="pocketSalary.json";
 a.click();
 }
 function importJSON(){
